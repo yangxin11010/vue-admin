@@ -14,4 +14,7 @@ npm run dev
 ```
 npm run build
 ```
-
+### Compiles and minifies for development
+```
+npm run test
+```
