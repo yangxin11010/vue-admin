@@ -1,7 +1,7 @@
 <template>
     <div class="aside">
         <el-menu
-            class="menu overhide"
+            class="asideMenu overhide"
             :uniqueOpened="true"
             :collapse="collapse"
             :default-active="defaultActive"
@@ -105,11 +105,11 @@ export default defineComponent({
 }
 </style>
 <style lang="scss">
-.menu {
+.asideMenu {
     // 去掉el-menu 白色右边框
     border: none !important;
 }
-.menu:not(.el-menu--collapse) {
+.asideMenu:not(.el-menu--collapse) {
     width: 200px;
     height: 100%;
     overflow: hidden;

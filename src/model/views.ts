@@ -11,3 +11,9 @@ export interface DashboardCard {
     num: string;
 }
 
+export interface ToDoItem {
+    id: number;
+    things: string;
+    isFinish: boolean;
+    isDel: boolean;
+}

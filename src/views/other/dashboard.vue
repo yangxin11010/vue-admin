@@ -27,13 +27,14 @@
             </template>
         </el-row>
         <div class="echars">
-            <Echars :options="options"></Echars>
+            <Echars ref="dabEcharts" :options="options"></Echars>
         </div>
         <el-row :gutter="30">
             <el-col :span="6" :xs="10" :sm="10" :md="6">
                 <el-card shadow="hover" class="bottom-el-card">
                     <template #header>
                         <img
+                            @click="imgHandle"
                             style="height: 220px;"
                             src="https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png"
                         />
@@ -57,15 +58,103 @@
                 </el-card>
             </el-col>
             <el-col :span="18" :xs="14" :sm="14" :md="18">
-                123
+                <el-card class="cCard" shadow="hover">
+                    <template #header>
+                        <div style="font-size: 16px;">
+                            <span style="font-weight: bold;">ToDo List</span>
+                            <el-button
+                                style="float: right; padding: 3px 0;margin-right:10px;"
+                                type="text"
+                                @click="showToDoDialog"
+                                >Add
+                            </el-button>
+                        </div>
+                    </template>
+                    <el-table :data="toDoList" :show-header="false">
+                        <el-table-column width="35">
+                            <template v-slot="{ row }">
+                                <el-checkbox v-model="row.isFinish"></el-checkbox>
+                            </template>
+                        </el-table-column>
+                        <el-table-column>
+                            <template v-slot="{ row }">
+                                <span :class="{ checked: row.isFinish }">{{ row.things }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column width="120">
+                            <template v-slot="{ row }">
+                                <el-tag :type="row.isFinish ? 'success' : 'danger'" style="cursor: pointer">
+                                    {{ row.isFinish ? "已完成" : "未完成" }}
+                                </el-tag>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <!-- <el-tabs class="todoTabs" tab-position="left" type="border-card">
+                        <el-tab-pane :label="`total (${getAllToDoList.length})`">
+                            <ToDoTableItem
+                                :data="getAllToDoList"
+                                operateText="delete"
+                                @del-and-back="delAndBack(0, $event)"
+                            ></ToDoTableItem>
+                        </el-tab-pane>
+                        <el-tab-pane :label="`unfinished (${finishToDoList.length})`">
+                            <ToDoTableItem
+                                :data="finishToDoList"
+                                operateText="delete"
+                                @del-and-back="delAndBack(0, $event)"
+                            ></ToDoTableItem>
+                        </el-tab-pane>
+                        <el-tab-pane :label="`finished (${noFinishToDoList.length})`">
+                            <ToDoTableItem
+                                :data="noFinishToDoList"
+                                operateText="delete"
+                                @del-and-back="delAndBack(0, $event)"
+                            ></ToDoTableItem>
+                        </el-tab-pane>
+                        <el-tab-pane :label="`trash (${delToDoList.length})`">
+                            <ToDoTableItem
+                                :data="delToDoList"
+                                operateText="reset"
+                                showDel
+                                @del-and-back="delAndBack(1, $event)"
+                                @real-del="realDel"
+                            ></ToDoTableItem>
+                        </el-tab-pane>
+                    </el-tabs> -->
+                </el-card>
             </el-col>
         </el-row>
+        <el-dialog title="待办事项" v-model="dialogVisible" width="30%" top="25vh">
+            <el-form :model="toDoForm" ref="toDoFormRef" label-width="80px">
+                <el-form-item
+                    prop="things"
+                    label="待办事项"
+                    :rules="[{ required: true, message: '请输入待办事项', trigger: 'blur' }]"
+                >
+                    <el-input v-model="toDoForm.things"></el-input>
+                </el-form-item>
+                <el-form-item prop="isFinish" label="是否完成">
+                    <el-select v-model="toDoForm.isFinish">
+                        <el-option label="未完成" :value="false"></el-option>
+                        <el-option label="已完成" :value="true"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="addToDoList">添 加</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
+import { defineComponent, defineAsyncComponent, reactive, onMounted, computed, ref, nextTick } from "vue";
 import { DashboardCard } from "@ts/views";
+import { ToDoItem } from "@ts/views";
+import { ElMessage } from "element-plus";
 
 export default defineComponent({
     name: "Dashboard",
@@ -159,6 +248,94 @@ export default defineComponent({
             ],
         });
 
+        let toDoList = ref<ToDoItem[]>([
+            { id: 1, things: "今天要修复100个bug", isFinish: false, isDel: false },
+            { id: 2, things: "今天要修复100个bug", isFinish: false, isDel: false },
+            { id: 3, things: "今天要写100行代码加几个bug吧", isFinish: false, isDel: false },
+            { id: 4, things: "今天要修复100个bug", isFinish: false, isDel: false },
+            { id: 5, things: "今天要修复100个bug", isFinish: true, isDel: true },
+            { id: 6, things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
+            { id: 7, things: "今天要修复100个bug", isFinish: false, isDel: false },
+            { id: 8, things: "今天要修复100个bug", isFinish: true, isDel: false },
+            { id: 9, things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
+        ]);
+
+        //全部待办事项
+        const getAllToDoList = computed(() => {
+            return toDoList.value.filter((item: ToDoItem) => {
+                return item.isDel === false;
+            });
+        });
+
+        //已完成待办事项
+        const finishToDoList = computed(() => {
+            return toDoList.value.filter((item: ToDoItem) => {
+                return item.isFinish === true && item.isDel == false;
+            });
+        });
+        //未完成待办事项
+        const noFinishToDoList = computed(() => {
+            return toDoList.value.filter((item: ToDoItem) => {
+                return item.isFinish === false && item.isDel == false;
+            });
+        });
+        //垃圾箱
+        const delToDoList = computed(() => {
+            return toDoList.value.filter((item: ToDoItem) => {
+                return item.isDel === true;
+            });
+        });
+
+        const getToDoById = (id: number) => {
+            return toDoList.value.findIndex((item: ToDoItem) => {
+                return item.id === id;
+            });
+        };
+
+        const delAndBack = (type: number, row: ToDoItem) => {
+            //0:删除 1:还原
+            row.isDel = type === 0 ? true : false;
+        };
+
+        const realDel = (row: ToDoItem) => {
+            toDoList.value.splice(getToDoById(row.id), 1);
+        };
+
+        const dialogVisible = ref(false);
+        const toDoFormRef = ref();
+        let toDoForm = reactive<ToDoItem>({
+            id: Math.max(...toDoList.value.map((item: ToDoItem) => item.id)) + 1,
+            things: "",
+            isFinish: false,
+            isDel: false,
+        });
+
+        const addToDoList = () => {
+            dialogVisible.value = true;
+            toDoFormRef.value.validate((valid: boolean) => {
+                if (valid) {
+                    toDoList.value.unshift(JSON.parse(JSON.stringify(toDoForm)));
+                    dialogVisible.value = false;
+                    ElMessage({
+                        showClose: true,
+                        message: "添加成功",
+                        type: "success",
+                        duration: 2000,
+                    });
+                    toDoFormRef.value.resetFields();
+                    toDoForm.id += 1;
+                } else {
+                    return false;
+                }
+            });
+        };
+
+        const showToDoDialog = async () => {
+            dialogVisible.value = true;
+            await nextTick();
+            toDoFormRef.value.resetFields();
+        };
+
         onMounted(() => {
             console.log(process.env);
         });
@@ -168,10 +345,23 @@ export default defineComponent({
             mouseoperate,
             mouseEnterStyle,
             options,
+            toDoList,
+            getAllToDoList,
+            finishToDoList,
+            noFinishToDoList,
+            delToDoList,
+            delAndBack,
+            realDel,
+            dialogVisible,
+            toDoForm,
+            toDoFormRef,
+            addToDoList,
+            showToDoDialog,
         };
     },
     components: {
-        Echars: defineAsyncComponent(() => import("@/components/Echars.vue")),
+        Echars: defineAsyncComponent(() => import("@/components/Echarts.vue")),
+        // ToDoTableItem: defineAsyncComponent(() => import("./components/ToDoTableItem.vue")),
     },
 });
 </script>
@@ -238,6 +428,13 @@ export default defineComponent({
         margin-bottom: 5px;
     }
 }
+.todoTabs {
+    min-height: 323px;
+}
+.checked {
+    color: #999999;
+    text-decoration: line-through;
+}
 </style>
 
 <style lang="scss">
@@ -252,7 +449,6 @@ export default defineComponent({
     }
 }
 .bottom-el-card {
-    margin-bottom: 20px;
     font-size: 14px;
     .el-card,
     .el-card__header {
@@ -260,5 +456,10 @@ export default defineComponent({
         padding: 0;
         border: none;
     }
+}
+
+.todoCard,
+.todoCard > div {
+    min-height: 423px;
 }
 </style>
