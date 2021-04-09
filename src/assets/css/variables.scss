@@ -1,0 +1,59 @@
+$text-color: #2c3e50;
+
+// $main-color: #545c64;
+$main-color: #304156;
+
+// 除了主色外的场景色，需要在不同的场景中使用（例如危险色表示危险的操作）。
+$color-success: #67c23a;
+$color-warning: #e6a23c;
+$color-danger: #f56c6c;
+$color-info: #909399;
+
+// 中性色用于文本、背景和边框颜色。通过运用不同的中性色，来表现层次结构。
+$text-color-main: #303133; //主要文字
+$text-color-normal: #303133; //常规文字
+$text-color-secondary: #303133; //次要文字
+$text-color-placeholder: #303133; //占位文字
+
+$border-color-level1: #dcdfe6; //一级边框
+$border-color-level2: #e4e7ed; //二级边框
+$border-color-level3: #ebeef5; //三级边框
+$border-color-level4: #f2f6fc; //四级边框
+
+//字号
+$font-size-assist: 12px; //辅助文字
+$font-size-body-s: 13px; //正文(小)
+$font-size-body-n: 14px; //正文
+$font-size-title-s: 16px; //小标题
+$font-size-title-n: 18px; //标题
+$font-size-title-m: 20px; //主标题
+
+// 主体部分  滚动条样式
+@mixin scrollStyle {
+    &::-webkit-scrollbar {
+        // 整个滚动条
+        // display: none;
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+        // 滚动条上的滚动滑块
+        // background-color: #9093994d;
+        background-color: $main-color;
+        border-radius: 50px;
+    }
+    // &::-webkit-scrollbar-button {
+    //     //  滚动条上的按钮 (上下箭头)
+    // }
+    // &::-webkit-scrollbar-track {
+    //     // 滚动条轨道
+    // }
+    // &::-webkit-scrollbar-track-piece {
+    //     // 滚动条没有滑块的轨道部分.
+    // }
+    // &::-webkit-scrollbar-corner {
+    //     // 当同时有垂直滚动条和水平滚动条时交汇的部分.
+    // }
+    // &::-webkit-resizer {
+    //     // 某些元素的corner部分的部分样式(例:textarea的可拖动按钮).
+    // }
+}

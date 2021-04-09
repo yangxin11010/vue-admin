@@ -1,0 +1,191 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	// background-color: #f4f4f4;
+}
+
+#app {
+	width: 100%;
+	height: 100%;
+	color: #303133;
+	font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+		sans-serif;
+}
+
+a {
+	text-decoration: none;
+	color: #303133;
+}
+
+ul {
+	list-style: none;
+}
+
+img {
+	width: 100%;
+	height: 100%;
+}
+
+.w100p {
+	width: 100%;
+}
+
+.h100p {
+	height: 100%;
+}
+
+.c_white {
+	color: #ffffff;
+}
+.bg_white {
+	background-color: #ffffff;
+}
+
+.disblock {
+	display: block;
+}
+.disinlblock {
+	display: inline-block;
+}
+.disinline {
+	display: inline;
+}
+.disflex {
+	display: flex;
+}
+
+.ju_cen {
+	justify-content: center;
+}
+.ju_bt {
+	justify-content: space-between;
+}
+.ju_ar {
+	justify-content: space-around;
+}
+
+.align-it-cen {
+	align-items: center;
+}
+.align-it-start {
+	align-items: flex-start;
+}
+.align-it-end {
+	align-items: flex-end;
+}
+.align-it-bsl {
+	align-items: baseline;
+}
+
+.align-se-cen {
+	align-self: center;
+}
+
+.flex-w {
+	flex-wrap: wrap;
+}
+
+.flex-nw {
+	flex-wrap: nowrap;
+}
+
+.flex-dir-c {
+	flex-direction: column;
+}
+
+.flex-dir-rr {
+	flex-direction: row-reverse;
+}
+
+.mauto {
+	margin: auto;
+}
+
+.posst {
+	position: static;
+}
+.posre {
+	position: relative;
+}
+.posab {
+	position: absolute;
+}
+.posfx {
+	position: fixed;
+}
+
+.overhide {
+	overflow: hidden;
+}
+.overauto {
+	overflow: auto;
+}
+.visb_hid {
+	visibility: hidden;
+}
+
+.textOver {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.textc {
+	text-align: center;
+}
+.textl {
+	text-align: left;
+}
+.textr {
+	text-align: right;
+}
+.text_underline {
+	text-decoration: underline;
+}
+.textde_lt {
+	text-decoration: line-through;
+}
+.text_no_select {
+	-webkit-touch-callout: none;
+	/* iOS Safari */
+	-webkit-user-select: none;
+	/* Chrome/Safari/Opera */
+	-khtml-user-select: none;
+	/* Konqueror */
+	-moz-user-select: none;
+	/* Firefox */
+	-ms-user-select: none;
+	/* Internet Explorer/Edge */
+	user-select: none;
+}
+.font_wb {
+	font-weight: bold;
+}
+
+.whs_now {
+	white-space: nowrap;
+}
+.fstyle_it {
+	font-style: italic;
+}
+
+.curpot {
+	cursor: pointer;
+}
+
+.valign_mid {
+	vertical-align: middle;
+}
+.valign_top {
+	vertical-align: top;
+}
+.valign_btm {
+	vertical-align: bottom;
+}
