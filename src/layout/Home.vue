@@ -37,9 +37,17 @@ export default defineComponent({
     setup() {
         const store = useStore();
 
+        const keepAliveList = computed(() =>
+            store.getters.tabsList
+                .map((item: Tabs[]) => {
+                    return item.map((item2: Tabs) => item2.name);
+                })
+                .flat()
+        );
+
         return {
             collapse: computed(() => store.getters.collapse),
-            keepAliveList: computed(() => store.getters.tabsList.map((item: Tabs) => item.name)),
+            keepAliveList,
         };
     },
     components: {

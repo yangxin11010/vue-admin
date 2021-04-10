@@ -36,6 +36,8 @@ export default defineComponent({
             }
         );
 
+       
+
         const resize = () => {
             echarts.resize();
         };
@@ -51,6 +53,7 @@ export default defineComponent({
         });
         return {
             echartsRef,
+            resize,
         };
     },
 });

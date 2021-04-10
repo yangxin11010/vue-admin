@@ -1,19 +1,24 @@
 <template>
     <div class="system">
-        <h1>system</h1>
+        <el-input v-model="form.name"></el-input>
+        <p>{{ form.name }}</p>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 
 export default defineComponent({
-    name: 'System',
+    name: "System",
     setup() {
-        return {};
+        let form = reactive({
+            name: "",
+        });
+        return {
+            form,
+        };
     },
 });
 </script>
 
-<style lang="scss" scoped>
-</style>>
+<style lang="scss" scoped></style>>

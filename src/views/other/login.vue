@@ -1,11 +1,6 @@
 <template>
     <div class="login disflex ju_cen align-it-cen">
-        <el-form
-            class="loginForm"
-            ref="loginFormRef"
-            :model="formData"
-            :rules="rules"
-        >
+        <el-form class="loginForm" ref="loginFormRef" :model="formData" :rules="rules">
             <div class="loginForm-title">
                 <h2>系统登录</h2>
             </div>
@@ -29,13 +24,7 @@
                 ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button
-                    class="submit"
-                    type="primary"
-                    :loading="loading"
-                    @click="submit"
-                    >登录</el-button
-                >
+                <el-button class="submit" type="primary" :loading="loading" @click="submit">登录</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -97,7 +86,7 @@ export default defineComponent({
                         // 初始化 collsape 值
                         store.dispatch("SET_COLLAPSE", false);
                         // 移除tabs
-                        store.dispatch("REMOVE_TABS");
+                        store.dispatch("INIT_TABS");
                         ElMessage({
                             message: "登录成功!",
                             type: "success",
@@ -148,17 +137,19 @@ export default defineComponent({
 }
 </style>
 <style lang="scss">
-.el-form-item {
-    border: 1px solid hsla(0, 0%, 100%, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-}
-.el-input {
-    .el-input__inner {
-        background-color: rgb(40, 52, 67);
-        border: none;
-        color: #ffffff;
+.login {
+    .el-form-item {
+        border: 1px solid hsla(0, 0%, 100%, 0.1);
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        color: #454545;
+    }
+    .el-input {
+        .el-input__inner {
+            background-color: rgb(40, 52, 67);
+            border: none;
+            color: #ffffff;
+        }
     }
 }
 </style>
