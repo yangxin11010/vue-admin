@@ -1,7 +1,7 @@
 <template>
     <div class="svgpage">
         <el-tabs type="border-card" tab-position="top">
-            <el-tab-pane label="Icons">
+            <el-tab-pane label="svgIcons">
                 <div class="icon-list disflex flex-w ju_ar">
                     <template v-for="(item, index) in iconsList" :key="index">
                         <el-tooltip

@@ -143,6 +143,7 @@ export default defineComponent({
                     break;
                 case 3:
                     store.dispatch("LOGIN_OUT");
+                    store.dispatch("INIT_TABS");
                     router.push("/login");
                     break;
             }

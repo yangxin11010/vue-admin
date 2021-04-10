@@ -70,7 +70,7 @@
                             </el-button>
                         </div>
                     </template>
-                    <el-table :data="toDoList" :show-header="false">
+                    <el-table height="323" :data="toDoList" :show-header="false" empty-text="No Things">
                         <el-table-column width="35">
                             <template v-slot="{ row }">
                                 <el-checkbox v-model="row.isFinish"></el-checkbox>
@@ -81,50 +81,23 @@
                                 <span :class="{ checked: row.isFinish }">{{ row.things }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column width="120">
+                        <el-table-column width="120" align="center">
                             <template v-slot="{ row }">
                                 <el-tag :type="row.isFinish ? 'success' : 'danger'" style="cursor: pointer">
                                     {{ row.isFinish ? "已完成" : "未完成" }}
                                 </el-tag>
                             </template>
                         </el-table-column>
+                        <el-table-column width="50" align="center">
+                            <template v-slot="{ $index }">
+                                <i @click="delToDo($index)" class="el-icon-close curpot"></i>
+                            </template>
+                        </el-table-column>
                     </el-table>
-                    <!-- <el-tabs class="todoTabs" tab-position="left" type="border-card">
-                        <el-tab-pane :label="`total (${getAllToDoList.length})`">
-                            <ToDoTableItem
-                                :data="getAllToDoList"
-                                operateText="delete"
-                                @del-and-back="delAndBack(0, $event)"
-                            ></ToDoTableItem>
-                        </el-tab-pane>
-                        <el-tab-pane :label="`unfinished (${finishToDoList.length})`">
-                            <ToDoTableItem
-                                :data="finishToDoList"
-                                operateText="delete"
-                                @del-and-back="delAndBack(0, $event)"
-                            ></ToDoTableItem>
-                        </el-tab-pane>
-                        <el-tab-pane :label="`finished (${noFinishToDoList.length})`">
-                            <ToDoTableItem
-                                :data="noFinishToDoList"
-                                operateText="delete"
-                                @del-and-back="delAndBack(0, $event)"
-                            ></ToDoTableItem>
-                        </el-tab-pane>
-                        <el-tab-pane :label="`trash (${delToDoList.length})`">
-                            <ToDoTableItem
-                                :data="delToDoList"
-                                operateText="reset"
-                                showDel
-                                @del-and-back="delAndBack(1, $event)"
-                                @real-del="realDel"
-                            ></ToDoTableItem>
-                        </el-tab-pane>
-                    </el-tabs> -->
                 </el-card>
             </el-col>
         </el-row>
-        <el-dialog title="待办事项" v-model="dialogVisible" width="30%" top="25vh">
+        <el-dialog title="待办事项" v-model="dialogVisible" width="30%">
             <el-form :model="toDoForm" ref="toDoFormRef" label-width="80px">
                 <el-form-item
                     prop="things"
@@ -151,7 +124,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, onMounted, computed, ref, nextTick } from "vue";
+import { defineComponent, defineAsyncComponent, reactive, onMounted, ref, nextTick } from "vue";
 import { DashboardCard } from "@ts/views";
 import { ToDoItem } from "@ts/views";
 import { ElMessage } from "element-plus";
@@ -249,62 +222,20 @@ export default defineComponent({
         });
 
         let toDoList = ref<ToDoItem[]>([
-            { id: 1, things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { id: 2, things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { id: 3, things: "今天要写100行代码加几个bug吧", isFinish: false, isDel: false },
-            { id: 4, things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { id: 5, things: "今天要修复100个bug", isFinish: true, isDel: true },
-            { id: 6, things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
-            { id: 7, things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { id: 8, things: "今天要修复100个bug", isFinish: true, isDel: false },
-            { id: 9, things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
+            { things: "今天要修复100个bug", isFinish: false, isDel: false },
+            { things: "今天要修复100个bug", isFinish: false, isDel: false },
+            { things: "今天要写100行代码加几个bug吧", isFinish: false, isDel: false },
+            { things: "今天要修复100个bug", isFinish: false, isDel: false },
+            { things: "今天要修复100个bug", isFinish: true, isDel: true },
+            { things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
+            { things: "今天要修复100个bug", isFinish: false, isDel: false },
+            { things: "今天要修复100个bug", isFinish: true, isDel: false },
+            { things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
         ]);
-
-        //全部待办事项
-        const getAllToDoList = computed(() => {
-            return toDoList.value.filter((item: ToDoItem) => {
-                return item.isDel === false;
-            });
-        });
-
-        //已完成待办事项
-        const finishToDoList = computed(() => {
-            return toDoList.value.filter((item: ToDoItem) => {
-                return item.isFinish === true && item.isDel == false;
-            });
-        });
-        //未完成待办事项
-        const noFinishToDoList = computed(() => {
-            return toDoList.value.filter((item: ToDoItem) => {
-                return item.isFinish === false && item.isDel == false;
-            });
-        });
-        //垃圾箱
-        const delToDoList = computed(() => {
-            return toDoList.value.filter((item: ToDoItem) => {
-                return item.isDel === true;
-            });
-        });
-
-        const getToDoById = (id: number) => {
-            return toDoList.value.findIndex((item: ToDoItem) => {
-                return item.id === id;
-            });
-        };
-
-        const delAndBack = (type: number, row: ToDoItem) => {
-            //0:删除 1:还原
-            row.isDel = type === 0 ? true : false;
-        };
-
-        const realDel = (row: ToDoItem) => {
-            toDoList.value.splice(getToDoById(row.id), 1);
-        };
 
         const dialogVisible = ref(false);
         const toDoFormRef = ref();
         let toDoForm = reactive<ToDoItem>({
-            id: Math.max(...toDoList.value.map((item: ToDoItem) => item.id)) + 1,
             things: "",
             isFinish: false,
             isDel: false,
@@ -323,11 +254,14 @@ export default defineComponent({
                         duration: 2000,
                     });
                     toDoFormRef.value.resetFields();
-                    toDoForm.id += 1;
                 } else {
                     return false;
                 }
             });
+        };
+
+        const delToDo = (index: number) => {
+            toDoList.value.splice(index, 1);
         };
 
         const showToDoDialog = async () => {
@@ -346,22 +280,16 @@ export default defineComponent({
             mouseEnterStyle,
             options,
             toDoList,
-            getAllToDoList,
-            finishToDoList,
-            noFinishToDoList,
-            delToDoList,
-            delAndBack,
-            realDel,
             dialogVisible,
             toDoForm,
             toDoFormRef,
             addToDoList,
+            delToDo,
             showToDoDialog,
         };
     },
     components: {
         Echars: defineAsyncComponent(() => import("@/components/Echarts.vue")),
-        // ToDoTableItem: defineAsyncComponent(() => import("./components/ToDoTableItem.vue")),
     },
 });
 </script>
@@ -427,9 +355,6 @@ export default defineComponent({
     p {
         margin-bottom: 5px;
     }
-}
-.todoTabs {
-    min-height: 323px;
 }
 .checked {
     color: #999999;
