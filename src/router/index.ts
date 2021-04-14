@@ -81,7 +81,7 @@ const routes: Array<RouteRecordRaw> = [
                     title: "导出 File",
                 },
                 alias: [],
-                component: () => import("@/views/other/exportFile.vue"),
+                component: () => import("@/views/other/export-file.vue"),
             },
             {
                 path: "personCenter",
@@ -91,7 +91,7 @@ const routes: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: "个人中心",
                 },
-                component: () => import("@/views/other/personCenter.vue"),
+                component: () => import("@/views/other/person-center.vue"),
             },
             {
                 path: "message",
