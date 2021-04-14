@@ -58,76 +58,15 @@
                 </el-card>
             </el-col>
             <el-col :span="18" :xs="14" :sm="14" :md="18">
-                <el-card class="cCard" shadow="hover">
-                    <template #header>
-                        <div style="font-size: 16px;">
-                            <span style="font-weight: bold;">ToDo List</span>
-                            <el-button
-                                style="float: right; padding: 3px 0;margin-right:10px;"
-                                type="text"
-                                @click="showToDoDialog"
-                                >Add
-                            </el-button>
-                        </div>
-                    </template>
-                    <el-table height="323" :data="toDoList" :show-header="false" empty-text="No Things">
-                        <el-table-column width="35">
-                            <template v-slot="{ row }">
-                                <el-checkbox v-model="row.isFinish"></el-checkbox>
-                            </template>
-                        </el-table-column>
-                        <el-table-column>
-                            <template v-slot="{ row }">
-                                <span :class="{ checked: row.isFinish }">{{ row.things }}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="120" align="center">
-                            <template v-slot="{ row }">
-                                <el-tag :type="row.isFinish ? 'success' : 'danger'" style="cursor: pointer">
-                                    {{ row.isFinish ? "已完成" : "未完成" }}
-                                </el-tag>
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="50" align="center">
-                            <template v-slot="{ $index }">
-                                <i @click="delToDo($index)" class="el-icon-close curpot"></i>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-card>
+                <ToDoList></ToDoList>
             </el-col>
         </el-row>
-        <el-dialog title="待办事项" v-model="dialogVisible" width="30%">
-            <el-form :model="toDoForm" ref="toDoFormRef" label-width="80px">
-                <el-form-item
-                    prop="things"
-                    label="待办事项"
-                    :rules="[{ required: true, message: '请输入待办事项', trigger: 'blur' }]"
-                >
-                    <el-input v-model="toDoForm.things"></el-input>
-                </el-form-item>
-                <el-form-item prop="isFinish" label="是否完成">
-                    <el-select v-model="toDoForm.isFinish">
-                        <el-option label="未完成" :value="false"></el-option>
-                        <el-option label="已完成" :value="true"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="addToDoList">添 加</el-button>
-                </span>
-            </template>
-        </el-dialog>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, onMounted, ref, nextTick } from "vue";
+import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
 import { DashboardCard } from "@ts/views";
-import { ToDoItem } from "@ts/views";
-import { ElMessage } from "element-plus";
 
 export default defineComponent({
     name: "Dashboard",
@@ -221,75 +160,24 @@ export default defineComponent({
             ],
         });
 
-        let toDoList = ref<ToDoItem[]>([
-            { things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { things: "今天要写100行代码加几个bug吧", isFinish: false, isDel: false },
-            { things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { things: "今天要修复100个bug", isFinish: true, isDel: true },
-            { things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
-            { things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { things: "今天要修复100个bug", isFinish: true, isDel: false },
-            { things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
-        ]);
-
-        const dialogVisible = ref(false);
-        const toDoFormRef = ref();
-        let toDoForm = reactive<ToDoItem>({
-            things: "",
-            isFinish: false,
-            isDel: false,
-        });
-
-        const addToDoList = () => {
-            dialogVisible.value = true;
-            toDoFormRef.value.validate((valid: boolean) => {
-                if (valid) {
-                    toDoList.value.unshift(JSON.parse(JSON.stringify(toDoForm)));
-                    dialogVisible.value = false;
-                    ElMessage({
-                        showClose: true,
-                        message: "添加成功",
-                        type: "success",
-                        duration: 2000,
-                    });
-                    toDoFormRef.value.resetFields();
-                } else {
-                    return false;
-                }
-            });
-        };
-
-        const delToDo = (index: number) => {
-            toDoList.value.splice(index, 1);
-        };
-
-        const showToDoDialog = async () => {
-            dialogVisible.value = true;
-            await nextTick();
-            toDoFormRef.value.resetFields();
-        };
-
         onMounted(() => {
             console.log(process.env);
         });
+        const scroll = (e: any) => {
+            console.log(e);
+        };
 
         return {
             cardList,
             mouseoperate,
             mouseEnterStyle,
             options,
-            toDoList,
-            dialogVisible,
-            toDoForm,
-            toDoFormRef,
-            addToDoList,
-            delToDo,
-            showToDoDialog,
+            scroll,
         };
     },
     components: {
         Echars: defineAsyncComponent(() => import("@/components/Echarts.vue")),
+        ToDoList: defineAsyncComponent(() => import("@/components/ToDoList.vue")),
     },
 });
 </script>
@@ -381,10 +269,5 @@ export default defineComponent({
         padding: 0;
         border: none;
     }
-}
-
-.todoCard,
-.todoCard > div {
-    min-height: 423px;
 }
 </style>

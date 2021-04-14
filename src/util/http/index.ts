@@ -1,4 +1,4 @@
-import http from '@/util/http';
+import http from './https';
 import { urlPlus } from '@/util/util';
 import qs from 'qs';
 

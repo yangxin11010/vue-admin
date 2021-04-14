@@ -16,3 +16,14 @@ export interface ToDoItem {
     isFinish: boolean;
     isDel: boolean;
 }
+
+export interface Menu {
+    menuId?: number;
+    title: string;
+    path: string;
+    icon: string;
+    parentMenuId: number | null;
+    isEdit: boolean;
+    status: number;
+    children: Menu[];
+}

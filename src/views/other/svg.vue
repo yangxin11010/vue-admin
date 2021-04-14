@@ -1,17 +1,34 @@
 <template>
     <div class="svgpage">
         <el-tabs type="border-card" tab-position="top">
-            <el-tab-pane label="svgIcons">
+            <el-tab-pane label="Svg-Icons">
                 <div class="icon-list disflex flex-w ju_ar">
-                    <template v-for="(item, index) in iconsList" :key="index">
+                    <template v-for="(item, index) in SvgIcons" :key="index">
                         <el-tooltip
                             class="item"
                             effect="dark"
                             :content="`<svg-icon icon-class=&quot;${item}&quot; />`"
                             placement="top"
                         >
-                            <div class="icon-item" @click="copyText(`<svg-icon icon-class=&quot;${item}&quot; />`)">
+                            <div class="icon-item" @click="copy(`<svg-icon icon-class=&quot;${item}&quot; />`)">
                                 <i><svg-icon :icon-class="item"></svg-icon></i>
+                                <span>{{ item }}</span>
+                            </div>
+                        </el-tooltip>
+                    </template>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="Np-Icons">
+                <div class="icon-list disflex flex-w ju_ar">
+                    <template v-for="(item, index) in NpIcons" :key="index">
+                        <el-tooltip
+                            class="item"
+                            effect="dark"
+                            :content="`<i class=&quot;${item}&quot; />`"
+                            placement="top"
+                        >
+                            <div class="icon-item" @click="copy(`<i class=&quot;${item}&quot; />`)">
+                                <i :class="item" />
                                 <span>{{ item }}</span>
                             </div>
                         </el-tooltip>
@@ -27,7 +44,7 @@
                             :content="`<i class=&quot;${item}&quot; />`"
                             placement="top"
                         >
-                            <div class="icon-item" @click="copyText(`<i class=&quot;${item}&quot; />`)">
+                            <div class="icon-item" @click="copy(`<i class=&quot;${item}&quot; />`)">
                                 <i :class="item" />
                                 <span>{{ item }}</span>
                             </div>
@@ -40,50 +57,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, getCurrentInstance, ComponentInternalInstance } from "vue";
-import { ElMessage } from "element-plus";
-import ElIcons from "@/util/el-icons";
-
+import { defineComponent, ref } from "vue";
+import { ElIcons, SvgIcons, NpIcons } from "@/assets/js/icons/index";
+import { copyText } from "@/util/clipboard/index";
 export default defineComponent({
     name: "SvgPage",
     setup() {
-        const app = getCurrentInstance() as ComponentInternalInstance;
-        const iconsList: string[] = [
-            "404",
-            "personcenter",
-            "nav_close",
-            "nav_open",
-            "search",
-            "yaoshi",
-            "fullscreen",
-            "exit-fullscreen",
-            "message",
-            "money",
-            "shopcar",
-            "usergroup",
-        ];
-
-        const copyText = (val: string) => {
-            app.appContext.config.globalProperties
-                .$copyText(val)
-                .then(() => {
-                    ElMessage({
-                        type: "success",
-                        message: "Copy successfully",
-                    });
+        const copy = (val: string) => {
+            copyText(val)
+                .then((e) => {
+                    console.log(e);
                 })
-                .catch(() => {
-                    ElMessage({
-                        type: "error",
-                        message: "Copy failed",
-                    });
+                .catch((e) => {
+                    console.error(e);
                 });
         };
 
         return {
             ElIcons: ref(ElIcons),
-            iconsList,
-            copyText,
+            SvgIcons: ref(SvgIcons),
+            NpIcons: ref(NpIcons),
+            copy,
         };
     },
 });
@@ -110,5 +104,5 @@ export default defineComponent({
         font-size: 14px !important;
         margin-top: 10px;
     }
-}</style
->>
+}
+</style>

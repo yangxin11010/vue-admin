@@ -1,27 +1,8 @@
 <template>
     <div class="header disflex ju_bt align-it-cen">
         <div class="header-l disflex align-it-cen">
-            <div class="collapse" @click="collapseHandle">
-                <svg-icon :iconClass="collapse ? 'nav_open' : 'nav_close'"></svg-icon>
-            </div>
-            <el-breadcrumb>
-                <el-breadcrumb-item :to="{ path: '/' }">
-                    <span
-                        class="breadcrumb"
-                        :class="{
-                            curpot: breadcrumbList.length > 0,
-                            hoverClass: breadcrumbList.length > 0,
-                        }"
-                        style="font-weight: normal"
-                        >首页</span
-                    >
-                </el-breadcrumb-item>
-                <template v-for="(item, index) in breadcrumbList" :key="index">
-                    <el-breadcrumb-item>
-                        <span class="breadcrumb">{{ item }}</span>
-                    </el-breadcrumb-item>
-                </template>
-            </el-breadcrumb>
+            <Collapse></Collapse>
+            <Breadcrumb></Breadcrumb>
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
             <el-tooltip
@@ -40,10 +21,8 @@
                     </div>
                 </router-link>
             </el-tooltip>
-            <el-tooltip effect="dark" :content="isFullScreen ? '取消全屏' : '全屏'" placement="bottom-end">
-                <div class="fullscreen header-r-item" @click="fullScreen">
-                    <svg-icon :icon-class="isFullScreen ? 'exit-fullscreen' : 'fullscreen'"></svg-icon>
-                </div>
+            <el-tooltip effect="dark" :content="isScreenfull ? '取消全屏' : '全屏'" placement="bottom-end">
+                <div class="fullscreen header-r-item"><Screenfull parent @screenfull="screenfull"></Screenfull></div>
             </el-tooltip>
             <el-dropdown
                 class="header-dropdown"
@@ -75,54 +54,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { defineComponent, ref, onMounted, defineAsyncComponent } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "@/store/index";
-import { ElMessage } from "element-plus";
-import Screenfull from "screenfull";
+import { infoMessage } from "@/util/message";
 import mitter from "@/plugins/mitt";
 
 export default defineComponent({
     setup() {
         const store = useStore(),
-            route = useRoute(),
             router = useRouter();
-
-        const collapse = computed(() => store.getters.collapse);
-        const collapseHandle = () => {
-            store.dispatch("SET_COLLAPSE", !collapse.value);
-        };
-
-        // 面包屑
-        let breadcrumbList = ref<string[]>([]);
-
-        watch(
-            () => route.meta.title,
-            (newValue) => {
-                if (route.path === "/dashboard") {
-                    breadcrumbList.value = [];
-                } else {
-                    breadcrumbList.value = [newValue as string];
-                }
-            }
-        );
-
-        // 全屏
-        const isFullScreen = ref(false);
-
-        const fullScreen = () => {
-            if (!Screenfull.isEnabled) {
-                ElMessage({
-                    showClose: true,
-                    message: "浏览器不支持全屏",
-                    type: "warning",
-                    duration: 1000,
-                });
-                return false;
-            }
-
-            Screenfull.toggle();
-        };
 
         const handleCommand = (e: number) => {
             switch (e) {
@@ -133,13 +74,7 @@ export default defineComponent({
                     router.push("/dashboard");
                     break;
                 case 2:
-                    ElMessage({
-                        showClose: true,
-                        message: "暂无！",
-                        type: "info",
-                        duration: 1000,
-                        center: true,
-                    });
+                    infoMessage("暂无！");
                     break;
                 case 3:
                     store.dispatch("LOGIN_OUT");
@@ -156,16 +91,13 @@ export default defineComponent({
             messageNum.value = 4;
         };
 
+        const isScreenfull = ref(false);
+        const screenfull = (e: any) => {
+            isScreenfull.value = e.screenfull;
+        };
+
         onMounted(() => {
             getData();
-            if (route.path !== "/dashboard") {
-                breadcrumbList.value = [route.meta.title as string];
-            }
-            if (Screenfull.isEnabled) {
-                Screenfull.onchange(() => {
-                    isFullScreen.value = !isFullScreen.value;
-                });
-            }
             // 监听 消息中心 清除未读消息
             mitter.$on("clearNoReadMessage", () => {
                 messageNum.value = 0;
@@ -173,14 +105,16 @@ export default defineComponent({
         });
 
         return {
-            collapse,
-            collapseHandle,
-            breadcrumbList,
-            fullScreen,
-            isFullScreen,
+            isScreenfull,
             handleCommand,
             messageNum,
+            screenfull,
         };
+    },
+    components: {
+        Collapse: defineAsyncComponent(() => import("@/components/Collapse.vue")),
+        Screenfull: defineAsyncComponent(() => import("@/components/Screenfull.vue")),
+        Breadcrumb: defineAsyncComponent(() => import("@/components/Breadcrumb.vue")),
     },
 });
 </script>
@@ -196,19 +130,7 @@ export default defineComponent({
         color: #ffffff;
     }
 }
-.collapse {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 22px;
-    margin-right: 10px;
-    &:hover {
-        background-color: #434a50;
-    }
-}
+
 .breadcrumb {
     color: #fff;
 }
@@ -242,6 +164,15 @@ export default defineComponent({
     color: #fff;
     position: relative;
     top: -15px;
+}
+.breadcrumbList-enter-active,
+.breadcrumbList-leave-active {
+    transition: all 1s ease;
+}
+.breadcrumbList-enter-from,
+.breadcrumbList-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
 }
 </style>
 <style lang="scss">

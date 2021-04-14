@@ -1,5 +1,7 @@
 <template>
-    <div class="echars overhide" ref="echartsRef"></div>
+    <div class="echars">
+        <div class="overhide" ref="echartsRef"></div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -36,8 +38,6 @@ export default defineComponent({
             }
         );
 
-       
-
         const resize = () => {
             echarts.resize();
         };
@@ -60,7 +60,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.echars {
+.echars,
+.echars > div {
     width: 100%;
     height: 100%;
 }
