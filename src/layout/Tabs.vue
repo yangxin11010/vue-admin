@@ -27,7 +27,7 @@
                     <el-dropdown-menu>
                         <el-dropdown-item v-if="keepTabsIndex === -1" :command="0">关闭当前</el-dropdown-item>
                         <el-dropdown-item v-if="keepTabsIndex === -1" :command="1">保持固定</el-dropdown-item>
-                        <el-dropdown-item v-if="tabsIndex === -1" :command="2">解除固定</el-dropdown-item>
+                        <el-dropdown-item v-if="tabsIndex === -1 && $route.path !== '/dashboard'" :command="2">解除固定</el-dropdown-item>
                         <el-dropdown-item :command="3">关闭其他</el-dropdown-item>
                         <el-dropdown-item :command="4">关闭所有</el-dropdown-item>
                         <el-dropdown-item :command="5" divided>一键清除</el-dropdown-item>

@@ -10,15 +10,15 @@
             active-text-color="#1890ff"
             router
         >
-            <template v-for="(item, index) in menuList" :key="index">
+            <template v-for="item in menuList" :key="item.path">
                 <template v-if="item.children.length > 0">
                     <el-submenu class="submenu" :index="item.path">
                         <template #title>
                             <i :class="item.icon"></i>
                             <span>{{ item.title }}</span>
                         </template>
-                        <template v-for="(item2, index2) in item.children" :key="index2">
-                            <el-menu-item :index="item2.path">{{ item2.title }}</el-menu-item>
+                        <template v-for="item2 in item.children" :key="item2.path">
+                            <el-menu-item :index="item.path + item2.path">{{ item2.title }}</el-menu-item>
                         </template>
                     </el-submenu>
                 </template>
@@ -37,50 +37,19 @@
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "@/store/index";
 import { useRoute } from "vue-router";
+import { Menu } from "@ts/views";
+import MenuList from "@/assets/js/menuList";
 
 export default defineComponent({
     setup() {
         const store = useStore();
         const route = useRoute();
 
-        const menuList = ref<object[]>([]);
+        const menuList = ref<Menu[]>([]);
 
-        const getMenuList = (): Promise<object[]> => {
+        const getMenuList = (): Promise<Menu[]> => {
             return new Promise((resolve) => {
-                const menuList: object[] = [
-                    {
-                        title: "首页",
-                        path: "/dashboard",
-                        icon: "el-icon-setting",
-                        children: [],
-                    },
-                    {
-                        title: "图标",
-                        path: "/svg",
-                        icon: "el-icon-setting",
-                        children: [],
-                    },
-                    {
-                        title: "设置",
-                        path: "",
-                        icon: "el-icon-setting",
-                        children: [
-                            {
-                                title: "系统设置",
-                                path: "/system",
-                                icon: "",
-                                children: [],
-                            },
-                            {
-                                title: "菜单管理",
-                                path: "/menu",
-                                icon: "el-icon-setting",
-                                children: [],
-                            },
-                        ],
-                    },
-                ];
-                resolve(menuList);
+                resolve(MenuList);
             });
         };
 
@@ -121,5 +90,13 @@ export default defineComponent({
         // 二级菜单鼠标移除背景色
         background-color: #001528 !important;
     }
+}
+.el-menu-item [class^="np-icon-"],
+.el-submenu [class^="np-icon-"] {
+    vertical-align: middle;
+    margin-right: 5px;
+    width: 24px;
+    text-align: center;
+    font-size: 15px;
 }
 </style>

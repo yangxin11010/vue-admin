@@ -34,7 +34,6 @@ img {
 	height: 100%;
 }
 
-
 // 全局 el-table 滚动条样式
 .el-table__body-wrapper {
 	&::-webkit-scrollbar {
@@ -47,6 +46,20 @@ img {
 		background-color: #9093994d;
 		border-radius: 50px;
 	}
+}
+// 全局 分页样式
+.pagination {
+	display: flex;
+	flex-direction: row-reverse;
+	margin-top: 10px;
+}
+
+.handle-box {
+	display: flex; 
+	& > div {
+		margin-right: 10px;
+	}
+	margin-bottom: 10px;
 }
 
 .w100p {

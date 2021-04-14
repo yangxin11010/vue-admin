@@ -16,6 +16,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import "@/assets/css/main.scss";
+@import "@/assets/css/np-icons.scss";
 .app {
     height: 100%;
 }

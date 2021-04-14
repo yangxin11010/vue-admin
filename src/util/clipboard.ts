@@ -1,0 +1,45 @@
+import Clipboard from "clipboard";
+import { ElMessage } from "@/util/message";
+
+/**
+ * @param: text {string}
+ * @returns: {Promise}
+ * @Description: Copy Text
+ */
+
+export function copyText(text: string) {
+    return new Promise((resolve, reject) => {
+        const btnElement = document.createElement("button");
+        btnElement.style.display = "none";
+        const clipboard = new Clipboard(btnElement, {
+            text: function() {
+                return text;
+            },
+            action: function() {
+                return "copy";
+            },
+        });
+
+        clipboard.on("success", function(e) {
+            ElMessage({
+                type: "success",
+                message: "Copy successfully",
+            });
+            clipboard.destroy();
+            e.clearSelection();
+            resolve(e);
+        });
+
+        clipboard.on("error", function(e) {
+            ElMessage({
+                type: "error",
+                message: "Copy failed",
+            });
+            clipboard.destroy();
+            reject(e);
+        });
+        btnElement && document.body.appendChild(btnElement);
+        btnElement && btnElement.click();
+        btnElement && document.body.removeChild(btnElement);
+    });
+}

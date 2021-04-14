@@ -34,7 +34,7 @@
 import { defineComponent, ref, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "@/store/index";
-import { ElMessage } from "element-plus";
+import { ElMessage } from "@/util/message";
 export default defineComponent({
     name: "Login",
     setup() {
@@ -82,11 +82,11 @@ export default defineComponent({
                     loading.value = true;
                     store.dispatch("LOGIN", "a1vb1-da598-dadsa-nahds");
                     const path = route.query.path as string;
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         // 初始化 collsape 值
-                        store.dispatch("SET_COLLAPSE", false);
+                        await store.dispatch("SET_COLLAPSE", false);
                         // 移除tabs
-                        store.dispatch("INIT_TABS");
+                        await store.dispatch("INIT_TABS");
                         ElMessage({
                             message: "登录成功!",
                             type: "success",
@@ -95,7 +95,7 @@ export default defineComponent({
                         setTimeout(() => {
                             router.replace(path ? path : "/dashboard");
                         }, 1000);
-                    }, 1500);
+                    }, 1000);
                 } else {
                     return false;
                 }
