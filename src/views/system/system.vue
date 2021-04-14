@@ -1,9 +1,6 @@
 <template>
     <div class="system">
-        <el-input v-model="form.name"></el-input>
-        <p v-clipboard:success="success" v-clipboard="123">{{ form.name }}</p>
-        <input type="text" />
-        <el-button type="primary" v-debounce:300="clickHandle">点击</el-button>
+        <Tinymce></Tinymce>
     </div>
 </template>
 
@@ -23,6 +20,7 @@ export default defineComponent({
             console.log(e);
         };
         const time: number = 300;
+
         return {
             form,
             clickHandle,

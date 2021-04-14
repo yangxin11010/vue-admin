@@ -54,16 +54,6 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/other/svg.vue"),
             },
             {
-                path: "notFound",
-                name: "NotFound",
-                meta: {
-                    requiresAuth: false,
-                    title: "404",
-                },
-                alias: [],
-                component: () => import("@/views/other/404.vue"),
-            },
-            {
                 path: "clipboard",
                 name: "Clipboard",
                 meta: {
@@ -137,24 +127,66 @@ const routes: Array<RouteRecordRaw> = [
         ],
     },
     {
-        path: "/:chapters+",
-        name: "Chapters",
+        path: "/components",
+        name: "Components",
+        component: Layout,
         meta: {
-            requiresAuth: false,
-            title: "",
+            requiresAuth: true,
+            title: "组件",
         },
-        alias: [],
-        component: () => import("@/views/other/404.vue"),
+        children: [
+            {
+                path: "tinymce",
+                name: "TinymcePage",
+                meta: {
+                    requiresAuth: false,
+                    title: "富文本编辑器",
+                },
+                alias: [],
+                component: () => import("@/views/components/tinymce-page.vue"),
+            },
+        ],
+    },
+    {
+        path: "/error",
+        name: "Error",
+        component: Layout,
+        meta: {
+            requiresAuth: true,
+            title: "错误页面",
+        },
+        children: [
+            {
+                path: "notFound",
+                name: "NotFound",
+                meta: {
+                    requiresAuth: false,
+                    title: "404",
+                },
+                alias: [],
+                component: () => import("@/views/error/404.vue"),
+            },
+            {
+                path: "notPermission",
+                name: "NotPermission",
+                meta: {
+                    requiresAuth: false,
+                    title: "401",
+                },
+                alias: [],
+                component: () => import("@/views/error/401.vue"),
+            },
+        ],
     },
     {
         path: "/:pathMatch(.*)*",
         name: "FourZeroFour",
+        redirect: "/error/notFound",
         meta: {
             requiresAuth: false,
-            title: "",
+            title: "404",
         },
         alias: [],
-        component: () => import("@/views/other/404.vue"),
     },
 ];
 

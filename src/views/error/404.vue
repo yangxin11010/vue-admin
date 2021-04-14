@@ -17,7 +17,6 @@ import { useRouter } from "vue-router";
 export default defineComponent({
     name: "FourZeroFour",
     setup() {
-
         const router = useRouter();
 
         const back = (index: number) => {
@@ -41,7 +40,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .FourZeroFour {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 120px);
     flex-direction: column;
     & > div:nth-child(1) {
         width: 320px;

@@ -20,6 +20,15 @@
         },
         "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
-    "exclude": ["node_modules", "dist", "src/**/*.js"]
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "tests/**/*.ts",
+        "tests/**/*.tsx",
+        "src/components/tinymce/dynamicLoadScript.js",
+        "src/vendor/Export2Excel.js",
+        "src/vendor/Export2Zip.js"
+    ],
+    "exclude": ["node_modules", "dist"]
 }
