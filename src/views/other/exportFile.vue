@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, reactive, toRefs } from "vue";
-import { exportExcel, exportZip } from "@/util/exportFile";
+import { exportExcel, exportZip } from "@/util/exportFile/index";
 import $api from "@/api/index";
 export default defineComponent({
     name: "ExportFile",

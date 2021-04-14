@@ -2,27 +2,7 @@
     <div class="header disflex ju_bt align-it-cen">
         <div class="header-l disflex align-it-cen">
             <Collapse></Collapse>
-            <el-breadcrumb>
-                <el-breadcrumb-item :to="{ path: '/' }">
-                    <span
-                        class="breadcrumb"
-                        :class="{
-                            curpot: breadcrumbList.length > 0,
-                            hoverClass: breadcrumbList.length > 0,
-                        }"
-                        style="font-weight: normal"
-                    >
-                        首页
-                    </span>
-                </el-breadcrumb-item>
-                <transition-group name="breadcrumbList">
-                    <template v-for="(item, index) in breadcrumbList" :key="index">
-                        <el-breadcrumb-item>
-                            <span class="breadcrumb">{{ item }}</span>
-                        </el-breadcrumb-item>
-                    </template>
-                </transition-group>
-            </el-breadcrumb>
+            <Breadcrumb></Breadcrumb>
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
             <el-tooltip
@@ -74,35 +54,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted, defineAsyncComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { defineComponent, ref, onMounted, defineAsyncComponent } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "@/store/index";
-import { ElMessage } from "@/util/message";
+import { infoMessage } from "@/util/message";
 import mitter from "@/plugins/mitt";
 
 export default defineComponent({
     setup() {
         const store = useStore(),
-            route = useRoute(),
             router = useRouter();
-
-        // 面包屑
-        let breadcrumbList = ref<string[]>([]);
-
-        const setBreadcrumb = () => {
-            breadcrumbList.value = [];
-            if (route.path === "/dashboard") return;
-            route.matched.forEach((item, index) => {
-                index > 0 && breadcrumbList.value.push(item.meta.title);
-            });
-        };
-
-        watch(
-            () => route.meta.title,
-            () => {
-                setBreadcrumb();
-            }
-        );
 
         const handleCommand = (e: number) => {
             switch (e) {
@@ -113,13 +74,7 @@ export default defineComponent({
                     router.push("/dashboard");
                     break;
                 case 2:
-                    ElMessage({
-                        showClose: true,
-                        message: "暂无！",
-                        type: "info",
-                        duration: 1000,
-                        center: true,
-                    });
+                    infoMessage("暂无！");
                     break;
                 case 3:
                     store.dispatch("LOGIN_OUT");
@@ -142,7 +97,6 @@ export default defineComponent({
         };
 
         onMounted(() => {
-            setBreadcrumb();
             getData();
             // 监听 消息中心 清除未读消息
             mitter.$on("clearNoReadMessage", () => {
@@ -152,7 +106,6 @@ export default defineComponent({
 
         return {
             isScreenfull,
-            breadcrumbList,
             handleCommand,
             messageNum,
             screenfull,
@@ -161,6 +114,7 @@ export default defineComponent({
     components: {
         Collapse: defineAsyncComponent(() => import("@/components/Collapse.vue")),
         Screenfull: defineAsyncComponent(() => import("@/components/Screenfull.vue")),
+        Breadcrumb: defineAsyncComponent(() => import("@/components/Breadcrumb.vue")),
     },
 });
 </script>

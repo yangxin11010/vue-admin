@@ -1,5 +1,5 @@
 import Clipboard from "clipboard";
-import { ElMessage } from "@/util/message";
+import { successMessage, errorMessage } from "@/util/message";
 import { App } from "vue";
 /**
  * 防抖
@@ -70,18 +70,12 @@ export default {
                         },
                     });
                     clipboard.on("success", (e) => {
-                        ElMessage({
-                            type: "success",
-                            message: "Copy successfully",
-                        });
+                        successMessage("Copy successfully");
                         const callback = el._v_clipboard_success;
                         callback && callback(e); // eslint-disable-line
                     });
                     clipboard.on("error", (e) => {
-                        ElMessage({
-                            type: "error",
-                            message: "Copy failed",
-                        });
+                        errorMessage("Copy failed");
                         const callback = el._v_clipboard_error;
                         callback && callback(e); // eslint-disable-line
                     });

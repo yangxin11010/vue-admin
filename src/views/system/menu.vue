@@ -101,7 +101,7 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, reactive, ref } from "vue";
 import { ElMessageBox } from "element-plus";
-import { ElMessage } from "@/util/message";
+import ElMessage from "@/util/message/index";
 import { Menu } from "@ts/views";
 import MenuList from "@/assets/js/menuList";
 

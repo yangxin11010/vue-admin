@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ElMessage } from "@/util/message";
+import { errorMessage } from "@/util/message/index";
 
 const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,
@@ -23,11 +23,7 @@ service.interceptors.response.use(
             case 0:
                 return data;
             case 1:
-                ElMessage({
-                    message: data.info,
-                    type: "error",
-                    center: true,
-                });
+                errorMessage(data.info);
                 return Promise.reject(data);
             default:
                 return data;

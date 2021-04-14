@@ -1,5 +1,5 @@
 import Clipboard from "clipboard";
-import { ElMessage } from "@/util/message";
+import { successMessage, errorMessage } from "@/util/message";
 
 /**
  * @param: text {string}
@@ -8,7 +8,7 @@ import { ElMessage } from "@/util/message";
  */
 
 export function copyText(text: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise<Clipboard.Event>((resolve, reject) => {
         const btnElement = document.createElement("button");
         btnElement.style.display = "none";
         const clipboard = new Clipboard(btnElement, {
@@ -21,20 +21,14 @@ export function copyText(text: string) {
         });
 
         clipboard.on("success", function(e) {
-            ElMessage({
-                type: "success",
-                message: "Copy successfully",
-            });
+            successMessage("Copy successfully");
             clipboard.destroy();
             e.clearSelection();
             resolve(e);
         });
 
         clipboard.on("error", function(e) {
-            ElMessage({
-                type: "error",
-                message: "Copy failed",
-            });
+            errorMessage("Copy failed");
             clipboard.destroy();
             reject(e);
         });

@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, ref, reactive } from "vue";
-import { ElMessage } from "@/util/message";
+import { successMessage } from "@/util/message/index";
 import { ToDoItem } from "@ts/views";
 
 export default defineComponent({
@@ -92,12 +92,7 @@ export default defineComponent({
                 if (valid) {
                     toDoList.value.unshift(JSON.parse(JSON.stringify(toDoForm)));
                     dialogVisible.value = false;
-                    ElMessage({
-                        showClose: true,
-                        message: "添加成功",
-                        type: "success",
-                        duration: 2000,
-                    });
+                    successMessage("添加成功");
                     toDoFormRef.value.resetFields();
                 } else {
                     return false;

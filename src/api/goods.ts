@@ -1,4 +1,4 @@
-import request from '@/util/request'
+import request from '@/util/http/index'
 
 interface QueryGoods {
 	page?: number;

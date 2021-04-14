@@ -39,6 +39,7 @@ export default defineComponent({
         vAside: defineAsyncComponent(() => import("@/layout/Aside.vue")),
         vTabs: defineAsyncComponent(() => import("@/layout/Tabs.vue")),
         vMain: defineAsyncComponent(() => import("@/layout/Main.vue")),
+        MyRouterView: defineAsyncComponent(() => import("@/components/MyRouterView.vue")),
     },
 });
 </script>

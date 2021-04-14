@@ -1,4 +1,4 @@
-import { ElMessage } from "@/util/message";
+import { successMessage } from "@/util/message";
 interface ExcelParams {
     header: string[];
     data: CustomData[];
@@ -18,10 +18,7 @@ export function exportExcel(params: ExcelParams) {
                 autoWidth: true,
                 bookType: "xlsx",
             });
-            ElMessage({
-                type: "success",
-                message: "Export Excel successfully",
-            });
+            successMessage("Export Excel successfully");
             resove("success");
         });
     });
@@ -33,10 +30,7 @@ export function exportZip(params: ExcelParams) {
         params.data = params.data.map((item) => params.filterVal.map((item1) => item[item1]));
         import("@/vendor/Export2Zip").then((zip) => {
             zip.export_txt_to_zip(params.header, params.data, params.filename, params.filename);
-            ElMessage({
-                type: "success",
-                message: "Export Zip successfully",
-            });
+            successMessage("Export Zip successfully");
             resove("success");
         });
     });

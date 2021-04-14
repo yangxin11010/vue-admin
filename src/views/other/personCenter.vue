@@ -102,7 +102,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from "vue";
-import { ElMessage } from "@/util/message";
+import { successMessage } from "@/util/message/index";
 
 export default defineComponent({
     name: "PsersonCenter",
@@ -190,10 +190,7 @@ export default defineComponent({
                 if (valid) {
                     updateLoading.value = true;
                     setTimeout(() => {
-                        ElMessage({
-                            message: "Update Successfully",
-                            type: "success",
-                        });
+                        successMessage("Update Successfully");
                         passFormRef.value.resetFields();
                         updateLoading.value = false;
                     }, 1000);

@@ -41,6 +41,5 @@ module.exports = {
         config.resolve.alias
             .set("@", resolve("src"))
             .set("@imgs", resolve("src/assets/images"))
-            .set("@util", resolve("src/util"));
     },
 };

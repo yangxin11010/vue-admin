@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { ElMessage } from "@/util/message";
+import { warningMessage } from "@/util/message/index";
 import Screenfull from "screenfull";
 
 export default defineComponent({
@@ -35,12 +35,7 @@ export default defineComponent({
 
         const fullScreen = () => {
             if (!Screenfull.isEnabled) {
-                ElMessage({
-                    showClose: true,
-                    message: "浏览器不支持全屏",
-                    type: "warning",
-                    duration: 1000,
-                });
+                warningMessage("浏览器不支持全屏");
                 return false;
             }
 

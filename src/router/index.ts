@@ -1,15 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import "nprogress/nprogress.css";
-import NProgress from "nprogress";
+import NProgress from "@/util/progress/index";
 import Store from "@/store/index";
-
-NProgress.configure({
-    easing: "ease", // 动画方式
-    speed: 500, // 递增进度条的速度
-    showSpinner: false, // 是否显示加载ico
-    trickleSpeed: 200, // 自动递增间隔
-    minimum: 0.3, // 初始化时的最小百分比
-});
+import Layout from "@/layout/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -27,9 +19,19 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/other/login.vue"),
     },
     {
+        path: "/login",
+        name: "Login",
+        alias: [],
+        meta: {
+            requiresAuth: false,
+            title: "",
+        },
+        component: () => import("@/views/other/login.vue"),
+    },
+    {
         path: "/",
         name: "Home",
-        component: () => import("@/layout/Home.vue"),
+        component: Layout,
         children: [
             {
                 path: "dashboard",
@@ -39,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: "首页",
                 },
-                component: () => import("@/views/index/dashboard.vue"),
+                component: () => import("@/views/other/dashboard.vue"),
             },
             {
                 path: "svg",
@@ -49,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
                     requiresAuth: true,
                     title: "图标",
                 },
-                component: () => import("@/views/index/svg.vue"),
+                component: () => import("@/views/other/svg.vue"),
             },
             {
                 path: "notFound",
@@ -59,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
                     title: "404",
                 },
                 alias: [],
-                component: () => import("@/views/index/404.vue"),
+                component: () => import("@/views/other/404.vue"),
             },
             {
                 path: "clipboard",
@@ -69,7 +71,7 @@ const routes: Array<RouteRecordRaw> = [
                     title: "Clipboard",
                 },
                 alias: [],
-                component: () => import("@/views/index/clipboard.vue"),
+                component: () => import("@/views/other/clipboard.vue"),
             },
             {
                 path: "exportFile",
@@ -79,7 +81,7 @@ const routes: Array<RouteRecordRaw> = [
                     title: "导出 File",
                 },
                 alias: [],
-                component: () => import("@/views/index/exportFile.vue"),
+                component: () => import("@/views/other/exportFile.vue"),
             },
             {
                 path: "personCenter",
@@ -101,37 +103,36 @@ const routes: Array<RouteRecordRaw> = [
                 },
                 component: () => import("@/views/other/message.vue"),
             },
+        ],
+    },
+    {
+        path: "/setting",
+        name: "Setting",
+        component: Layout,
+        meta: {
+            requiresAuth: true,
+            title: "设置",
+        },
+        children: [
             {
-                path: "setting",
-                name: "Setting",
-                alias: ["/setting"],
+                path: "system",
+                name: "System",
+                alias: [],
                 meta: {
                     requiresAuth: true,
-                    title: "设置",
+                    title: "系统设置",
                 },
-                component: () => import("@/views/index/setting.vue"),
-                children: [
-                    {
-                        path: "system",
-                        name: "System",
-                        alias: [],
-                        meta: {
-                            requiresAuth: true,
-                            title: "系统设置",
-                        },
-                        component: () => import("@/views/system/system.vue"),
-                    },
-                    {
-                        path: "menu",
-                        name: "MenuPage",
-                        alias: [],
-                        meta: {
-                            requiresAuth: true,
-                            title: "菜单管理",
-                        },
-                        component: () => import("@/views/system/menu.vue"),
-                    },
-                ],
+                component: () => import("@/views/system/system.vue"),
+            },
+            {
+                path: "menu",
+                name: "MenuPage",
+                alias: [],
+                meta: {
+                    requiresAuth: true,
+                    title: "菜单管理",
+                },
+                component: () => import("@/views/system/menu.vue"),
             },
         ],
     },
@@ -143,7 +144,7 @@ const routes: Array<RouteRecordRaw> = [
             title: "",
         },
         alias: [],
-        component: () => import("@/views/index/404.vue"),
+        component: () => import("@/views/other/404.vue"),
     },
     {
         path: "/:pathMatch(.*)*",
@@ -153,7 +154,7 @@ const routes: Array<RouteRecordRaw> = [
             title: "",
         },
         alias: [],
-        component: () => import("@/views/index/404.vue"),
+        component: () => import("@/views/other/404.vue"),
     },
 ];
 

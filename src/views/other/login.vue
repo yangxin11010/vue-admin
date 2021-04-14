@@ -34,7 +34,7 @@
 import { defineComponent, ref, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "@/store/index";
-import { ElMessage } from "@/util/message";
+import { successMessage } from "@/util/message";
 export default defineComponent({
     name: "Login",
     setup() {
@@ -87,11 +87,7 @@ export default defineComponent({
                         await store.dispatch("SET_COLLAPSE", false);
                         // 移除tabs
                         await store.dispatch("INIT_TABS");
-                        ElMessage({
-                            message: "登录成功!",
-                            type: "success",
-                            duration: 2000,
-                        });
+                        successMessage("登录成功!");
                         setTimeout(() => {
                             router.replace(path ? path : "/dashboard");
                         }, 1000);
