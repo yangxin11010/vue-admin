@@ -58,8 +58,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { ElIcons, SvgIcons, NpIcons } from "@/assets/js/icons/index";
-import { copyText } from "@/util/clipboard/index";
+import { ElIcons, SvgIcons, NpIcons } from "@/assets/js/icons";
+import { copyText } from "@/util/clipboard";
 export default defineComponent({
     name: "SvgPage",
     setup() {

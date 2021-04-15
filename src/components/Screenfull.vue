@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { warningMessage } from "@/util/message/index";
+import { warningMessage } from "@/util/message";
 import Screenfull from "screenfull";
 
 export default defineComponent({

@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, PropType, watch, onUnmounted } from "vue";
 import * as Echarts from "echarts";
-import { useStore } from "@/store/index";
+import { useStore } from "@/store";
 
 export default defineComponent({
     name: "Echars",

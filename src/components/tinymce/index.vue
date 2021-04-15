@@ -26,7 +26,8 @@ import plugins from "./plugins";
 import toolbar from "./toolbar";
 import load from "./dynamicLoadScript";
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = "http://chky.js.zhuanfa666.com/chky/tinymce/tinymce.min.js";
+// const tinymceCDN = "http://chky.js.zhuanfa666.com/chky/tinymce/tinymce.min.js";
+const tinymceCDN = "https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js";
 import { errorMessage } from "@/util/message";
 
 export default defineComponent({
@@ -126,13 +127,8 @@ export default defineComponent({
 
         const destroyTinymce = () => {
             const tinymce = _window.tinymce.get(state.tinymceId);
-            if (state.fullscreen) {
-                tinymce.execCommand("mceFullScreen");
-            }
-
-            if (tinymce) {
-                tinymce.destroy();
-            }
+            state.fullscreen && tinymce.execCommand("mceFullScreen");
+            tinymce && tinymce.destroy();
         };
 
         const setContent = (value: any) => {
@@ -160,6 +156,7 @@ export default defineComponent({
                 menubar: props.menubar,
                 plugins: plugins,
                 end_container_on_empty_block: true,
+                fontsize_formats: "8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 17pt 18pt 19pt 20pt 24pt 36pt",
                 powerpaste_word_import: "clean",
                 code_dialog_height: 450,
                 code_dialog_width: 1000,
@@ -259,7 +256,7 @@ export default defineComponent({
 }
 
 .tinymce-container {
-    ::v-deep {
+    /deep/ {
         .mce-fullscreen {
             z-index: 10000;
         }

@@ -56,7 +56,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from "@/store/index";
+import { useStore } from "@/store";
 import { infoMessage } from "@/util/message";
 import mitter from "@/plugins/mitt";
 
@@ -174,12 +174,13 @@ export default defineComponent({
     opacity: 0;
     transform: translateX(30px);
 }
-</style>
-<style lang="scss">
-.header-dropdown {
-    height: 100%;
-}
-.el-badge__content {
-    border: none;
+
+/deep/ {
+    .header-dropdown {
+        height: 100%;
+    }
+    .el-badge__content {
+        border: none;
+    }
 }
 </style>

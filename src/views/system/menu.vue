@@ -100,9 +100,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, reactive, ref } from "vue";
-import { ElMessageBox } from "element-plus";
-import ElMessage from "@/util/message/index";
-import { Menu } from "@ts/views";
+import { warningMsgBox } from "@/util/messageBox";
+import ElMessage from "@/util/message";
+import { Menu } from "@model/views";
 import MenuList from "@/assets/js/menuList";
 
 export default defineComponent({
@@ -191,14 +191,7 @@ export default defineComponent({
         const submit = () => {
             menuFormRef.value.validate((valid: boolean) => {
                 if (valid) {
-                    ElMessageBox({
-                        title: "提示",
-                        message: isAddMenu.value ? "确定添加吗？" : "确定修改吗？",
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        showCancelButton: true,
-                        type: "warning",
-                    })
+                    warningMsgBox(isAddMenu.value ? "确定添加吗？" : "确定修改吗？")
                         .then(() => {
                             dialogVisible.value = false;
                             console.log(menuForm);

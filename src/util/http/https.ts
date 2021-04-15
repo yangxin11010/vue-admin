@@ -1,5 +1,5 @@
 import axios from "axios";
-import { errorMessage } from "@/util/message/index";
+import { errorMessage } from "@/util/message";
 
 const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,

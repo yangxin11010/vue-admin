@@ -33,7 +33,7 @@
 <script lang="ts">
 import { defineComponent, ref, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { useStore } from "@/store/index";
+import { useStore } from "@/store";
 import { successMessage } from "@/util/message";
 export default defineComponent({
     name: "Login",
@@ -131,9 +131,7 @@ export default defineComponent({
 .submit {
     width: 100%;
 }
-</style>
-<style lang="scss">
-.login {
+/deep/ {
     .el-form-item {
         border: 1px solid hsla(0, 0%, 100%, 0.1);
         background: rgba(0, 0, 0, 0.1);

@@ -6,14 +6,18 @@
     >
         <ul class="tabs-l disflex align-it-cen" ref="tabsRef">
             <template v-for="item in keepTabsList" :key="item.path">
-                <li :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
-                    <span :class="{ 'tabs-black-circle': $route.path === item.path }">{{ item.title }}</span>
+                <li class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
+                    <span class="tab-text" :class="{ 'tabs-black-circle': $route.path === item.path }">
+                        {{ item.title }}
+                    </span>
                 </li>
             </template>
             <template v-for="(item, index) in tabsList" :key="item.path">
-                <li :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
-                    <span :class="{ 'tabs-white-circle': $route.path === item.path }">{{ item.title }}</span>
-                    <span @click.stop="closeTabs(index)"><i class="el-icon-close"></i></span>
+                <li class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
+                    <span class="tab-text" :class="{ 'tabs-white-circle': $route.path === item.path }">
+                        {{ item.title }}
+                    </span>
+                    <span class="tab-close" @click.stop="closeTabs(index)"><i class="el-icon-close"></i></span>
                 </li>
             </template>
         </ul>
@@ -27,7 +31,9 @@
                     <el-dropdown-menu>
                         <el-dropdown-item v-if="keepTabsIndex === -1" :command="0">关闭当前</el-dropdown-item>
                         <el-dropdown-item v-if="keepTabsIndex === -1" :command="1">保持固定</el-dropdown-item>
-                        <el-dropdown-item v-if="tabsIndex === -1 && $route.path !== '/dashboard'" :command="2">解除固定</el-dropdown-item>
+                        <el-dropdown-item v-if="tabsIndex === -1 && $route.path !== '/dashboard'" :command="2">
+                            解除固定
+                        </el-dropdown-item>
                         <el-dropdown-item :command="3">关闭其他</el-dropdown-item>
                         <el-dropdown-item :command="4">关闭所有</el-dropdown-item>
                         <el-dropdown-item :command="5" divided>一键清除</el-dropdown-item>
@@ -41,10 +47,10 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { ElMessageBox } from "element-plus";
-import { useStore } from "@/store/index";
+import { warningMsgBox } from "@/util/messageBox";
+import { useStore } from "@/store";
 
-import { Tabs } from "@ts/views";
+import { Tabs } from "@model/views";
 
 export default defineComponent({
     setup() {
@@ -97,14 +103,7 @@ export default defineComponent({
                     store.dispatch("REMOVE_TABS");
                     break;
                 case 5:
-                    ElMessageBox({
-                        title: "提示",
-                        message: "此操作将清空所有Tab，是否继续？",
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        showCancelButton: true,
-                        type: "warning",
-                    })
+                    warningMsgBox("此操作将清空所有Tab，是否继续？")
                         .then(() => {
                             store.dispatch("INIT_TABS");
                             router.push("/dashboard");
@@ -199,45 +198,44 @@ export default defineComponent({
     &::-webkit-scrollbar {
         display: none;
     }
-    li {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: nowrap;
-        border: 1px solid #d8dce5;
-        color: #495060;
-        background: #fff;
-        height: 25px;
-        padding: 0 8px;
-        cursor: pointer;
-        margin-right: 5px;
-        border-radius: 2px;
-        span {
-            white-space: nowrap;
-        }
-        span:nth-child(2) {
-            width: 16px;
-            height: 16px;
-            text-align: center;
-            border-radius: 50%;
-            margin-left: 2px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            i {
-                transform: scale(0.6);
-                position: relative;
-                top: 1px;
-            }
-            transition: all 0.5s linear;
-            &:hover {
-                background-color: #b4bccc;
-                color: #fff;
-            }
-        }
+}
+.tab-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: 25px;
+    border: 1px solid #d8dce5;
+    color: #495060;
+    background: #fff;
+    padding: 0 8px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+.tab-text {
+    white-space: nowrap;
+}
+.tab-close {
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    border-radius: 50%;
+    margin-left: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & > i {
+        transform: scale(0.6);
+        position: relative;
+        top: 1px;
+    }
+    transition: all 0.5s linear;
+    &:hover {
+        background-color: #b4bccc;
+        color: #fff;
     }
 }
-
 .tabs-black-circle::before,
 .tabs-white-circle::before {
     content: "";

@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, computed } from "vue";
-import { useStore } from "@/store/index";
+import { useStore } from "@/store";
 
 export default defineComponent({
     setup() {

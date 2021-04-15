@@ -10,8 +10,8 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { useStore } from "@/store/index";
-import { Tabs } from "@ts/views";
+import { useStore } from "@/store";
+import { Tabs } from "@model/views";
 
 export default defineComponent({
     name: "MyRouterView",

@@ -1,11 +1,9 @@
 <template>
-    <div class="system">
-        <Tinymce></Tinymce>
-    </div>
+    <div class="system"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, onMounted } from "vue";
 
 export default defineComponent({
     name: "System",
@@ -20,6 +18,10 @@ export default defineComponent({
             console.log(e);
         };
         const time: number = 300;
+
+        onMounted(() => {
+            
+        });
 
         return {
             form,

@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import NProgress from "@/util/progress/index";
-import Store from "@/store/index";
+import NProgress from "@/util/progress";
+import Store from "@/store";
 import Layout from "@/layout/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [

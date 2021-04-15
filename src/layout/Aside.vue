@@ -35,9 +35,9 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from "vue";
-import { useStore } from "@/store/index";
+import { useStore } from "@/store";
 import { useRoute } from "vue-router";
-import { Menu } from "@ts/views";
+import { Menu } from "@model/views";
 import MenuList from "@/assets/js/menuList";
 
 export default defineComponent({
@@ -71,32 +71,32 @@ export default defineComponent({
     height: 100%;
     background-color: $main-color;
     user-select: none;
-}
-</style>
-<style lang="scss">
-.asideMenu {
-    // 去掉el-menu 白色右边框
-    border: none !important;
-}
-.asideMenu:not(.el-menu--collapse) {
-    width: 200px;
-    height: 100%;
-    overflow: hidden;
-}
-.el-menu--inline .el-menu-item {
-    // 二级菜单 背景色
-    background-color: #1f2f3f !important;
-    &:hover {
-        // 二级菜单鼠标移除背景色
-        background-color: #001528 !important;
+    /deep/ {
+        .asideMenu {
+            // 去掉el-menu 白色右边框
+            border: none !important;
+        }
+        .asideMenu:not(.el-menu--collapse) {
+            width: 200px;
+            height: 100%;
+            overflow: hidden;
+        }
+        .el-menu--inline .el-menu-item {
+            // 二级菜单 背景色
+            background-color: #1f2f3f !important;
+            &:hover {
+                // 二级菜单鼠标移除背景色
+                background-color: #001528 !important;
+            }
+        }
+        .el-menu-item [class^="np-icon-"],
+        .el-submenu [class^="np-icon-"] {
+            vertical-align: middle;
+            margin-right: 5px;
+            width: 24px;
+            text-align: center;
+            font-size: 16px;
+        }
     }
-}
-.el-menu-item [class^="np-icon-"],
-.el-submenu [class^="np-icon-"] {
-    vertical-align: middle;
-    margin-right: 5px;
-    width: 24px;
-    text-align: center;
-    font-size: 15px;
 }
 </style>

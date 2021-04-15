@@ -7,13 +7,13 @@ import locale from "element-plus/lib/locale/lang/zh-cn";
 // ele 自定义主题
 import "@/assets/css/element-variables.scss";
 //	Router
-import Router from "@/router/index";
+import Router from "@/router";
 //	Store
-import Store, { key } from "@/store/index";
+import Store, { key } from "@/store";
 //	SVG
-import Svg from "@/icons/index";
+import Svg from "@/icons";
 // directive
-import directive from "@/directive/index";
+import directive from "@/directive";
 
 const app = createApp(App);
 

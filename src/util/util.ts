@@ -1,4 +1,4 @@
-import { Window } from "@ts/util";
+import { Window } from "@model/util";
 
 
 
