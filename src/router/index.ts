@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import NProgress from "@/util/progress";
 import Store from "@/store";
-import Layout from "@/layout/Home.vue";
+import Layout from "@/layout/index.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -123,6 +123,16 @@ const routes: Array<RouteRecordRaw> = [
                     title: "菜单管理",
                 },
                 component: () => import("@/views/system/menu.vue"),
+            },
+            {
+                path: "user",
+                name: "User",
+                alias: [],
+                meta: {
+                    requiresAuth: true,
+                    title: "用户管理",
+                },
+                component: () => import("@/views/system/user.vue"),
             },
         ],
     },

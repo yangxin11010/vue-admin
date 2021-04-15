@@ -13,6 +13,8 @@ export interface State {
     isLogin: boolean;
     collapse: boolean;
     token: string | null;
+    openLogo: boolean;
+    openTabs: boolean;
     tabsList: [Tabs[], Tabs[]];
 }
 
@@ -39,7 +41,10 @@ const store = createStore<State>({
         createPersistedState({
             storage: window.localStorage,
             reducer(state) {
-                return {};
+                return {
+                    openLogo: state.openLogo,
+                    openTabs: state.openTabs,
+                };
             },
         }),
     ],
@@ -47,6 +52,8 @@ const store = createStore<State>({
         isLogin: false,
         collapse: true,
         token: null,
+        openLogo: true,
+        openTabs: true,
         tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard" }], []],
     },
     getters: {
@@ -54,6 +61,8 @@ const store = createStore<State>({
         collapse: (state) => state.collapse,
         token: (state) => state.token,
         tabsList: (state) => state.tabsList,
+        openLogo: (state) => state.openLogo,
+        openTabs: (state) => state.openTabs,
     },
     mutations: {
         LOGIN(state, value: string) {
@@ -90,6 +99,12 @@ const store = createStore<State>({
         INIT_TABS(state) {
             state.tabsList = [[{ name: "Dashboard", title: "首页", path: "/dashboard" }], []];
         },
+        CHANGE_LOGO(state, value: boolean) {
+            state.openLogo = value;
+        },
+        CHANGE_Tabs(state, value: boolean) {
+            state.openTabs = value;
+        },
     },
     actions: {
         LOGIN({ commit }, value: string) {
@@ -119,6 +134,12 @@ const store = createStore<State>({
         },
         INIT_TABS({ commit }) {
             commit("INIT_TABS");
+        },
+        CHANGE_LOGO({ commit }, value: boolean) {
+            commit("CHANGE_LOGO", value);
+        },
+        CHANGE_Tabs({ commit }, value: boolean) {
+            commit("CHANGE_Tabs", value);
         },
     },
 });

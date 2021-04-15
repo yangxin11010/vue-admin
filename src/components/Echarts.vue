@@ -48,9 +48,11 @@ export default defineComponent({
             window.addEventListener("resize", resize);
         });
 
+
         onUnmounted(() => {
             window.removeEventListener("resize", resize);
         });
+
         return {
             echartsRef,
             resize,

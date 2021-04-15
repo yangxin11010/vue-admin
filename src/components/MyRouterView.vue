@@ -15,17 +15,22 @@ import { Tabs } from "@model/views";
 
 export default defineComponent({
     name: "MyRouterView",
-    props: {},
     setup() {
         const store = useStore();
 
-        const keepAliveList = computed(() =>
-            store.getters.tabsList
-                .map((item: Tabs[]) => {
-                    return item.map((item2: Tabs) => item2.name);
-                })
-                .flat()
-        );
+        const openTabs = computed(() => store.getters.openTabs);
+
+        const keepAliveList = computed(() => {
+            if (openTabs.value) {
+                return store.getters.tabsList
+                    .map((item: Tabs[]) => {
+                        return item.map((item2: Tabs) => item2.name);
+                    })
+                    .flat();
+            } else {
+                return [];
+            }
+        });
         return {
             keepAliveList,
         };

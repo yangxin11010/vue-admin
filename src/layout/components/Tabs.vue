@@ -65,6 +65,8 @@ export default defineComponent({
         // 为保持固定的数组
         const tabsList = computed(() => store.getters.tabsList[1]);
 
+        const openTabs = computed(() => store.getters.openTabs);
+
         // 点击跳转
         const tabsClick = (item: Tabs) => {
             router.push(item.path);
@@ -155,7 +157,8 @@ export default defineComponent({
                     keepTabsList.value.findIndex((item: Tabs) => item.path === newValue) === -1 &&
                     tabsList.value.findIndex((item: Tabs) => item.path === newValue) === -1 &&
                     route.name &&
-                    route.meta.title
+                    route.meta.title &&
+                    openTabs
                 ) {
                     store.dispatch("ADD_TABS", {
                         name: route.name,

@@ -1,33 +1,21 @@
 <template>
-    <div class="system"></div>
+    <div class="system">
+        <el-button @click="clickHandle">click</el-button>
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from "vue";
+import { defineComponent, onMounted } from "vue";
 
 export default defineComponent({
     name: "System",
     setup() {
-        let form = reactive({
-            name: "",
-        });
-        const clickHandle = () => {
-            console.log(1);
-        };
-        const success = (e: any) => {
-            console.log(e);
-        };
-        const time: number = 300;
+        const clickHandle = () => {};
 
-        onMounted(() => {
-            
-        });
+        onMounted(() => {});
 
         return {
-            form,
             clickHandle,
-            time,
-            success,
         };
     },
 });

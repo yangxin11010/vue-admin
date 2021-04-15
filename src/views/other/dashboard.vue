@@ -1,6 +1,6 @@
 <template>
     <div class="dashboard">
-        <el-row :gutter="30">
+        <el-row :gutter="30" style="margin-bottom: 0;">
             <template v-for="(item, index) in cardList" :key="index">
                 <el-col :span="6" :xs="12">
                     <el-card shadow="hover" class="el-card-item">
@@ -198,9 +198,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     background-color: #fff;
-    & > div {
-        height: 100%;
-    }
+    
 }
 
 .card-item-icon-box {

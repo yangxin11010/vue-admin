@@ -10,6 +10,12 @@
             active-text-color="#1890ff"
             router
         >
+            <el-menu-item v-if="openLogo" class="logo-title" index="/">
+                <img class="logo" src="@imgs/logo.png" alt="vue-admin" />
+                <template #title>
+                    <span class="title">vue-admin</span>
+                </template>
+            </el-menu-item>
             <template v-for="item in menuList" :key="item.path">
                 <template v-if="item.children.length > 0">
                     <el-submenu class="submenu" :index="item.path">
@@ -61,6 +67,7 @@ export default defineComponent({
             menuList,
             collapse: computed(() => store.getters.collapse),
             defaultActive: computed(() => route.path),
+            openLogo: computed(() => store.getters.openLogo)
         };
     },
 });
@@ -71,6 +78,27 @@ export default defineComponent({
     height: 100%;
     background-color: $main-color;
     user-select: none;
+    .logo-title {
+        background-color: #2b2f3a !important;
+        height: 60px;
+        line-height: 60px;
+    }
+    .logo {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        left: -6px;
+    }
+    .title {
+        width: 130px;
+        height: 60px;
+        display: inline-block;
+        color: #fff;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     /deep/ {
         .asideMenu {
             // 去掉el-menu 白色右边框
