@@ -2,19 +2,23 @@
 
 ## Project setup
 ```
+cd vue-admin
+
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### run
 ```
 npm run dev
 ```
 
-### Compiles and minifies for production
+### build for development
+```
+npm run build-dev
+```
+
+### build for production
 ```
 npm run build
 ```
-### Compiles and minifies for test
-```
-npm run test
-```
+
