@@ -24,7 +24,7 @@
                 ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="submit" type="primary" :loading="loading" @click="submit">登录</el-button>
+                <el-button class="submit" type="primary" :loading="loading" v-keyboard:Enter="submit" @click="submit">登录</el-button>
             </el-form-item>
         </el-form>
     </div>

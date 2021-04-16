@@ -22,9 +22,16 @@
                     </el-table-column>
                     <el-table-column label="菜单路径" prop="path" align="left"></el-table-column>
                     <el-table-column label="菜单图标" prop="icon" align="left"></el-table-column>
+                    <el-table-column label="缓存状态" prop="keepAlive" align="center" width="100">
+                        <template v-slot="{ row }">
+                            <el-tag :type="row.keepAlive ? 'success' : 'danger'">
+                                {{ row.keepAlive ? "开启" : "关闭" }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="菜单状态" prop="status" width="150" align="center">
                         <template v-slot="{ row }">
-                            <el-tag :type="row.status === 0 ? 'danger' : 'primary'">
+                            <el-tag :type="row.status === 0 ? 'danger' : 'success'">
                                 {{ row.status === 0 ? "已禁用" : "已启用" }}
                             </el-tag>
                         </template>
@@ -78,6 +85,15 @@
                 <el-form-item prop="icon" label="菜单图标">
                     <el-input v-model="menuForm.icon"></el-input>
                 </el-form-item>
+                <el-form-item prop="keepAlive" label="缓存状态">
+                    <el-switch
+                        v-model="menuForm.keepAlive"
+                        :active-value="true"
+                        :inactive-value="false"
+                        active-color="#13ce66"
+                        inactive-color="#dddddd"
+                    ></el-switch>
+                </el-form-item>
                 <el-form-item prop="status" label="是否启用">
                     <el-switch
                         v-model="menuForm.status"
@@ -120,7 +136,7 @@ export default defineComponent({
             path: "",
             icon: "",
             parentMenuId: null,
-            isEdit: false,
+            keepAlive: true,
             status: 1,
             children: [],
         });

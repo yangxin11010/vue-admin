@@ -8,14 +8,14 @@
             <template v-for="item in keepTabsList" :key="item.path">
                 <li class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
                     <span class="tab-text" :class="{ 'tabs-black-circle': $route.path === item.path }">
-                        {{ item.title }}
+                        {{ $t(`aside.${item.path}`) }}
                     </span>
                 </li>
             </template>
             <template v-for="(item, index) in tabsList" :key="item.path">
                 <li class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
                     <span class="tab-text" :class="{ 'tabs-white-circle': $route.path === item.path }">
-                        {{ item.title }}
+                        {{ $t(`aside.${item.path}`) }}
                     </span>
                     <span class="tab-close" @click.stop="closeTabs(index)"><i class="el-icon-close"></i></span>
                 </li>
@@ -164,6 +164,7 @@ export default defineComponent({
                         name: route.name,
                         title: route.meta.title,
                         path: newValue,
+                        keepAlive: route.meta.keepAlive
                     });
                 }
             }

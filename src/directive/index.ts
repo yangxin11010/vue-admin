@@ -1,5 +1,5 @@
-import Clipboard from "clipboard";
 import { successMessage, errorMessage } from "@/util/message";
+import Clipboard from "clipboard";
 import { App } from "vue";
 /**
  * 防抖
@@ -105,6 +105,32 @@ export default {
                     el._v_clipboard.destroy();
                     delete el._v_clipboard;
                 }
+            },
+        });
+
+        // v-keyboard:Enter="clickHandle"  Enter: 键盘事件的code值 clickHandle 为绑定的事件(事件擦参数(e,...))
+        // v-keyboard:text="value"  text必穿 value 为键盘事件参数
+        app.directive("keyboard", {
+            mounted: (el, binding) => {
+                if (binding.arg === "text") {
+                    el._v_value = binding.value;
+                } else {
+                    const keyDown = (e: any) => {
+                        e.code === binding.arg && binding.value && binding.value(e, el._v_value);
+                    };
+                    el._v_event = keyDown;
+                    window && window.addEventListener("keydown", keyDown);
+                }
+            },
+            updated: (el, binding) => {
+                if (binding.arg === "text") {
+                    el._v_value = binding.value;
+                }
+            },
+            unmounted: (el) => {
+                window && window.removeEventListener("keydown", el._v_event);
+                delete el._v_value;
+                delete el._v_event;
             },
         });
     },

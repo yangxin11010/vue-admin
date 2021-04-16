@@ -22,11 +22,15 @@ export default defineComponent({
 
         const keepAliveList = computed(() => {
             if (openTabs.value) {
-                return store.getters.tabsList
-                    .map((item: Tabs[]) => {
-                        return item.map((item2: Tabs) => item2.name);
-                    })
-                    .flat();
+                let aliveList: string[] = [];
+                store.getters.tabsList.forEach((item: Tabs[]) => {
+                    item.forEach((item2: Tabs) => {
+                        if (item2.keepAlive) {
+                            aliveList.push(item2.name);
+                        }
+                    });
+                });
+                return aliveList;
             } else {
                 return [];
             }

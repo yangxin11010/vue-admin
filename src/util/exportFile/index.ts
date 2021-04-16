@@ -6,8 +6,13 @@ interface ExcelParams {
     filename: string;
 }
 
+/**
+ * @param params {params}
+ * @returns 'success' {Promise}
+ */
+
 export function exportExcel(params: ExcelParams) {
-    return new Promise((resove) => {
+    return new Promise<string>((resove) => {
         if (!params.header) params.header = params.filterVal;
         params.data = params.data.map((item) => params.filterVal.map((item1) => item[item1]));
         import("@/vendor/Export2Excel").then((excel) => {
@@ -24,8 +29,12 @@ export function exportExcel(params: ExcelParams) {
     });
 }
 
+/**
+ * @param params {params}
+ * @returns 'success' {Promise}
+ */
 export function exportZip(params: ExcelParams) {
-    return new Promise((resove) => {
+    return new Promise<string>((resove) => {
         if (!params.header) params.header = params.filterVal;
         params.data = params.data.map((item) => params.filterVal.map((item1) => item[item1]));
         import("@/vendor/Export2Zip").then((zip) => {

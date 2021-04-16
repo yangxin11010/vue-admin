@@ -15,16 +15,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             requiresAuth: false,
             title: "",
-        },
-        component: () => import("@/views/other/login.vue"),
-    },
-    {
-        path: "/login",
-        name: "Login",
-        alias: [],
-        meta: {
-            requiresAuth: false,
-            title: "",
+            keepAlive: false,
         },
         component: () => import("@/views/other/login.vue"),
     },
@@ -40,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "首页",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/other/dashboard.vue"),
             },
@@ -50,6 +42,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "图标",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/other/svg.vue"),
             },
@@ -59,6 +52,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: false,
                     title: "Clipboard",
+                    keepAlive: true,
                 },
                 alias: [],
                 component: () => import("@/views/other/clipboard.vue"),
@@ -69,6 +63,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: false,
                     title: "导出 File",
+                    keepAlive: true,
                 },
                 alias: [],
                 component: () => import("@/views/other/export-file.vue"),
@@ -80,6 +75,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "个人中心",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/other/person-center.vue"),
             },
@@ -90,6 +86,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "消息中心",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/other/message.vue"),
             },
@@ -102,6 +99,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             requiresAuth: true,
             title: "设置",
+            keepAlive: true,
         },
         children: [
             {
@@ -111,6 +109,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "系统设置",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/system/system.vue"),
             },
@@ -121,6 +120,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "菜单管理",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/system/menu.vue"),
             },
@@ -131,6 +131,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "用户管理",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/system/user.vue"),
             },
@@ -143,6 +144,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             requiresAuth: true,
             title: "组件",
+            keepAlive: true,
         },
         children: [
             {
@@ -151,6 +153,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: false,
                     title: "富文本编辑器",
+                    keepAlive: true,
                 },
                 alias: [],
                 component: () => import("@/views/components/tinymce-page.vue"),
@@ -164,6 +167,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             requiresAuth: true,
             title: "错误页面",
+            keepAlive: true,
         },
         children: [
             {
@@ -172,6 +176,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: false,
                     title: "404",
+                    keepAlive: true,
                 },
                 alias: [],
                 component: () => import("@/views/error/404.vue"),
@@ -182,6 +187,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: false,
                     title: "401",
+                    keepAlive: true,
                 },
                 alias: [],
                 component: () => import("@/views/error/401.vue"),
@@ -195,6 +201,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             requiresAuth: false,
             title: "404",
+            keepAlive: true,
         },
         alias: [],
     },

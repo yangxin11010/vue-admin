@@ -21,17 +21,19 @@
                     <el-submenu class="submenu" :index="item.path">
                         <template #title>
                             <i :class="item.icon"></i>
-                            <span>{{ item.title }}</span>
+                            <span>{{ $t(`aside.${item.path}`) }}</span>
                         </template>
                         <template v-for="item2 in item.children" :key="item2.path">
-                            <el-menu-item :index="item.path + item2.path">{{ item2.title }}</el-menu-item>
+                            <el-menu-item :index="item.path + item2.path">
+                                {{ $t(`aside.${item.path + item2.path}`) }}
+                            </el-menu-item>
                         </template>
                     </el-submenu>
                 </template>
                 <template v-else>
                     <el-menu-item :index="item.path">
                         <i :class="item.icon"></i>
-                        <template #title>{{ item.title }}</template>
+                        <template #title>{{ $t(`aside.${item.path}`) }}</template>
                     </el-menu-item>
                 </template>
             </template>
@@ -67,7 +69,7 @@ export default defineComponent({
             menuList,
             collapse: computed(() => store.getters.collapse),
             defaultActive: computed(() => route.path),
-            openLogo: computed(() => store.getters.openLogo)
+            openLogo: computed(() => store.getters.openLogo),
         };
     },
 });

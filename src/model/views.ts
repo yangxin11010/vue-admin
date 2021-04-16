@@ -2,6 +2,7 @@ export interface Tabs {
     name: string;
     title: string;
     path: string;
+    keepAlive: boolean,
 }
 
 export interface DashboardCard {
@@ -23,7 +24,7 @@ export interface Menu {
     path: string;
     icon: string;
     parentMenuId: number | null;
-    isEdit: boolean;
+    keepAlive: boolean;
     status: number;
     children: Menu[];
 }

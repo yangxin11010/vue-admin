@@ -61,6 +61,9 @@ export default defineComponent({
 .breadcrumb {
     color: #fff;
 }
+.hoverClass:hover {
+    color: #1890ff;
+}
 .breadcrumbList-enter-active,
 .breadcrumbList-leave-active {
     transition: all 0.5s;

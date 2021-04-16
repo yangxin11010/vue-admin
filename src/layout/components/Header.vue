@@ -7,7 +7,7 @@
         <div class="header-r disflex ju_bt align-it-cen">
             <el-tooltip
                 effect="dark"
-                :content="messageNum !== 0 ? `有${messageNum}条未读消息` : '消息中心'"
+                :content="messageNum !== 0 ? $t('message.have', { value: messageNum }) : $t('message.no')"
                 placement="bottom-end"
             >
                 <router-link class="h100p" to="/message">
@@ -21,9 +21,32 @@
                     </div>
                 </router-link>
             </el-tooltip>
-            <el-tooltip effect="dark" :content="isScreenfull ? '取消全屏' : '全屏'" placement="bottom-end">
-                <div class="fullscreen header-r-item"><Screenfull parent @screenfull="screenfull"></Screenfull></div>
+            <el-tooltip
+                effect="dark"
+                :content="isScreenfull ? $t('fullscreen.exit') : $t('fullscreen.full')"
+                placement="bottom-end"
+            >
+                <div class="fullscreen header-r-item">
+                    <Screenfull parent @screenfull="screenfull"></Screenfull>
+                </div>
             </el-tooltip>
+            <el-dropdown
+                class="header-dropdown"
+                placement="bottom-end"
+                size="medium"
+                trigger="click"
+                @command="langSelect"
+            >
+                <div class="header-r-item lang-icon">
+                    <svg-icon icon-class="language" />
+                </div>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item command="zh" :disabled="langIndex === 'zh'">中文</el-dropdown-item>
+                        <el-dropdown-item command="en" :disabled="langIndex === 'en'">English</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
             <el-dropdown
                 class="header-dropdown"
                 placement="bottom-end"
@@ -54,16 +77,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, defineAsyncComponent } from "vue";
+import { defineComponent, ref, onMounted, defineAsyncComponent, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
-import { infoMessage } from "@/util/message";
 import mitter from "@/plugins/mitt";
+import { openWindow } from "@/util/util";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
     setup() {
         const store = useStore(),
             router = useRouter();
+
+        const { locale } = useI18n();
+
+        let langIndex = computed(() => store.getters.lang);
+
+        const langSelect = (e: string) => {
+            locale.value = e;
+            store.dispatch("SET_LANG", e);
+        };
 
         const handleCommand = (e: number) => {
             switch (e) {
@@ -74,7 +107,7 @@ export default defineComponent({
                     router.push("/dashboard");
                     break;
                 case 2:
-                    infoMessage("暂无！");
+                    openWindow("https://gitee.com/yangxin11010/vue-admin");
                     break;
                 case 3:
                     store.dispatch("LOGIN_OUT");
@@ -106,6 +139,8 @@ export default defineComponent({
 
         return {
             isScreenfull,
+            langIndex,
+            langSelect,
             handleCommand,
             messageNum,
             screenfull,
@@ -134,9 +169,6 @@ export default defineComponent({
 .breadcrumb {
     color: #fff;
 }
-.hoverClass:hover {
-    color: #1890ff;
-}
 .header-r {
     padding-right: 10px;
     height: 100%;
@@ -153,6 +185,10 @@ export default defineComponent({
 }
 .fullscreen {
     font-size: 22px;
+}
+.lang-icon {
+    color: #fff;
+    font-size: 16px;
 }
 .user-header {
     width: 100%;

@@ -1,17 +1,19 @@
 <template>
-    <div class="FourZeroOne disflex align-it-cen ju_cen">
-        <div class="disflex align-it-cen ju_cen overhide">
-            <svg-icon class="svgicon" icon-class="404" />
-        </div>
-        <div>
-            <el-button type="primary" round @click="back(0)">Back to home</el-button>
-            <el-button type="primary" round @click="back(1)">Back last page</el-button>
+    <div class="FourZeroOne disflex align-it-cen ju_cen overhide">
+        <div class="disflex align-it-cen ju_cen overhide"></div>
+        <div class="disflex flex-dir-c">
+            <div>
+                <el-button class="btn" type="primary" round @click="back(0)">Back to home</el-button>
+            </div>
+            <div>
+                <el-button class="btn" type="primary" round @click="back(1)">Back last page</el-button>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -30,8 +32,13 @@ export default defineComponent({
             }
         };
 
+        const options = reactive({
+            name: 123,
+        });
+
         return {
             back,
+            options,
         };
     },
 });
@@ -41,11 +48,19 @@ export default defineComponent({
 .FourZeroOne {
     width: 100%;
     height: calc(100vh - 120px);
-    flex-direction: column;
     & > div:nth-child(1) {
-        width: 320px;
-        height: 160px;
+        background-image: url("../../assets/images/401.gif");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        user-select: none;
+        width: 213px;
+        height: 300px;
+        margin-right: 20px;
     }
+}
+.btn {
+    width: 144px;
+    margin-bottom: 20px;
 }
 .svgicon {
     transform: scale(20);

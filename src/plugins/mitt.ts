@@ -1,4 +1,4 @@
-//  Even bus
+//  Event bus
 import mitt from "mitt";
 
 const emitter = mitt();

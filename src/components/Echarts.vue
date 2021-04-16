@@ -38,6 +38,16 @@ export default defineComponent({
             }
         );
 
+        watch(
+            () => props.options,
+            (val) => {
+                echarts.setOption(val);
+            },
+            {
+                deep: true,
+            }
+        );
+
         const resize = () => {
             echarts.resize();
         };
@@ -47,7 +57,6 @@ export default defineComponent({
             echarts.setOption(props.options);
             window.addEventListener("resize", resize);
         });
-
 
         onUnmounted(() => {
             window.removeEventListener("resize", resize);

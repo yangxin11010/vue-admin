@@ -1,5 +1,5 @@
 <template>
-    <div class="FourZeroFour disflex align-it-cen ju_cen">
+    <div class="FourZeroFour disflex align-it-cen ju_cen flex-dir-c">
         <div class="disflex align-it-cen ju_cen overhide">
             <svg-icon class="svgicon" icon-class="404" />
         </div>
@@ -40,11 +40,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .FourZeroFour {
     width: 100%;
-    height: calc(100vh - 120px);
-    flex-direction: column;
+    height: calc(100vh - 200px);
     & > div:nth-child(1) {
         width: 320px;
         height: 160px;
+        margin-bottom: 20px;
     }
 }
 .svgicon {

@@ -1,6 +1,6 @@
 <template>
     <div class="system">
-        <el-button @click="clickHandle">click</el-button>
+        <p>system</p>
     </div>
 </template>
 
@@ -10,12 +10,11 @@ import { defineComponent, onMounted } from "vue";
 export default defineComponent({
     name: "System",
     setup() {
-        const clickHandle = () => {};
-
+        
         onMounted(() => {});
 
         return {
-            clickHandle,
+            
         };
     },
 });

@@ -10,6 +10,7 @@ export interface KeyValue {
 }
 
 export interface State {
+    lang: string;
     isLogin: boolean;
     collapse: boolean;
     token: string | null;
@@ -31,6 +32,7 @@ const store = createStore<State>({
             storage: window.sessionStorage,
             reducer(state) {
                 return {
+                    lang: state.lang,
                     isLogin: state.isLogin,
                     collapse: state.collapse,
                     token: state.token,
@@ -49,14 +51,16 @@ const store = createStore<State>({
         }),
     ],
     state: {
+        lang: "zh",
         isLogin: false,
         collapse: true,
         token: null,
         openLogo: true,
         openTabs: true,
-        tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard" }], []],
+        tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
     },
     getters: {
+        lang: (state) => state.lang,
         isLogin: (state) => state.isLogin,
         collapse: (state) => state.collapse,
         token: (state) => state.token,
@@ -65,6 +69,9 @@ const store = createStore<State>({
         openTabs: (state) => state.openTabs,
     },
     mutations: {
+        SET_LANG(state, value: string) {
+            state.lang = value;
+        },
         LOGIN(state, value: string) {
             state.isLogin = true;
             state.token = value;
@@ -97,7 +104,7 @@ const store = createStore<State>({
             state.tabsList[0].splice(value, 1);
         },
         INIT_TABS(state) {
-            state.tabsList = [[{ name: "Dashboard", title: "首页", path: "/dashboard" }], []];
+            state.tabsList = [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []];
         },
         CHANGE_LOGO(state, value: boolean) {
             state.openLogo = value;
@@ -107,6 +114,9 @@ const store = createStore<State>({
         },
     },
     actions: {
+        SET_LANG({ commit }, value: string) {
+            commit("SET_LANG", value);
+        },
         LOGIN({ commit }, value: string) {
             commit("LOGIN", value);
         },
