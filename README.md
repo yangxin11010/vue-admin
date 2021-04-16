@@ -2,7 +2,7 @@
 
 ## Project setup
 ```
-cd vue-pure-admin
+cd vue-admin
 
 npm install
 ```
