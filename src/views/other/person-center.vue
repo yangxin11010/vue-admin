@@ -102,7 +102,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from "vue";
-import { successMessage } from "@/util/message/index";
+import { successMessage } from "@/util/message";
 
 export default defineComponent({
     name: "PsersonCenter",

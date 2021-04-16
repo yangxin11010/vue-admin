@@ -1,11 +1,11 @@
 <template>
     <div class="menu">
-        <el-row>
-            <el-col :span="24">
+        <div class="handle-box">
+            <div>
                 <el-button type="primary" @click="addMenu">添加菜单</el-button>
-            </el-col>
-        </el-row>
-        <el-row style="margin-top: 10px;">
+            </div>
+        </div>
+        <el-row>
             <el-col :span="24">
                 <el-table
                     :data="menuList"
@@ -22,9 +22,16 @@
                     </el-table-column>
                     <el-table-column label="菜单路径" prop="path" align="left"></el-table-column>
                     <el-table-column label="菜单图标" prop="icon" align="left"></el-table-column>
+                    <el-table-column label="缓存状态" prop="keepAlive" align="center" width="100">
+                        <template v-slot="{ row }">
+                            <el-tag :type="row.keepAlive ? 'success' : 'danger'">
+                                {{ row.keepAlive ? "开启" : "关闭" }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="菜单状态" prop="status" width="150" align="center">
                         <template v-slot="{ row }">
-                            <el-tag :type="row.status === 0 ? 'danger' : 'primary'">
+                            <el-tag :type="row.status === 0 ? 'danger' : 'success'">
                                 {{ row.status === 0 ? "已禁用" : "已启用" }}
                             </el-tag>
                         </template>
@@ -51,7 +58,7 @@
         <el-dialog title="新增菜单" v-model="dialogVisible" width="40%">
             <el-form :model="menuForm" ref="menuFormRef" label-width="80px">
                 <el-form-item label="上级菜单" prop="parentMenuId">
-                    <el-select v-model="menuForm.parentMenuId">
+                    <el-select v-model="menuForm.parentMenuId" clearable>
                         <template v-for="item in parentMenuIdOptions" :key="item.title">
                             <el-option :label="item.title + ' --> ' + item.path" :value="item.menuId"></el-option>
                         </template>
@@ -78,6 +85,15 @@
                 <el-form-item prop="icon" label="菜单图标">
                     <el-input v-model="menuForm.icon"></el-input>
                 </el-form-item>
+                <el-form-item prop="keepAlive" label="缓存状态">
+                    <el-switch
+                        v-model="menuForm.keepAlive"
+                        :active-value="true"
+                        :inactive-value="false"
+                        active-color="#13ce66"
+                        inactive-color="#dddddd"
+                    ></el-switch>
+                </el-form-item>
                 <el-form-item prop="status" label="是否启用">
                     <el-switch
                         v-model="menuForm.status"
@@ -100,9 +116,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, reactive, ref } from "vue";
-import { ElMessageBox } from "element-plus";
-import ElMessage from "@/util/message/index";
-import { Menu } from "@ts/views";
+import { warningMsgBox } from "@/util/messageBox";
+import { successMessage, warningMessage } from "@/util/message";
+import { Menu } from "@model/views";
 import MenuList from "@/assets/js/menuList";
 
 export default defineComponent({
@@ -110,23 +126,22 @@ export default defineComponent({
     setup() {
         let menuList = ref<Menu[]>([]);
 
-        const getMenuList = (): Promise<Menu[]> => {
-            return new Promise((resolve) => {
-                resolve(MenuList);
-            });
-        };
-
+        let menuFormRef = ref();
         const dialogVisible = ref(false);
+
+        let isAddMenu = ref(true);
+
         let menuForm = reactive<Menu>({
             title: "",
             path: "",
             icon: "",
             parentMenuId: null,
-            isEdit: false,
+            keepAlive: true,
             status: 1,
             children: [],
         });
 
+        // 一级菜单 列表
         const parentMenuIdOptions = computed(() => {
             let val: Menu[] = [];
             menuList.value.forEach((item: Menu) => {
@@ -140,14 +155,15 @@ export default defineComponent({
             list.forEach((item) => {
                 if (item.menuId === id) {
                     val = item.path;
-                    return;
                 } else {
-                    val = getMenuPathById(id, item.children);
+                    const nextVal = getMenuPathById(id, item.children);
+                    nextVal && (val = nextVal);
                 }
             });
             return val;
         };
 
+        // 上级菜单
         const parentMenuPath = computed(() => {
             return (menuId: number | null) => {
                 if (menuId || menuId !== null) {
@@ -157,13 +173,26 @@ export default defineComponent({
             };
         });
 
-        let isAddMenu = ref(true);
-
+        // 添加菜单
         const addMenu = async () => {
             dialogVisible.value = true;
             isAddMenu.value = true;
             await nextTick();
             menuFormRef.value.resetFields();
+        };
+
+        // 修改 menuList 里的 菜单
+        const updateMenu = (menu: Menu) => {
+            menu = JSON.parse(JSON.stringify(menuForm));
+            const parentMenuId = menu.parentMenuId;
+            if (!parentMenuId) {
+                const index = menuList.value.findIndex((item) => item.menuId === menu.menuId);
+                menuList.value[index] = menu;
+            } else {
+                const parentMenuIndex = menuList.value.findIndex((item) => item.menuId === parentMenuId);
+                const index = menuList.value[parentMenuIndex].children.findIndex((item) => item.menuId === menu.menuId);
+                menuList.value[parentMenuIndex].children[index] = menu;
+            }
         };
 
         // 操作
@@ -176,37 +205,33 @@ export default defineComponent({
                 isAddMenu.value = false;
                 menuForm = Object.assign(menuForm, item);
             } else if (type === 1 && item) {
+                // 禁用/启用菜单
                 dialogVisible.value = false;
-                // 禁用菜单
-                item.status = item.status === 0 ? 1 : 0;
-                ElMessage({
-                    message: item.status === 0 ? "已禁用" : "已启用",
-                    type: item.status === 0 ? "info" : "success",
+                warningMsgBox(`确认${item.status === 0 ? "启用" : "禁用"}此菜单吗？`).then(() => {
+                    item.status = item.status === 0 ? 1 : 0;
+                    item.status === 0 ? warningMessage("已禁用") : successMessage("已启用");
                 });
             }
         };
 
-        let menuFormRef = ref();
-
         const submit = () => {
             menuFormRef.value.validate((valid: boolean) => {
                 if (valid) {
-                    ElMessageBox({
-                        title: "提示",
-                        message: isAddMenu.value ? "确定添加吗？" : "确定修改吗？",
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        showCancelButton: true,
-                        type: "warning",
-                    })
+                    warningMsgBox(`确定${isAddMenu.value ? "添加" : "修改"}吗？`)
                         .then(() => {
                             dialogVisible.value = false;
-                            console.log(menuForm);
+                            updateMenu(menuForm);
                         })
                         .catch(() => {});
                 } else {
                     return false;
                 }
+            });
+        };
+
+        const getMenuList = (): Promise<Menu[]> => {
+            return new Promise((resolve) => {
+                resolve(MenuList);
             });
         };
 

@@ -5,10 +5,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 export default defineComponent({
     name: "",
     setup() {
+        const info = "项目地址：https://gitee.com/yangxin11010/vue-admin";
+        const style = "font-size:12px;color: #333;";
+
+        onMounted(() => {
+            console.log("%c%s", style, info);
+        });
+
         return {};
     },
 });

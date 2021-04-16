@@ -12,4 +12,5 @@ export default [
     "shopcar",
     "usergroup",
     "book",
+    "language",
 ];

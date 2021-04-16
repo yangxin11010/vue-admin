@@ -5,9 +5,12 @@ import { Store } from "vuex";
 declare module "@vue/runtime-core" {
     // declare your own store states
     interface State {
+        lang: string;
         isLogin: boolean;
         collapse: boolean;
         token: string | null;
+        openLogo: boolean;
+        openTabs: boolean;
         tabsList: [Tabs[], Tabs[]];
     }
 

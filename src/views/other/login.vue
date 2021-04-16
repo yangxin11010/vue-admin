@@ -2,14 +2,27 @@
     <div class="login disflex ju_cen align-it-cen">
         <el-form class="loginForm" ref="loginFormRef" :model="formData" :rules="rules">
             <div class="loginForm-title">
-                <h2>系统登录</h2>
+                <h2>{{ $t("login.title") }}</h2>
+                <div class="lang curpot">
+                    <el-dropdown placement="bottom-end" size="medium" trigger="click" @command="changeLang">
+                        <div class="lang-select lang-icon">
+                            <svg-icon icon-class="language" />
+                        </div>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item command="zh" :disabled="langIndex === 'zh'">中文</el-dropdown-item>
+                                <el-dropdown-item command="en" :disabled="langIndex === 'en'">English</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </div>
             </div>
             <el-form-item prop="username">
                 <el-input
                     class="input"
                     v-model="formData.username"
                     prefix-icon="el-icon-user"
-                    placeholder="账号"
+                    :placeholder="$t('login.username')"
                     clearable
                 ></el-input>
             </el-form-item>
@@ -18,29 +31,42 @@
                     class="input"
                     v-model="formData.password"
                     prefix-icon="el-icon-lock"
-                    placeholder="密码"
+                    :placeholder="$t('login.password')"
                     show-password
                     clearable
                 ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="submit" type="primary" :loading="loading" @click="submit">登录</el-button>
+                <el-button class="submit" type="primary" :loading="loading" v-keyboard:Enter="submit" @click="submit">
+                    {{ $t("login.button") }}
+                </el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { useStore } from "@/store/index";
+import { useStore } from "@/store";
 import { successMessage } from "@/util/message";
+import { useI18n } from "vue-i18n";
+
 export default defineComponent({
     name: "Login",
     setup() {
         const router = useRouter();
         const route = useRoute();
         const store = useStore();
+        const { t: $t } = useI18n();
+
+        let langIndex = computed(() => store.getters.lang);
+
+        const changeLang = async (e: string) => {
+            await store.dispatch("SET_LANG", e);
+            window.location.reload();
+            // locale.value = e;
+        };
 
         const loading = ref(false);
 
@@ -57,19 +83,19 @@ export default defineComponent({
             username: [
                 {
                     required: true,
-                    message: "Please enter the correct username",
+                    message: $t("login.unameReq"),
                     trigger: "blur",
                 },
             ],
             password: [
                 {
                     required: true,
-                    message: "Please enter the correct password",
+                    message: $t("login.pwdReq"),
                     trigger: "blur",
                 },
                 {
                     min: 6,
-                    message: "The password can not be less than 6 digits",
+                    message: $t("login.pwdError"),
                     trigger: "blur",
                 },
             ],
@@ -87,7 +113,7 @@ export default defineComponent({
                         await store.dispatch("SET_COLLAPSE", false);
                         // 移除tabs
                         await store.dispatch("INIT_TABS");
-                        successMessage("登录成功!");
+                        successMessage($t("login.success"));
                         setTimeout(() => {
                             router.replace(path ? path : "/dashboard");
                         }, 1000);
@@ -99,6 +125,8 @@ export default defineComponent({
         };
 
         return {
+            langIndex,
+            changeLang,
             loginFormRef,
             formData,
             submit,
@@ -123,6 +151,16 @@ export default defineComponent({
     text-align: center;
     color: #ffffff;
     margin-bottom: 50px;
+    position: relative;
+}
+.lang {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.lang-select {
+    color: #fff;
+    font-size: 16px;
 }
 .input {
     height: 50px;
@@ -131,9 +169,7 @@ export default defineComponent({
 .submit {
     width: 100%;
 }
-</style>
-<style lang="scss">
-.login {
+/deep/ {
     .el-form-item {
         border: 1px solid hsla(0, 0%, 100%, 0.1);
         background: rgba(0, 0, 0, 0.1);

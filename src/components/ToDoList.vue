@@ -8,7 +8,7 @@
                 </el-button>
             </div>
         </template>
-        <el-table height="326" :data="toDoList" :show-header="false" empty-text="No Things">
+        <el-table height="326" :data="toDoList" v-loading="loading" :show-header="false" empty-text="No Things">
             <el-table-column width="35">
                 <template v-slot="{ row }">
                     <el-checkbox v-model="row.isFinish"></el-checkbox>
@@ -59,24 +59,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref, reactive } from "vue";
-import { successMessage } from "@/util/message/index";
-import { ToDoItem } from "@ts/views";
+import { defineComponent, nextTick, ref, reactive, onMounted } from "vue";
+import { successMessage } from "@/util/message";
+import { ToDoItem } from "@model/views";
 
 export default defineComponent({
     name: "ToDoList",
     setup() {
-        let toDoList = ref<ToDoItem[]>([
-            { things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { things: "今天要写100行代码加几个bug吧", isFinish: false, isDel: false },
-            { things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { things: "今天要修复100个bug", isFinish: true, isDel: true },
-            { things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
-            { things: "今天要修复100个bug", isFinish: false, isDel: false },
-            { things: "今天要修复100个bug", isFinish: true, isDel: false },
-            { things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
-        ]);
+        let loading = ref(false);
+
+        let toDoList = ref<ToDoItem[]>([]);
 
         const dialogVisible = ref(false);
         const toDoFormRef = ref();
@@ -111,7 +103,29 @@ export default defineComponent({
             });
         };
 
+        const getData = () => {
+            return new Promise<ToDoItem[]>((resolve) => {
+                const list = [
+                    { things: "今天要修复100个bug", isFinish: false, isDel: false },
+                    { things: "今天要修复100个bug", isFinish: false, isDel: false },
+                    { things: "今天要写100行代码加几个bug吧", isFinish: false, isDel: false },
+                    { things: "今天要修复100个bug", isFinish: false, isDel: false },
+                    { things: "今天要修复100个bug", isFinish: true, isDel: true },
+                    { things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
+                    { things: "今天要修复100个bug", isFinish: false, isDel: false },
+                    { things: "今天要修复100个bug", isFinish: true, isDel: false },
+                    { things: "今天要写100行代码加几个bug吧", isFinish: true, isDel: false },
+                ];
+                resolve(list);
+            });
+        };
+
+        onMounted(async () => {
+            toDoList.value = await getData();
+        });
+
         return {
+            loading,
             toDoList,
             dialogVisible,
             toDoForm,

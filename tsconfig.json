@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "outDir": "./",
         "target": "esnext",
         "module": "esnext",
         "strict": true,
@@ -16,10 +17,20 @@
         "types": ["webpack-env"],
         "paths": {
             "@/*": ["src/*"],
-            "@ts/*": ["src/model/*"]
+            "@model/*": ["src/model/*"],    
         },
         "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
-    "exclude": ["node_modules", "dist", "src/**/*.js"]
+    "include": [
+        "src/**/*.ts", 
+        "src/**/*.tsx", 
+        "src/**/*.vue", 
+        "tests/**/*.ts", 
+        "tests/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "src/**/*.js",
+    ]
 }

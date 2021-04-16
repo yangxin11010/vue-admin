@@ -4,9 +4,5 @@ export interface Storage {
     way: "session" | "location";
 }
 
-export interface Window {
-    url: string;
-    flag: boolean;
-}
 
 

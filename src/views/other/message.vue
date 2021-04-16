@@ -31,7 +31,9 @@
                     </el-popconfirm>
                 </template>
                 <template v-slot="{ $index }">
-                    <el-tag :type="$index < messageNum ? 'danger' : 'success'">{{ $index >= messageNum ? "已读" : "未读" }}</el-tag>
+                    <el-tag :type="$index < messageNum ? 'danger' : 'success'">{{
+                        $index >= messageNum ? "已读" : "未读"
+                    }}</el-tag>
                 </template>
             </el-table-column>
         </el-table>
@@ -49,11 +51,10 @@ export default defineComponent({
             messageNum = ref(0),
             loading = ref(true);
 
-
         const clearNoRead = () => {
             messageNum.value = 0;
-            mitter.$emit('clearNoReadMessage');
-        }
+            mitter.$emit("clearNoReadMessage");
+        };
 
         const getData = () => {
             setTimeout(() => {
@@ -104,12 +105,12 @@ export default defineComponent({
     color: red;
     font-size: 22px;
 }
-</style>
-<style lang="scss">
-.el-table__expanded-cell {
-    background-color: #f0f2f5;
-    &:hover {
-        background-color: #f0f2f5 !important;
+/deep/ {
+    .el-table__expanded-cell {
+        background-color: #f0f2f5;
+        &:hover {
+            background-color: #f0f2f5 !important;
+        }
     }
 }
 </style>

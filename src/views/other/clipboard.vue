@@ -12,8 +12,9 @@
                     v-clipboard="text"
                     v-clipboard:success="copySuccess"
                     v-clipboard:error="copyError"
-                    >copy</el-button
                 >
+                    copy
+                </el-button>
             </el-tab-pane>
         </el-tabs>
     </div>

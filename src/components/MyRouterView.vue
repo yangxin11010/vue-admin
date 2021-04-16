@@ -10,22 +10,31 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { useStore } from "@/store/index";
-import { Tabs } from "@ts/views";
+import { useStore } from "@/store";
+import { Tabs } from "@model/views";
 
 export default defineComponent({
     name: "MyRouterView",
-    props: {},
     setup() {
         const store = useStore();
 
-        const keepAliveList = computed(() =>
-            store.getters.tabsList
-                .map((item: Tabs[]) => {
-                    return item.map((item2: Tabs) => item2.name);
-                })
-                .flat()
-        );
+        const openTabs = computed(() => store.getters.openTabs);
+
+        const keepAliveList = computed(() => {
+            if (openTabs.value) {
+                let aliveList: string[] = [];
+                store.getters.tabsList.forEach((item: Tabs[]) => {
+                    item.forEach((item2: Tabs) => {
+                        if (item2.keepAlive) {
+                            aliveList.push(item2.name);
+                        }
+                    });
+                });
+                return aliveList;
+            } else {
+                return [];
+            }
+        });
         return {
             keepAliveList,
         };

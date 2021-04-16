@@ -1,6 +1,6 @@
 <template>
     <div class="dashboard">
-        <el-row :gutter="30">
+        <el-row :gutter="30" style="margin-bottom: 0;">
             <template v-for="(item, index) in cardList" :key="index">
                 <el-col :span="6" :xs="12">
                     <el-card shadow="hover" class="el-card-item">
@@ -10,6 +10,7 @@
                             @mouseleave="mouseoperate(item, index, 1)"
                         >
                             <div
+                                class="card-item-icon-box"
                                 :style="{
                                     color: index === mouseEnterStyle.index ? '#fff' : item.iconColor,
                                     background: index === mouseEnterStyle.index ? mouseEnterStyle.color : '#fff',
@@ -17,7 +18,7 @@
                             >
                                 <svg-icon class="card-item-icon" :icon-class="item.icon"></svg-icon>
                             </div>
-                            <div>
+                            <div class="card-item-body">
                                 <span>{{ item.title }}</span>
                                 <span>{{ item.num }}</span>
                             </div>
@@ -66,7 +67,7 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
-import { DashboardCard } from "@ts/views";
+import { DashboardCard } from "@model/views";
 
 export default defineComponent({
     name: "Dashboard",
@@ -197,38 +198,36 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     background-color: #fff;
-    & > div {
-        height: 100%;
-    }
-    & > div:nth-child(1) {
-        width: 80px;
-        height: 80px;
-        margin: 14px;
-        transition: all 0.38s ease-out;
-        border-radius: 6px;
-        .card-item-icon {
-            width: 48px;
-            height: 48px;
-            margin: 16px;
+}
+
+.card-item-icon-box {
+    width: 80px;
+    height: 80px;
+    margin: 14px;
+    transition: all 0.38s ease-out;
+    border-radius: 6px;
+}
+.card-item-icon {
+    width: 48px;
+    height: 48px;
+    margin: 16px;
+}
+.card-item-body {
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-right: 20px;
+    & > span {
+        &:nth-child(1) {
+            line-height: 18px;
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: rgba(0, 0, 0, 0.45);
         }
-    }
-    & > div:nth-child(2) {
-        font-weight: bold;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        padding-right: 20px;
-        span {
-            &:nth-child(1) {
-                line-height: 18px;
-                font-size: 16px;
-                margin-bottom: 12px;
-                color: rgba(0, 0, 0, 0.45);
-            }
-            &:nth-child(2) {
-                font-size: 20px;
-                color: #666;
-            }
+        &:nth-child(2) {
+            font-size: 20px;
+            color: #666;
         }
     }
 }
@@ -248,26 +247,25 @@ export default defineComponent({
     color: #999999;
     text-decoration: line-through;
 }
-</style>
-
-<style lang="scss">
-.el-card-item {
-    height: 108px;
-    .el-card,
-    .el-card__body {
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        border: none;
+/deep/ {
+    .el-card-item {
+        height: 108px;
+        .el-card,
+        .el-card__body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            border: none;
+        }
     }
-}
-.bottom-el-card {
-    font-size: 14px;
-    .el-card,
-    .el-card__header {
-        width: 100%;
-        padding: 0;
-        border: none;
+    .bottom-el-card {
+        font-size: 14px;
+        .el-card,
+        .el-card__header {
+            width: 100%;
+            padding: 0;
+            border: none;
+        }
     }
 }
 </style>

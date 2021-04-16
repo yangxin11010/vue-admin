@@ -8,13 +8,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
     setup() {
         const mainStyleList: string[] = ["/dashboard", "/personCenter"];
-
-        onMounted(() => {});
 
         return {
             mainStyleList,
@@ -26,7 +24,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .main {
     background-color: #f0f2f5;
-    padding: 10px 10px 0;
+    padding: 10px 10px 0 !important;
     min-height: calc(100% - 30px);
     overflow-y: auto;
     overflow-x: hidden;

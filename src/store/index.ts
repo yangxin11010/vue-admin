@@ -10,9 +10,12 @@ export interface KeyValue {
 }
 
 export interface State {
+    lang: string;
     isLogin: boolean;
     collapse: boolean;
     token: string | null;
+    openLogo: boolean;
+    openTabs: boolean;
     tabsList: [Tabs[], Tabs[]];
 }
 
@@ -29,6 +32,7 @@ const store = createStore<State>({
             storage: window.sessionStorage,
             reducer(state) {
                 return {
+                    lang: state.lang,
                     isLogin: state.isLogin,
                     collapse: state.collapse,
                     token: state.token,
@@ -39,23 +43,35 @@ const store = createStore<State>({
         createPersistedState({
             storage: window.localStorage,
             reducer(state) {
-                return {};
+                return {
+                    openLogo: state.openLogo,
+                    openTabs: state.openTabs,
+                };
             },
         }),
     ],
     state: {
+        lang: "zh",
         isLogin: false,
         collapse: true,
         token: null,
-        tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard" }], []],
+        openLogo: true,
+        openTabs: true,
+        tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
     },
     getters: {
+        lang: (state) => state.lang,
         isLogin: (state) => state.isLogin,
         collapse: (state) => state.collapse,
         token: (state) => state.token,
         tabsList: (state) => state.tabsList,
+        openLogo: (state) => state.openLogo,
+        openTabs: (state) => state.openTabs,
     },
     mutations: {
+        SET_LANG(state, value: string) {
+            state.lang = value;
+        },
         LOGIN(state, value: string) {
             state.isLogin = true;
             state.token = value;
@@ -88,10 +104,19 @@ const store = createStore<State>({
             state.tabsList[0].splice(value, 1);
         },
         INIT_TABS(state) {
-            state.tabsList = [[{ name: "Dashboard", title: "首页", path: "/dashboard" }], []];
+            state.tabsList = [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []];
+        },
+        CHANGE_LOGO(state, value: boolean) {
+            state.openLogo = value;
+        },
+        CHANGE_Tabs(state, value: boolean) {
+            state.openTabs = value;
         },
     },
     actions: {
+        SET_LANG({ commit }, value: string) {
+            commit("SET_LANG", value);
+        },
         LOGIN({ commit }, value: string) {
             commit("LOGIN", value);
         },
@@ -119,6 +144,12 @@ const store = createStore<State>({
         },
         INIT_TABS({ commit }) {
             commit("INIT_TABS");
+        },
+        CHANGE_LOGO({ commit }, value: boolean) {
+            commit("CHANGE_LOGO", value);
+        },
+        CHANGE_Tabs({ commit }, value: boolean) {
+            commit("CHANGE_Tabs", value);
         },
     },
 });

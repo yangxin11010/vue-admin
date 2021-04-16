@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, PropType, watch, onUnmounted } from "vue";
 import * as Echarts from "echarts";
-import { useStore } from "@/store/index";
+import { useStore } from "@/store";
 
 export default defineComponent({
     name: "Echars",
@@ -38,6 +38,16 @@ export default defineComponent({
             }
         );
 
+        watch(
+            () => props.options,
+            (val) => {
+                echarts.setOption(val);
+            },
+            {
+                deep: true,
+            }
+        );
+
         const resize = () => {
             echarts.resize();
         };
@@ -51,6 +61,7 @@ export default defineComponent({
         onUnmounted(() => {
             window.removeEventListener("resize", resize);
         });
+
         return {
             echartsRef,
             resize,

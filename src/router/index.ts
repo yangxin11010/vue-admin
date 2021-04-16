@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import NProgress from "@/util/progress/index";
-import Store from "@/store/index";
-import Layout from "@/layout/Home.vue";
+import NProgress from "@/util/progress";
+import Store from "@/store";
+import Layout from "@/layout/index.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -15,16 +15,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             requiresAuth: false,
             title: "",
-        },
-        component: () => import("@/views/other/login.vue"),
-    },
-    {
-        path: "/login",
-        name: "Login",
-        alias: [],
-        meta: {
-            requiresAuth: false,
-            title: "",
+            keepAlive: false,
         },
         component: () => import("@/views/other/login.vue"),
     },
@@ -40,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "首页",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/other/dashboard.vue"),
             },
@@ -50,18 +42,9 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "图标",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/other/svg.vue"),
-            },
-            {
-                path: "notFound",
-                name: "NotFound",
-                meta: {
-                    requiresAuth: false,
-                    title: "404",
-                },
-                alias: [],
-                component: () => import("@/views/other/404.vue"),
             },
             {
                 path: "clipboard",
@@ -69,6 +52,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: false,
                     title: "Clipboard",
+                    keepAlive: true,
                 },
                 alias: [],
                 component: () => import("@/views/other/clipboard.vue"),
@@ -79,6 +63,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: false,
                     title: "导出 File",
+                    keepAlive: true,
                 },
                 alias: [],
                 component: () => import("@/views/other/export-file.vue"),
@@ -90,6 +75,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "个人中心",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/other/person-center.vue"),
             },
@@ -100,6 +86,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "消息中心",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/other/message.vue"),
             },
@@ -112,6 +99,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
             requiresAuth: true,
             title: "设置",
+            keepAlive: true,
         },
         children: [
             {
@@ -121,6 +109,7 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "系统设置",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/system/system.vue"),
             },
@@ -131,30 +120,90 @@ const routes: Array<RouteRecordRaw> = [
                 meta: {
                     requiresAuth: true,
                     title: "菜单管理",
+                    keepAlive: true,
                 },
                 component: () => import("@/views/system/menu.vue"),
+            },
+            {
+                path: "user",
+                name: "User",
+                alias: [],
+                meta: {
+                    requiresAuth: true,
+                    title: "用户管理",
+                    keepAlive: true,
+                },
+                component: () => import("@/views/system/user.vue"),
             },
         ],
     },
     {
-        path: "/:chapters+",
-        name: "Chapters",
+        path: "/components",
+        name: "Components",
+        component: Layout,
         meta: {
-            requiresAuth: false,
-            title: "",
+            requiresAuth: true,
+            title: "组件",
+            keepAlive: true,
         },
-        alias: [],
-        component: () => import("@/views/other/404.vue"),
+        children: [
+            {
+                path: "tinymce",
+                name: "TinymcePage",
+                meta: {
+                    requiresAuth: false,
+                    title: "富文本编辑器",
+                    keepAlive: true,
+                },
+                alias: [],
+                component: () => import("@/views/components/tinymce-page.vue"),
+            },
+        ],
+    },
+    {
+        path: "/error",
+        name: "Error",
+        component: Layout,
+        meta: {
+            requiresAuth: true,
+            title: "错误页面",
+            keepAlive: true,
+        },
+        children: [
+            {
+                path: "notFound",
+                name: "NotFound",
+                meta: {
+                    requiresAuth: false,
+                    title: "404",
+                    keepAlive: true,
+                },
+                alias: [],
+                component: () => import("@/views/error/404.vue"),
+            },
+            {
+                path: "notPermission",
+                name: "NotPermission",
+                meta: {
+                    requiresAuth: false,
+                    title: "401",
+                    keepAlive: true,
+                },
+                alias: [],
+                component: () => import("@/views/error/401.vue"),
+            },
+        ],
     },
     {
         path: "/:pathMatch(.*)*",
         name: "FourZeroFour",
+        redirect: "/error/notFound",
         meta: {
             requiresAuth: false,
-            title: "",
+            title: "404",
+            keepAlive: true,
         },
         alias: [],
-        component: () => import("@/views/other/404.vue"),
     },
 ];
 
