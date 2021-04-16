@@ -29,6 +29,7 @@ import load from "./dynamicLoadScript";
 // const tinymceCDN = "http://chky.js.zhuanfa666.com/chky/tinymce/tinymce.min.js";
 const tinymceCDN = "https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js";
 import { errorMessage } from "@/util/message";
+import { useStore } from "@/store";
 
 export default defineComponent({
     name: "Tinymce",
@@ -67,7 +68,14 @@ export default defineComponent({
         },
     },
     setup(props, ctx) {
-        const state = reactive({
+        const store = useStore();
+        const state = reactive<{
+            hasChange: boolean;
+            hasInit: boolean;
+            tinymceId: string;
+            fullscreen: boolean;
+            languageTypeList: { [keyL: string]: string };
+        }>({
             hasChange: props.childHasChange,
             hasInit: false,
             tinymceId: props.id,
@@ -92,9 +100,16 @@ export default defineComponent({
         });
 
         watch(
+            () => store.getters.lang,
+            () => {
+                destroyTinymce();
+                init();
+            }
+        );
+
+        watch(
             () => props.modelValue,
             (val) => {
-                // props.value = val;
                 if (!state.hasChange && state.hasInit) {
                     nextTick(() => {
                         _window.tinymce.get(state.tinymceId).setContent(val || "");
@@ -148,7 +163,7 @@ export default defineComponent({
         const initTinymce = () => {
             _window.tinymce.init({
                 selector: `#${state.tinymceId}`,
-                language: state.languageTypeList["zh"],
+                language: state.languageTypeList[store.getters.lang],
                 height: props.height,
                 body_class: "panel-body ",
                 object_resizing: false,

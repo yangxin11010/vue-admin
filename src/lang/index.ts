@@ -1,16 +1,12 @@
 // 国际化
 import { createI18n } from "vue-i18n";
-import zhLocale from "./zh";
-import enLocale from "./en";
+import zhLocale from "./zh.json";
+import enLocale from "./en.json";
 import Store from "@/store";
 
 const messages = {
-    en: {
-        ...enLocale,
-    },
-    zh: {
-        ...zhLocale,
-    },
+    en: enLocale,
+    zh: zhLocale,
 };
 
 const i18n = createI18n({

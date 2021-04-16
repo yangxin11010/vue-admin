@@ -65,10 +65,10 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item :command="0">{{ $t('header.personCenter')}}</el-dropdown-item>
-                        <el-dropdown-item :command="1">{{ $t('header.dashboard')}}</el-dropdown-item>
-                        <el-dropdown-item :command="2">{{ $t('header.projectAddress')}}</el-dropdown-item>
-                        <el-dropdown-item :command="3" divided>{{ $t('header.logOut')}}</el-dropdown-item>
+                        <el-dropdown-item :command="0">{{ $t("header.personCenter") }}</el-dropdown-item>
+                        <el-dropdown-item :command="1">{{ $t("header.dashboard") }}</el-dropdown-item>
+                        <el-dropdown-item :command="2">{{ $t("header.projectAddress") }}</el-dropdown-item>
+                        <el-dropdown-item :command="3" divided>{{ $t("header.logOut") }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -77,13 +77,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, defineAsyncComponent, computed } from "vue";
+import Collapse from "@/layout/components/Collapse.vue";
+import Screenfull from "@/layout/components/Screenfull.vue";
+import Breadcrumb from "@/layout/components/Breadcrumb.vue";
+import { defineComponent, ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
-import mitter from "@/plugins/mitt";
 import { openWindow } from "@/util/util";
 import { useI18n } from "vue-i18n";
-
+import mitter from "@/plugins/mitt";
 export default defineComponent({
     setup() {
         const store = useStore(),
@@ -147,9 +149,9 @@ export default defineComponent({
         };
     },
     components: {
-        Collapse: defineAsyncComponent(() => import("@/components/Collapse.vue")),
-        Screenfull: defineAsyncComponent(() => import("@/components/Screenfull.vue")),
-        Breadcrumb: defineAsyncComponent(() => import("@/components/Breadcrumb.vue")),
+        Collapse,
+        Screenfull,
+        Breadcrumb,
     },
 });
 </script>
