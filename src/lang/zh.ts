@@ -1,4 +1,19 @@
 export default {
+    login: {
+        title: "系统登录",
+        username: "账号",
+        password: "密码",
+        button: "登录",
+        success: "登录成功！",
+        unameReq: "请输入账号",
+        pwdReq: "请输入密码",
+        pwdError: "请输入至少6位数的密码",
+    },
+    system: {
+        title: "系统布局设置",
+        tagsView: "开启 Tags-View",
+        sidebarLogo: "侧边栏 Logo",
+    },
     message: {
         have: "{value}条未读消息",
         no: "消息中心",
@@ -23,5 +38,25 @@ export default {
         "/setting/system": "系统设置",
         "/setting/menu": "菜单管理",
         "/setting/user": "用户管理",
+    },
+    breadcrumb: "首页",
+    header: {
+        personCenter: "个人中心",
+        dashboard: "首页",
+        projectAddress: "项目地址",
+        logOut: "退出登录",
+    },
+    tabs: {
+        title: "关闭当前",
+        closeNow: "关闭当前",
+        keepFixed: "保持固定",
+        removeFixed: "解除固定",
+        closeOther: "关闭其他",
+        closeAll: "关闭所有",
+        clear: "一键清除",
+        clearTitle: "提示",
+        clearMsg: "此操作将清空所有Tab，是否继续？",
+        clearConfirm: "确定",
+        clearCancel: "取消",
     },
 };

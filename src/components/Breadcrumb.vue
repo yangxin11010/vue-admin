@@ -9,12 +9,12 @@
                 }"
                 style="font-weight: normal"
             >
-                首页
+                {{ $t("breadcrumb") }}
             </span>
         </el-breadcrumb-item>
         <transition-group appear name="breadcrumbList">
             <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.path">
-                <span class="breadcrumb">{{ item.meta.title }}</span>
+                <span class="breadcrumb">{{ $t(`aside.${item.path}`) }}</span>
             </el-breadcrumb-item>
         </transition-group>
     </el-breadcrumb>

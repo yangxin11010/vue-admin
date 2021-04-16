@@ -35,7 +35,7 @@
                 placement="bottom-end"
                 size="medium"
                 trigger="click"
-                @command="langSelect"
+                @command="changeLang"
             >
                 <div class="header-r-item lang-icon">
                     <svg-icon icon-class="language" />
@@ -65,10 +65,10 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item :command="0">个人中心</el-dropdown-item>
-                        <el-dropdown-item :command="1">首页</el-dropdown-item>
-                        <el-dropdown-item :command="2">项目地址</el-dropdown-item>
-                        <el-dropdown-item :command="3" divided>退出登录</el-dropdown-item>
+                        <el-dropdown-item :command="0">{{ $t('header.personCenter')}}</el-dropdown-item>
+                        <el-dropdown-item :command="1">{{ $t('header.dashboard')}}</el-dropdown-item>
+                        <el-dropdown-item :command="2">{{ $t('header.projectAddress')}}</el-dropdown-item>
+                        <el-dropdown-item :command="3" divided>{{ $t('header.logOut')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -93,7 +93,7 @@ export default defineComponent({
 
         let langIndex = computed(() => store.getters.lang);
 
-        const langSelect = (e: string) => {
+        const changeLang = (e: string) => {
             locale.value = e;
             store.dispatch("SET_LANG", e);
         };
@@ -140,7 +140,7 @@ export default defineComponent({
         return {
             isScreenfull,
             langIndex,
-            langSelect,
+            changeLang,
             handleCommand,
             messageNum,
             screenfull,

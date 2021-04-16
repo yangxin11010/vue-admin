@@ -1,11 +1,26 @@
 export default {
+    login: {
+        title: "Login",
+        username: "username",
+        password: "password",
+        button: "login",
+        success: "Login Success！",
+        unameReq: "Please enter your account number",
+        pwdReq: "Please enter your password",
+        pwdError: "Please enter a password of at least 6",
+    },
+    system: {
+        title: "System layout Settings",
+        tagsView: "Open Tags-View",
+        sidebarLogo: "Sidebar Logo",
+    },
     message: {
         have: "{value} messages",
-        no: "message"
+        no: "message",
     },
     fullscreen: {
         full: "full screen",
-        exit: "exit full screen"
+        exit: "exit full screen",
     },
     aside: {
         "/personCenter": "Person Center",
@@ -23,5 +38,25 @@ export default {
         "/setting/system": "System Setting",
         "/setting/menu": "Menu Management",
         "/setting/user": "User Management",
-    }
+    },
+    breadcrumb: "Dashboard",
+    header: {
+        personCenter: "Pserson Center",
+        dashboard: "Dashboard",
+        projectAddress: "Project Address",
+        logOut: "Login Out",
+    },
+    tabs: {
+        title: "LabelOptions",
+        closeNow: "CloseNow",
+        keepFixed: "KeepFixed",
+        removeFixed: "RemoveFixed",
+        closeOther: "CloseOther",
+        closeAll: "CloseAll",
+        clear: "Clear",
+        clearTitle: "Message",
+        clearMsg: "This will clear all tabs. Do you want to continue?",
+        clearConfirm: "confirm",
+        clearCancel: "cancel",
+    },
 };

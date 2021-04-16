@@ -23,20 +23,24 @@
         </ul>
         <div class="tabs-r disflex align-it-cen">
             <el-dropdown class="tabs-dropdown" placement="bottom" size="medium" @command="handleCommand">
-                <span>
-                    <span>标签选项</span>
+                <span class="tabs-dropdown-title">
+                    <span>{{ $t("tabs.title") }}</span>
                     <i class="el-icon-arrow-down"></i>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item v-if="keepTabsIndex === -1" :command="0">关闭当前</el-dropdown-item>
-                        <el-dropdown-item v-if="keepTabsIndex === -1" :command="1">保持固定</el-dropdown-item>
-                        <el-dropdown-item v-if="tabsIndex === -1 && $route.path !== '/dashboard'" :command="2">
-                            解除固定
+                        <el-dropdown-item v-if="keepTabsIndex === -1" :command="0">
+                            {{ $t("tabs.closeNow") }}
                         </el-dropdown-item>
-                        <el-dropdown-item :command="3">关闭其他</el-dropdown-item>
-                        <el-dropdown-item :command="4">关闭所有</el-dropdown-item>
-                        <el-dropdown-item :command="5" divided>一键清除</el-dropdown-item>
+                        <el-dropdown-item v-if="keepTabsIndex === -1" :command="1">
+                            {{ $t("tabs.keepFixed") }}
+                        </el-dropdown-item>
+                        <el-dropdown-item v-if="tabsIndex === -1 && $route.path !== '/dashboard'" :command="2">
+                            {{ $t("tabs.removeFixed") }}
+                        </el-dropdown-item>
+                        <el-dropdown-item :command="3">{{ $t("tabs.closeOther") }}</el-dropdown-item>
+                        <el-dropdown-item :command="4">{{ $t("tabs.closeAll") }}</el-dropdown-item>
+                        <el-dropdown-item :command="5" divided>{{ $t("tabs.clear") }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -47,8 +51,9 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { warningMsgBox } from "@/util/messageBox";
+import ElMessageBox from "@/util/messageBox";
 import { useStore } from "@/store";
+import { useI18n } from "vue-i18n";
 
 import { Tabs } from "@model/views";
 
@@ -57,6 +62,7 @@ export default defineComponent({
         const router = useRouter(),
             route = useRoute(),
             store = useStore(),
+            { t: $t } = useI18n(),
             tabsRef = ref();
 
         // 保持固定的数组
@@ -105,7 +111,14 @@ export default defineComponent({
                     store.dispatch("REMOVE_TABS");
                     break;
                 case 5:
-                    warningMsgBox("此操作将清空所有Tab，是否继续？")
+                    ElMessageBox({
+                        title: $t("tabs.clearTitle"),
+                        message: $t("tabs.clearMsg"),
+                        showCancelButton: true,
+                        type: "warning",
+                        cancelButtonText: $t("tabs.clearCancel"),
+                        confirmButtonText: $t("tabs.clearConfirm"),
+                    })
                         .then(() => {
                             store.dispatch("INIT_TABS");
                             router.push("/dashboard");
@@ -164,7 +177,7 @@ export default defineComponent({
                         name: route.name,
                         title: route.meta.title,
                         path: newValue,
-                        keepAlive: route.meta.keepAlive
+                        keepAlive: route.meta.keepAlive,
                     });
                 }
             }
@@ -258,25 +271,38 @@ export default defineComponent({
     background: #fff;
 }
 .tabs-r {
-    width: 105px;
     height: 100%;
-    padding-right: 10px;
     cursor: pointer;
-    padding-left: 5px;
     box-shadow: -5px 0 5px #d6d3d3;
     position: relative;
     z-index: 100;
+    padding-left: 10px;
+    padding-right: 10px;
 }
-.tabs-dropdown span {
-    background-color: $main-color !important;
+.tabs-dropdown-title {
+    height: 100%;
+    text-align: center;
+    line-height: 26px;
     color: #fff;
-    height: 16px;
     border-radius: 2px;
     font-size: 12px;
-    padding: 6px 7.2px 4px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.tabs-dropdown > span > i {
+    margin-left: 5px;
 }
 .tabs_hover {
     background-color: $main-color !important;
     color: #fff !important;
+}
+/deep/ {
+    .tabs-dropdown {
+        height: 24px;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: $main-color !important;
+    }
 }
 </style>

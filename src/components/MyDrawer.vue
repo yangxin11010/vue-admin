@@ -164,7 +164,7 @@ export default defineComponent({
     height: 48px;
     background: #1890ff;
     position: absolute;
-    top: 40vh;
+    top: 45vh;
     text-align: center;
     font-size: 24px;
     cursor: pointer;

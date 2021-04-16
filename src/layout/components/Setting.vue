@@ -1,9 +1,9 @@
 <template>
     <my-drawer :before-close="beforeClose">
         <div class="setting">
-            <p class="title">系统布局设置</p>
+            <p class="title">{{ $t("system.title") }}</p>
             <div class="set-item">
-                <div>侧边栏 Logo</div>
+                <div>{{ $t("system.tagsView") }}</div>
                 <el-switch
                     :value="openLogo"
                     active-color="#1890ff"
@@ -12,7 +12,7 @@
                 ></el-switch>
             </div>
             <div class="set-item">
-                <div>开启 Tags-View</div>
+                <div>{{ $t("system.sidebarLogo") }}</div>
                 <el-switch
                     :value="openTabs"
                     active-color="#1890ff"
