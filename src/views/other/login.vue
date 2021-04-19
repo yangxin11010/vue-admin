@@ -9,10 +9,11 @@
                             <svg-icon icon-class="language" />
                         </div>
                         <template #dropdown>
-                            <el-dropdown-menu>
-                                <el-dropdown-item command="zh" :disabled="langIndex === 'zh'">中文</el-dropdown-item>
-                                <el-dropdown-item command="en" :disabled="langIndex === 'en'">English</el-dropdown-item>
-                            </el-dropdown-menu>
+                            <template v-for="locale in availableLocales" :key="`locale-${locale}`">
+                                <el-dropdown-item :command="locale" :disabled="langIndex === locale">
+                                    {{ langSetting[locale] }}
+                                </el-dropdown-item>
+                            </template>
                         </template>
                     </el-dropdown>
                 </div>
@@ -47,9 +48,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive, computed } from "vue";
+import { availableLocales, langSetting } from "@/lang";
 import { useRouter, useRoute } from "vue-router";
-import { useStore } from "@/store";
 import { successMessage } from "@/util/message";
+import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
@@ -132,6 +134,8 @@ export default defineComponent({
             submit,
             loading,
             rules,
+            langSetting,
+            availableLocales,
         };
     },
 });

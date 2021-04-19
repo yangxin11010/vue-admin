@@ -1,7 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import ElementPlus from "element-plus";
-import locale from "element-plus/lib/locale/lang/zh-cn";
 // ele 主题
 // import 'element-plus/lib/theme-chalk/index.css';
 // ele 自定义主题
@@ -16,13 +15,16 @@ import Svg from "@/icons";
 import directive from "@/directive";
 
 // 国际化
-import VueI18n from '@/lang'
+import VueI18n from "@/lang";
 
 const app = createApp(App);
 
 app.use(Router)
     .use(Store, key)
-    .use(ElementPlus, { size: "medium", locale })
+    .use(ElementPlus, {
+        size: "medium",
+        i18n: VueI18n.global.t,
+    })
     .use(Svg)
     .use(directive)
     .use(VueI18n);

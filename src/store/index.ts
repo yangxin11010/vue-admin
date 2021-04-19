@@ -51,7 +51,7 @@ const store = createStore<State>({
         }),
     ],
     state: {
-        lang: "zh",
+        lang: "zh-cn",
         isLogin: false,
         collapse: true,
         token: null,

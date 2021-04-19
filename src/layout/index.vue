@@ -25,8 +25,12 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
+import Header from "./Header.vue";
+import Aside from "./Aside.vue";
+import Tabs from "./Tabs.vue";
+import Main from "./Main.vue";
+import Setting from "./Setting.vue";
 import { useStore } from "@/store";
-import { Header, Aside, Tabs, Main, Setting } from "./components";
 import MyRouterView from "@/components/MyRouterView.vue";
 
 export default defineComponent({

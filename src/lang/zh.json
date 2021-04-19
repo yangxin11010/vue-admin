@@ -28,9 +28,11 @@
         "/dashboard": "首页",
         "/svg": "图标",
         "/clipboard": "clipboard",
-        "/exportFile": "导出 File",
+        "/exportFile": "导出",
         "/components": "组件",
         "/components/tinymce": "富文本编辑器",
+        "/components/jsoneditor": "JSON 编辑器",
+        "/components/charts": "Echarts 图表",
         "/error": "错误页面",
         "/error/notFound": "404",
         "/error/notPermission": "401",
@@ -47,7 +49,7 @@
         "logOut": "退出登录"
     },
     "tabs": {
-        "title": "关闭当前",
+        "title": "标签选项",
         "closeNow": "关闭当前",
         "keepFixed": "保持固定",
         "removeFixed": "解除固定",
@@ -58,5 +60,32 @@
         "clearMsg": "此操作将清空所有Tab，是否继续？",
         "clearConfirm": "确定",
         "clearCancel": "取消"
+    },
+    "tinymce": {
+        "upimg": {
+            "t-title": "上传图片",
+            "clickUpload": "点击上传",
+            "cancel": "取消",
+            "upload": "上传",
+            "errMsg": "请等待所有图片上传成功。如果出现网络问题，请刷新页面重新上传!"
+        }
+    },
+    "export": {
+        "excel-btn": "导出 Excel",
+        "zip-btn": "导出 Zip",
+        "input-plc": "文件名称"
+    },
+    "error": {
+        "backHome": "返回首页",
+        "backLast": "返回上一页"
+    },
+    "button": {
+        "add": "新 增",
+        "update": "修 改",
+        "delete": "删 除",
+        "reset": "重 置",
+        "cancel": "取 消",
+        "confirm": "确 定",
+        "operate" : "操 作"
     }
 }

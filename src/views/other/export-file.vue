@@ -2,10 +2,10 @@
     <div class="exportExcel">
         <div class="handle-box">
             <div>
-                <el-input type="text" v-model="exportFileName" placeholder="export filename" clearable></el-input>
+                <el-input type="text" v-model="exportFileName" :placeholder="$t('export.input-plc')" clearable></el-input>
             </div>
-            <div><el-button type="primary" @click="exportTable(0)">导出 Excel</el-button></div>
-            <div><el-button type="primary" @click="exportTable(1)">导出 Zip</el-button></div>
+            <div><el-button type="primary" @click="exportTable(0)">{{ $t("export.excel-btn") }}</el-button></div>
+            <div><el-button type="primary" @click="exportTable(1)">{{ $t("export.zip-btn") }}</el-button></div>
         </div>
         <el-table v-loading="loading" :data="tableData" border>
             <el-table-column label="id" prop="_id" align="center" width="80" sortable></el-table-column>
