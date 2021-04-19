@@ -50,9 +50,29 @@ export default [
         status: 1,
         children: [
             {
-                menuId: 8,
+                menuId: 51,
                 title: "富文本编辑器",
                 path: "/tinymce",
+                icon: "",
+                parentMenuId: 5,
+                keepAlive: true,
+                status: 1,
+                children: [],
+            },
+            {
+                menuId: 52,
+                title: "JSON 编辑器",
+                path: "/jsoneditor",
+                icon: "",
+                parentMenuId: 5,
+                keepAlive: true,
+                status: 1,
+                children: [],
+            },
+            {
+                menuId: 53,
+                title: "图表",
+                path: "/charts",
                 icon: "",
                 parentMenuId: 5,
                 keepAlive: true,
@@ -71,7 +91,7 @@ export default [
         status: 1,
         children: [
             {
-                menuId: 9,
+                menuId: 61,
                 title: "404",
                 path: "/notFound",
                 icon: "",
@@ -81,7 +101,7 @@ export default [
                 children: [],
             },
             {
-                menuId: 10,
+                menuId: 62,
                 title: "401",
                 path: "/notPermission",
                 icon: "",
@@ -102,7 +122,7 @@ export default [
         status: 1,
         children: [
             {
-                menuId: 11,
+                menuId: 71,
                 title: "系统设置",
                 path: "/system",
                 icon: "",
@@ -112,7 +132,7 @@ export default [
                 children: [],
             },
             {
-                menuId: 12,
+                menuId: 72,
                 title: "菜单管理",
                 path: "/menu",
                 icon: "",
@@ -122,7 +142,7 @@ export default [
                 children: [],
             },
             {
-                menuId: 13,
+                menuId: 73,
                 title: "用户管理",
                 path: "/user",
                 icon: "",

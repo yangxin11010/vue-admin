@@ -55,7 +55,7 @@
             </el-col>
         </el-row>
 
-        <el-dialog title="新增菜单" v-model="dialogVisible" width="40%">
+        <el-dialog :title="`${isAddMenu ? '添加' : '修改'}菜单`" v-model="dialogVisible" width="40%">
             <el-form :model="menuForm" ref="menuFormRef" label-width="80px">
                 <el-form-item label="上级菜单" prop="parentMenuId">
                     <el-select v-model="menuForm.parentMenuId" clearable>
@@ -69,21 +69,21 @@
                     label="菜单名称"
                     :rules="[{ required: true, message: '请输入菜单名称', trigger: 'blur' }]"
                 >
-                    <el-input v-model="menuForm.title"></el-input>
+                    <el-input v-model="menuForm.title" clearable></el-input>
                 </el-form-item>
                 <el-form-item
                     prop="path"
                     label="菜单路径"
                     :rules="[{ required: true, message: '请输入菜单路径', trigger: 'blur' }]"
                 >
-                    <el-input v-model="menuForm.path">
+                    <el-input v-model="menuForm.path" clearable>
                         <template v-if="menuForm.parentMenuId !== null" #prepend>
                             {{ parentMenuPath(menuForm.parentMenuId) }}
                         </template>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="icon" label="菜单图标">
-                    <el-input v-model="menuForm.icon"></el-input>
+                    <el-input v-model="menuForm.icon" clearable></el-input>
                 </el-form-item>
                 <el-form-item prop="keepAlive" label="缓存状态">
                     <el-switch
@@ -196,15 +196,15 @@ export default defineComponent({
         };
 
         // 操作
-        const operate = async (type: number, item?: Menu) => {
-            if (type === 0 && item) {
+        const operate = async (type: number, item: Menu) => {
+            if (type === 0) {
                 // 修改菜单
                 dialogVisible.value = true;
                 await nextTick();
                 menuFormRef.value.clearValidate();
                 isAddMenu.value = false;
                 menuForm = Object.assign(menuForm, item);
-            } else if (type === 1 && item) {
+            } else if (type === 1) {
                 // 禁用/启用菜单
                 dialogVisible.value = false;
                 warningMsgBox(`确认${item.status === 0 ? "启用" : "禁用"}此菜单吗？`).then(() => {
@@ -221,6 +221,7 @@ export default defineComponent({
                         .then(() => {
                             dialogVisible.value = false;
                             updateMenu(menuForm);
+                            successMessage(`${isAddMenu.value ? "添加" : "修改"}成功！`)
                         })
                         .catch(() => {});
                 } else {

@@ -3,10 +3,10 @@
         <div class="disflex align-it-cen ju_cen overhide"></div>
         <div class="disflex flex-dir-c">
             <div>
-                <el-button class="btn" type="primary" round @click="back(0)">Back to home</el-button>
+                <el-button class="btn" type="primary" round @click="back(0)">{{ $t("error.backHome") }}</el-button>
             </div>
             <div>
-                <el-button class="btn" type="primary" round @click="back(1)">Back last page</el-button>
+                <el-button class="btn" type="primary" round @click="back(1)">{{ $t("error.backLast") }}</el-button>
             </div>
         </div>
     </div>

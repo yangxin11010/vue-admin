@@ -10,7 +10,7 @@
         "pwdError": "Please enter a password of at least 6"
     },
     "system": {
-        "title": "System layout Settings",
+        "title": "System Layout Settings",
         "tagsView": "Open Tags-View",
         "sidebarLogo": "Sidebar Logo"
     },
@@ -31,6 +31,8 @@
         "/exportFile": "Export File",
         "/components": "Components",
         "/components/tinymce": "Tinymce",
+        "/components/jsoneditor": "JSON Editor",
+        "/components/charts": "Echarts",
         "/error": "Error Page",
         "/error/notFound": "404",
         "/error/notPermission": "401",
@@ -48,7 +50,7 @@
     },
     "tabs": {
         "title": "LabelOptions",
-        "closeNow": "Close Now",
+        "closeNow": "Close This",
         "keepFixed": "Keep Fixed",
         "removeFixed": "Remove Fixed",
         "closeOther": "Close Other",
@@ -58,5 +60,32 @@
         "clearMsg": "This will clear all tabs. Do you want to continue?",
         "clearConfirm": "confirm",
         "clearCancel": "cancel"
+    },
+    "tinymce": {
+        "upimg": {
+            "t-title": "upload",
+            "clickUpload": "Click Upload",
+            "cancel": "Cancel",
+            "upload": "Confirm",
+            "errMsg": "Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!"
+        }
+    },
+    "export": {
+        "excel-btn": "Exoprt Excel",
+        "zip-btn": "Exoprt Zip",
+        "input-plc": "filename"
+    },
+    "error": {
+        "backHome": "Back to home",
+        "backLast": "Back last page"
+    },
+    "button": {
+        "add": "add",
+        "update": "update",
+        "delete": "delete",
+        "reset": "reset",
+        "cancel": "cancel",
+        "confirm": "confirm",
+        "operate": "operate"
     }
 }

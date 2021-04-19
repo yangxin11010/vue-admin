@@ -50,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
                 path: "clipboard",
                 name: "Clipboard",
                 meta: {
-                    requiresAuth: false,
+                    requiresAuth: true,
                     title: "Clipboard",
                     keepAlive: true,
                 },
@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
                 path: "exportFile",
                 name: "ExportFile",
                 meta: {
-                    requiresAuth: false,
+                    requiresAuth: true,
                     title: "导出 File",
                     keepAlive: true,
                 },
@@ -151,12 +151,34 @@ const routes: Array<RouteRecordRaw> = [
                 path: "tinymce",
                 name: "TinymcePage",
                 meta: {
-                    requiresAuth: false,
+                    requiresAuth: true,
                     title: "富文本编辑器",
                     keepAlive: true,
                 },
                 alias: [],
                 component: () => import("@/views/components/tinymce-page.vue"),
+            },
+            {
+                path: "jsoneditor",
+                name: "JsonEditorPage",
+                meta: {
+                    requiresAuth: true,
+                    title: "JSON 编辑器",
+                    keepAlive: true,
+                },
+                alias: [],
+                component: () => import("@/views/components/jsoneditor-page.vue"),
+            },
+            {
+                path: "charts",
+                name: "Charts",
+                meta: {
+                    requiresAuth: true,
+                    title: "图表",
+                    keepAlive: true,
+                },
+                alias: [],
+                component: () => import("@/views/components/charts.vue"),
             },
         ],
     },
@@ -174,7 +196,7 @@ const routes: Array<RouteRecordRaw> = [
                 path: "notFound",
                 name: "NotFound",
                 meta: {
-                    requiresAuth: false,
+                    requiresAuth: true,
                     title: "404",
                     keepAlive: true,
                 },
@@ -185,7 +207,7 @@ const routes: Array<RouteRecordRaw> = [
                 path: "notPermission",
                 name: "NotPermission",
                 meta: {
-                    requiresAuth: false,
+                    requiresAuth: true,
                     title: "401",
                     keepAlive: true,
                 },

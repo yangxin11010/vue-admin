@@ -1,11 +1,6 @@
 import { successMessage, errorMessage } from "@/util/message";
 import Clipboard from "clipboard";
 import { App } from "vue";
-/**
- * 防抖
- * @param {number} arg  0
- * @return {Function}
- */
 
 export default {
     install: (app: App) => {
@@ -109,14 +104,18 @@ export default {
         });
 
         // v-keyboard:Enter="clickHandle"  Enter: 键盘事件的code值 clickHandle 为绑定的事件(事件擦参数(e,...))
-        // v-keyboard:text="value"  text必穿 value 为键盘事件参数
+        // v-keyboard:text="value"  text必传 value 为键盘事件参数
         app.directive("keyboard", {
             mounted: (el, binding) => {
                 if (binding.arg === "text") {
                     el._v_value = binding.value;
                 } else {
-                    const keyDown = (e: any) => {
-                        e.code === binding.arg && binding.value && binding.value(e, el._v_value);
+                    const keyDown = (e: KeyboardEvent) => {
+                        const args = binding.arg as string,
+                            code = e.code;
+                        if (code.toLowerCase() === args.toLowerCase()) {
+                            binding.value && binding.value(e, el._v_value);
+                        }
                     };
                     el._v_event = keyDown;
                     window && window.addEventListener("keydown", keyDown);

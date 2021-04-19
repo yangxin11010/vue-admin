@@ -42,8 +42,11 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item command="zh" :disabled="langIndex === 'zh'">中文</el-dropdown-item>
-                        <el-dropdown-item command="en" :disabled="langIndex === 'en'">English</el-dropdown-item>
+                        <template v-for="locale in availableLocales" :key="`locale-${locale}`">
+                            <el-dropdown-item :command="locale" :disabled="langIndex === locale">
+                                {{ langSetting[locale] }}
+                            </el-dropdown-item>
+                        </template>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -77,14 +80,15 @@
 </template>
 
 <script lang="ts">
-import Collapse from "@/layout/components/Collapse.vue";
-import Screenfull from "@/layout/components/Screenfull.vue";
-import Breadcrumb from "@/layout/components/Breadcrumb.vue";
 import { defineComponent, ref, onMounted, computed } from "vue";
+import Collapse from "./components/Collapse.vue";
+import Screenfull from "./components/Screenfull.vue";
+import Breadcrumb from "./components/Breadcrumb.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
 import { openWindow } from "@/util/util";
 import { useI18n } from "vue-i18n";
+import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
 export default defineComponent({
     setup() {
@@ -146,6 +150,8 @@ export default defineComponent({
             handleCommand,
             messageNum,
             screenfull,
+            langSetting,
+            availableLocales
         };
     },
     components: {

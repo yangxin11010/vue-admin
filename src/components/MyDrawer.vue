@@ -64,15 +64,7 @@ export default defineComponent({
 
         const drawerIconClassName = computed(() => {
             if (!props.showClose) return [];
-            return [
-                `${
-                    props.direction === "right"
-                        ? "drawer-icon-right"
-                        : props.direction === "left"
-                        ? "drawer-icon-left"
-                        : "drawer-icon-right"
-                }`,
-            ];
+            return [`${props.direction === "left" ? "drawer-icon-left" : "drawer-icon-right"}`];
         });
 
         const drawerBoxclassName = computed(() => {

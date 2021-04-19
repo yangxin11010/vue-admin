@@ -7,7 +7,7 @@
             type="primary"
             @click="dialogVisible = true"
         >
-            上传图片
+            {{ $t("tinymce.upimg.t-title") }}
         </el-button>
         <el-dialog v-model="dialogVisible">
             <el-upload
@@ -22,28 +22,18 @@
                 action="https://httpbin.org/post"
                 list-type="picture-card"
             >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button size="small" type="primary">{{ $t("tinymce.upimg.clickUpload") }}</el-button>
             </el-upload>
-            <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleSubmit">上传</el-button>
+            <el-button @click="dialogVisible = false">{{ $t("tinymce.upimg.cancel") }}</el-button>
+            <el-button type="primary" @click="handleSubmit">{{ $t("tinymce.upimg.upload") }}</el-button>
         </el-dialog>
     </div>
 </template>
 
 <script lang="ts">
-// import { getToken } from 'api/qiniu'
 import { defineComponent, reactive, toRefs, ref } from "vue";
 import { errorMessage } from "@/util/message";
-
-interface CustomData {
-    [key: string]: any;
-}
-
-interface State {
-    dialogVisible: boolean;
-    listObj: CustomData;
-    fileList: [];
-}
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
     name: "EditorSlideUpload",
@@ -54,9 +44,15 @@ export default defineComponent({
         },
     },
     setup(props, ctx) {
+        const { t: $t } = useI18n();
+
         const uploadRef = ref();
 
-        const state = reactive<State>({
+        const state = reactive<{
+            dialogVisible: boolean;
+            listObj: { [key: string]: any };
+            fileList: [];
+        }>({
             dialogVisible: false,
             listObj: {},
             fileList: [],
@@ -69,9 +65,7 @@ export default defineComponent({
         const handleSubmit = () => {
             const arr = Object.keys(state.listObj).map((v) => state.listObj[v]);
             if (!checkAllSuccess()) {
-                errorMessage(
-                    "Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!"
-                );
+                errorMessage($t("tinymce.upimg.errMsg"));
                 return;
             }
             ctx.emit("successCBK", arr);

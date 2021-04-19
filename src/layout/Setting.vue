@@ -3,7 +3,7 @@
         <div class="setting">
             <p class="title">{{ $t("system.title") }}</p>
             <div class="set-item">
-                <div>{{ $t("system.tagsView") }}</div>
+                <div>{{ $t("system.sidebarLogo") }}</div>
                 <el-switch
                     :value="openLogo"
                     active-color="#1890ff"
@@ -12,7 +12,7 @@
                 ></el-switch>
             </div>
             <div class="set-item">
-                <div>{{ $t("system.sidebarLogo") }}</div>
+                <div>{{ $t("system.tagsView") }}</div>
                 <el-switch
                     :value="openTabs"
                     active-color="#1890ff"
