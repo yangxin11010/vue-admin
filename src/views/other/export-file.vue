@@ -2,16 +2,34 @@
     <div class="exportExcel">
         <div class="handle-box">
             <div>
-                <el-input type="text" v-model="exportFileName" :placeholder="$t('export.input-plc')" clearable></el-input>
+                <el-input
+                    type="text"
+                    v-model="exportFileName"
+                    :placeholder="$t('export.input-plc')"
+                    clearable
+                ></el-input>
             </div>
-            <div><el-button type="primary" @click="exportTable(0)">{{ $t("export.excel-btn") }}</el-button></div>
-            <div><el-button type="primary" @click="exportTable(1)">{{ $t("export.zip-btn") }}</el-button></div>
+            <div>
+                <el-button type="primary" @click="exportTable(0)">{{ $t("export.excel-btn") }}</el-button>
+            </div>
+            <div>
+                <el-button type="primary" @click="exportTable(1)">{{ $t("export.zip-btn") }}</el-button>
+            </div>
         </div>
         <el-table v-loading="loading" :data="tableData" border>
             <el-table-column label="id" prop="_id" align="center" width="80" sortable></el-table-column>
             <el-table-column label="img_url" prop="img_url" align="center" width="80">
                 <template v-slot="{ row }">
-                    <img style="width: 50px;height:50px;" :src="row.img_url" :alt="row.title" />
+                    <el-image
+                        style="width: 50px;height:50px;"
+                        fit="scale-down"
+                        :src="row.img_url"
+                        :alt="row.title"
+                        :preview-src-list="[row.img_url]"
+                        hide-on-click-modal
+                        lazy
+                    />
+                    <!-- <img style="width: 50px;height:50px;" :src="row.img_url" :alt="row.title" /> -->
                 </template>
             </el-table-column>
             <el-table-column label="title" prop="title" align="center" width="250"></el-table-column>
@@ -40,11 +58,13 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, reactive, toRefs } from "vue";
 import { exportExcel, exportZip } from "@/util/exportFile";
+import { warningMsgBox } from "@/util/messageBox";
 import $api from "@/api";
+
 export default defineComponent({
     name: "ExportFile",
     setup() {
-        let tableData = ref([]);
+        let tableData = ref<any>([]);
 
         let loading = ref(false);
 
@@ -66,23 +86,27 @@ export default defineComponent({
         let exportFileName = ref("");
 
         const exportTable = (type: number) => {
-            const header = ["id", "title", "price", "mack", "supplier", "img_url"];
-            const filterVal = ["_id", "title", "price", "mack", "supplier", "img_url"];
-            if (type === 0) {
-                exportExcel({
-                    header,
-                    data: tableData.value,
-                    filterVal,
-                    filename: exportFileName.value,
-                });
-            } else if (type === 1) {
-                exportZip({
-                    header,
-                    filterVal,
-                    data: tableData.value,
-                    filename: exportFileName.value,
-                });
-            }
+            warningMsgBox(`确定导出${type === 0 ? "Excel" : "Zip"}吗？`)
+                .then(() => {
+                    const header = ["id", "title", "price", "mack", "supplier", "img_url"];
+                    const filterVal = ["_id", "title", "price", "mack", "supplier", "img_url"];
+                    if (type === 0) {
+                        exportExcel({
+                            header,
+                            data: tableData.value,
+                            filterVal,
+                            filename: exportFileName.value,
+                        });
+                    } else if (type === 1) {
+                        exportZip({
+                            header,
+                            filterVal,
+                            data: tableData.value,
+                            filename: exportFileName.value,
+                        });
+                    }
+                })
+                .catch(() => {});
         };
 
         const getData = async () => {

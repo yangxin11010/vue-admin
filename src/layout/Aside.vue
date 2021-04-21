@@ -45,7 +45,7 @@
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "@/store";
 import { useRoute } from "vue-router";
-import { Menu } from "@model/views";
+import { Menu } from "@/model/views/views";
 import MenuList from "@/assets/js/menuList";
 
 export default defineComponent({
@@ -76,6 +76,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
 .aside {
     height: 100%;
     background-color: $main-color;

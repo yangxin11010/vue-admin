@@ -1,7 +1,12 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import NProgress from "@/util/progress";
 import Store from "@/store";
 import Layout from "@/layout/index.vue";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+import { nprogress } from "@/config";
+
+NProgress.configure(nprogress);
+
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -242,6 +247,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    NProgress.start();
     const { isLogin, token } = Store.getters;
     if (to.meta.requiresAuth && (!isLogin || !token)) {
         next("/login");
@@ -252,7 +258,6 @@ router.beforeEach((to, from, next) => {
             next();
         }
     }
-    NProgress.start();
 });
 
 router.afterEach(() => {

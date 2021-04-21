@@ -1,20 +1,20 @@
 import http from "./https";
-import { urlPlus } from "@/util/util";
+import { urlPlus } from "@/util";
 import qs from "qs";
 
 export default {
     // get
-    get: (url: string, params: object = {}) => http.get(url, { params }),
+    get: <T>(url: string, params: object = {}) => http.get<T>(url, { params }),
     // post
-    post: (url: string, params: object = {}) => http.post(url, params),
+    post: <T>(url: string, params: object = {}) => http.post<T>(url, params),
     // post 参数拼接
-    postUrl: (url: string, params: object = {}) => http.post(urlPlus(url, params)),
+    postUrl: <T>(url: string, params: object = {}) => http.post<T>(urlPlus(url, params)),
     // formData
-    postForm: (url: string, params: object = {}) => http.post(url, qs.stringify(params)),
+    postForm: <T>(url: string, params: object = {}) => http.post<T>(url, qs.stringify(params)),
     // delete
-    delete: (url: string, params: object = {}) => http.delete(url, params),
+    delete: <T>(url: string, params: object = {}) => http.delete<T>(url, params),
     // put
-    put: (url: string, params: object = {}) => http.put(url, params),
+    put: <T>(url: string, params: object = {}) => http.put<T>(url, params),
     // patch
-    patch: (url: string, params: object = {}) => http.patch(url, params),
+    patch: <T>(url: string, params: object = {}) => http.patch<T>(url, params),
 };

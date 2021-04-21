@@ -55,7 +55,7 @@ import ElMessageBox from "@/util/messageBox";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
 
-import { Tabs } from "@model/views";
+import { Tabs } from "@/model/views/views";
 
 export default defineComponent({
     setup() {
@@ -200,6 +200,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
 .tabs {
     height: 30px;
     font-size: 12px;

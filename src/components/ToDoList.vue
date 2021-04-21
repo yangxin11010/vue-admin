@@ -61,7 +61,7 @@
 <script lang="ts">
 import { defineComponent, nextTick, ref, reactive, onMounted } from "vue";
 import { successMessage } from "@/util/message";
-import { ToDoItem } from "@model/views";
+import { ToDoItem } from "@/model/views/views";
 
 export default defineComponent({
     name: "ToDoList",

@@ -11,6 +11,7 @@
         </el-button>
         <el-dialog v-model="dialogVisible">
             <el-upload
+                class="editor-slide-upload"
                 ref="uploadRef"
                 :multiple="true"
                 :file-list="fileList"
@@ -18,9 +19,10 @@
                 :on-remove="handleRemove"
                 :on-success="handleSuccess"
                 :before-upload="beforeUpload"
-                class="editor-slide-upload"
-                action="https://httpbin.org/post"
+                :action="actions"
+                :drag="true"
                 list-type="picture-card"
+                accept=".jpg,.png,.jpeg,.webp,.gif,.JPG,.PNG,.JPEG,.WEBP"
             >
                 <el-button size="small" type="primary">{{ $t("tinymce.upimg.clickUpload") }}</el-button>
             </el-upload>
@@ -41,6 +43,10 @@ export default defineComponent({
         color: {
             type: String,
             default: "#1890ff",
+        },
+        actions: {
+            type: String,
+            required: true,
         },
     },
     setup(props, ctx) {
@@ -131,8 +137,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editor-slide-upload {
     margin-bottom: 20px;
-    ::v-deep .el-upload--picture-card {
-        width: 100%;
+    ::v-deep {
+        .el-upload-dragger,
+        .el-upload--picture-card {
+            width: 100%;
+            height: 100%;
+        }
+        .el-upload-dragger, .el-upload-dragger:hover {
+            border: 1px dashed transparent;
+        }
     }
 }
 </style>

@@ -67,7 +67,8 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
-import { DashboardCard } from "@model/views";
+import { DashboardCard } from "@/model/views/views";
+// import {} from "@/assets/css/variables.scss";
 
 export default defineComponent({
     name: "Dashboard",

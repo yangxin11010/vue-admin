@@ -1,42 +1,8 @@
 <template>
     <div class="svgpage">
         <el-tabs type="border-card" tab-position="top">
-            <el-tab-pane label="Svg-Icons">
-                <div class="icon-list disflex flex-w ju_ar">
-                    <template v-for="(item, index) in SvgIcons" :key="index">
-                        <el-tooltip
-                            class="item"
-                            effect="dark"
-                            :content="`<svg-icon icon-class=&quot;${item}&quot; />`"
-                            placement="top"
-                        >
-                            <div class="icon-item" @click="copy(`<svg-icon icon-class=&quot;${item}&quot; />`)">
-                                <i><svg-icon :icon-class="item"></svg-icon></i>
-                                <span>{{ item }}</span>
-                            </div>
-                        </el-tooltip>
-                    </template>
-                </div>
-            </el-tab-pane>
-            <el-tab-pane label="Np-Icons">
-                <div class="icon-list disflex flex-w ju_ar">
-                    <template v-for="(item, index) in NpIcons" :key="index">
-                        <el-tooltip
-                            class="item"
-                            effect="dark"
-                            :content="`<i class=&quot;${item}&quot; />`"
-                            placement="top"
-                        >
-                            <div class="icon-item" @click="copy(`<i class=&quot;${item}&quot; />`)">
-                                <i :class="item" />
-                                <span>{{ item }}</span>
-                            </div>
-                        </el-tooltip>
-                    </template>
-                </div>
-            </el-tab-pane>
             <el-tab-pane label="Element-UI Icons">
-                <div class="icon-list disflex flex-w ju_ar">
+                <el-space wrap size="large">
                     <template v-for="(item, index) in ElIcons" :key="index">
                         <el-tooltip
                             class="item"
@@ -50,7 +16,41 @@
                             </div>
                         </el-tooltip>
                     </template>
-                </div>
+                </el-space>
+            </el-tab-pane>
+            <el-tab-pane label="Svg-Icons">
+                <el-space wrap size="large">
+                    <template v-for="(item, index) in SvgIcons" :key="index">
+                        <el-tooltip
+                            class="item"
+                            effect="dark"
+                            :content="`<svg-icon icon-class=&quot;${item}&quot; />`"
+                            placement="top"
+                        >
+                            <div class="icon-item" @click="copy(`<svg-icon icon-class=&quot;${item}&quot; />`)">
+                                <i><svg-icon :icon-class="item"></svg-icon></i>
+                                <span>{{ item }}</span>
+                            </div>
+                        </el-tooltip>
+                    </template>
+                </el-space>
+            </el-tab-pane>
+            <el-tab-pane label="Np-Icons">
+                <el-space wrap size="large">
+                    <template v-for="(item, index) in NpIcons" :key="index">
+                        <el-tooltip
+                            class="item"
+                            effect="dark"
+                            :content="`<i class=&quot;${item}&quot; />`"
+                            placement="top"
+                        >
+                            <div class="icon-item" @click="copy(`<i class=&quot;${item}&quot; />`)">
+                                <i :class="item" />
+                                <span>{{ item }}</span>
+                            </div>
+                        </el-tooltip>
+                    </template>
+                </el-space>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -88,7 +88,7 @@ export default defineComponent({
     width: 120px;
     height: 120px;
     text-align: center;
-    margin-right: 20px;
+    // margin-right: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;

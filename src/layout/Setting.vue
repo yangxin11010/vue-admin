@@ -1,5 +1,5 @@
 <template>
-    <my-drawer :before-close="beforeClose">
+    <my-drawer v-if="setting.showSetting" :before-close="beforeClose">
         <div class="setting">
             <p class="title">{{ $t("system.title") }}</p>
             <div class="set-item">
@@ -28,11 +28,11 @@
 import { defineComponent, computed } from "vue";
 import MyDrawer from "@/components/MyDrawer.vue";
 import { useStore } from "@/store";
+import { setting } from "@/config";
 
 export default defineComponent({
     setup() {
         const store = useStore();
-        // my-drawer 关闭前 回调
         let openLogo = computed(() => store.getters.openLogo);
         let openTabs = computed(() => store.getters.openTabs);
 
@@ -44,6 +44,7 @@ export default defineComponent({
             }
         };
 
+        // my-drawer 关闭前 回调
         const beforeClose = (done: () => void) => {
             console.warn("my-drawer is colsed");
             done();
@@ -53,6 +54,7 @@ export default defineComponent({
             openLogo,
             openTabs,
             switchChange,
+            setting
         };
     },
     components: {

@@ -11,13 +11,13 @@ module.exports = {
     outputDir: "dist",
     assetsDir: "",
     indexPath: "index.html",
-    css: {
-        loaderOptions: {
-            scss: {
-                additionalData: `@import "~@/assets/css/variables.scss";`,
-            },
-        },
-    },
+    // css: {
+    //     loaderOptions: {
+    //         scss: {
+    //             additionalData: `@import "~@/assets/css/variables.scss";`,
+    //         },
+    //     },
+    // },
     devServer: {
         open: false,
     },
@@ -38,8 +38,6 @@ module.exports = {
             .loader("svg-sprite-loader") // 指定loader
             .options({ symbolId: "icon-[name]" }); // 选项配置，将来使用图标的名称, 例：icon-qq
         // 路径配置
-        config.resolve.alias
-            .set("@", resolve("src"))
-            .set("@imgs", resolve("src/assets/images"))
-    }
+        config.resolve.alias.set("@", resolve("src")).set("@imgs", resolve("src/assets/images"));
+    },
 };

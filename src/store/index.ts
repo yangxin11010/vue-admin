@@ -2,12 +2,8 @@
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import { InjectionKey } from "vue";
-import { Tabs } from "@/model/views";
-
-export interface KeyValue {
-    key: string;
-    value: any;
-}
+import { Tabs } from "@/model/views/views";
+import { setting } from "@/config";
 
 export interface State {
     lang: string;
@@ -28,6 +24,7 @@ export function useStore() {
 
 const store = createStore<State>({
     plugins: [
+        // session 存储
         createPersistedState({
             storage: window.sessionStorage,
             reducer(state) {
@@ -40,6 +37,7 @@ const store = createStore<State>({
                 };
             },
         }),
+        // local 存储
         createPersistedState({
             storage: window.localStorage,
             reducer(state) {
@@ -55,8 +53,8 @@ const store = createStore<State>({
         isLogin: false,
         collapse: true,
         token: null,
-        openLogo: true,
-        openTabs: true,
+        openLogo: setting.openLogo,
+        openTabs: setting.openTabs,
         tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
     },
     getters: {

@@ -118,7 +118,7 @@
 import { computed, defineComponent, nextTick, onMounted, reactive, ref } from "vue";
 import { warningMsgBox } from "@/util/messageBox";
 import { successMessage, warningMessage } from "@/util/message";
-import { Menu } from "@model/views";
+import { Menu } from "@/model/views/views";
 import MenuList from "@/assets/js/menuList";
 
 export default defineComponent({

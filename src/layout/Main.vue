@@ -22,6 +22,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
+@import "@/assets/css/mixin.scss";
 .main {
     background-color: #f0f2f5;
     padding: 10px 10px 0 !important;

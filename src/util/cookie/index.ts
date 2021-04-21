@@ -7,10 +7,11 @@ export function getToken(tokenKey?: string) {
 }
 
 export function setToken(...params: string[]) {
-    if (params.length === 1) {
-        return Cookies.set(defaultTokenKey, params[0]);
-    } else if (params.length === 2) {
-        return Cookies.set(params[0], params[1]);
+    const [key, value] = params;
+    if (key) {
+        return Cookies.set(defaultTokenKey, key);
+    } else if (key && value) {
+        return Cookies.set(key, value);
     } else {
         throw new Error("Parameter error");
     }

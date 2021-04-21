@@ -1,5 +1,6 @@
 import axios from "axios";
 import { errorMessage } from "@/util/message";
+import Store from "@/store";
 
 const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,
@@ -8,6 +9,8 @@ const service = axios.create({
 
 service.interceptors.request.use(
     (config) => {
+        const token = Store.getters.token;
+        token && (config.headers["token"] = token);
         return config;
     },
     (error) => {
@@ -30,6 +33,7 @@ service.interceptors.response.use(
         }
     },
     (error) => {
+        console.error("service.interceptors.response  --> ", error);
         return Promise.reject(error);
     }
 );

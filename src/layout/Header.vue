@@ -86,10 +86,11 @@ import Screenfull from "./components/Screenfull.vue";
 import Breadcrumb from "./components/Breadcrumb.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
-import { openWindow } from "@/util/util";
+import { openWindow } from "@/util";
 import { useI18n } from "vue-i18n";
 import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
+
 export default defineComponent({
     setup() {
         const store = useStore(),
@@ -163,6 +164,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
 .header {
     width: 100%;
     height: 100%;
