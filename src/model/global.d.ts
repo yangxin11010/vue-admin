@@ -22,6 +22,7 @@ declare interface CustomData {
     [key: string]: any;
 }
 
-declare interface Window {
-    [key: string]: any;
-}
+// declare interface Window {
+//     [key: string]: any;
+// }
+declare interface Window extends CustomData {}
