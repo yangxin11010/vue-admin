@@ -1,5 +1,5 @@
 import request from "@/util/http";
-import { QueryGoods, ShopGood } from "@/model/views/shopGood";
+import { QueryGoods, ShopGood } from "@/model/shopGood";
 
 export default {
     queryGoods: (params: QueryGoods) => request.get<ReqRes.ListData<ShopGood>>("/queryGoods", params),

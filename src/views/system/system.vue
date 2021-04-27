@@ -1,6 +1,6 @@
 <template>
     <div class="system">
-        <p>system</p>
+        system
     </div>
 </template>
 

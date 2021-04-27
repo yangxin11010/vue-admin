@@ -45,7 +45,7 @@
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "@/store";
 import { useRoute } from "vue-router";
-import { Menu } from "@/model/views/views";
+import { Menu } from "@/model/views";
 import MenuList from "@/assets/js/menuList";
 
 export default defineComponent({

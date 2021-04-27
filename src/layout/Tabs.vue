@@ -55,7 +55,7 @@ import ElMessageBox from "@/util/messageBox";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
 
-import { Tabs } from "@/model/views/views";
+import { Tabs } from "@/model/views";
 
 export default defineComponent({
     setup() {

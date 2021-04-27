@@ -2,7 +2,7 @@
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import { InjectionKey } from "vue";
-import { Tabs } from "@/model/views/views";
+import { Tabs } from "@/model/views";
 import { setting } from "@/config";
 
 export interface State {

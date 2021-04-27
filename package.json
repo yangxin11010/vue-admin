@@ -14,7 +14,7 @@
 		"clipboard": "^2.0.8",
 		"core-js": "^3.6.5",
 		"echarts": "^5.0.2",
-		"element-plus": "*",
+		"element-plus": "^1.0.2-beta.40",
 		"es6-promise": "^4.2.8",
 		"file-saver": "^2.0.5",
 		"js-cookie": "^2.2.1",
@@ -36,6 +36,7 @@
 	"devDependencies": {
 		"@types/echarts": "^4.9.7",
 		"@types/js-cookie": "^2.2.6",
+		"@types/jsoneditor": "^8.6.0",
 		"@types/nprogress": "^0.2.0",
 		"@typescript-eslint/eslint-plugin": "^4.18.0",
 		"@typescript-eslint/parser": "^4.18.0",

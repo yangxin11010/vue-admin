@@ -9,10 +9,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mainStyleList } from "@/config"
 
 export default defineComponent({
     setup() {
-        const mainStyleList: string[] = ["/dashboard", "/personCenter"];
 
         return {
             mainStyleList,

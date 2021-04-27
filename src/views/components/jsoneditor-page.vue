@@ -3,10 +3,12 @@
         <JsonEditor
             ref="jsonEditorRef"
             :options="options"
-            mode="tree"
+            mode="code"
+            v-model="value"
             :value="value"
             @change="jsonChange"
         ></JsonEditor>
+        <div class="jsonvalue">{{ value }}</div>
         <div class="jsonvalue">{{ showValue }}</div>
     </div>
 </template>

@@ -50,9 +50,7 @@ export default defineComponent({
         },
         toolbar: {
             type: Array as PropType<string[]>,
-            default: () => {
-                return [];
-            },
+            default: () => [],
         },
         menubar: {
             type: String,
