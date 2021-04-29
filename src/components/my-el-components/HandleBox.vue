@@ -1,5 +1,5 @@
 <template>
-    <el-space wrap :style="{ marginBottom: `${bottom}px` }">
+    <el-space class="space" wrap>
         <slot></slot>
     </el-space>
 </template>
@@ -14,16 +14,13 @@
 import { defineComponent } from "vue";
 export default defineComponent({
     name: "HandleBox",
-    props: {
-        bottom: {
-            type: Number,
-            default: 10,
-        },
-    },
 });
 </script>
 
 <style lang="scss" scoped>
+.space {
+    margin-bottom: 2px !important;
+}
 /deep/ {
     .el-space__item {
         padding-bottom: 10px !important;

@@ -32,6 +32,26 @@
             </el-tooltip>
             <el-dropdown
                 class="header-dropdown"
+                placement="bottom"
+                size="medium"
+                trigger="click"
+                @command="changeLayoutSize"
+            >
+                <div class="header-r-item layout-size">
+                    <svg-icon icon-class="layout-size" />
+                </div>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <template v-for="item in ['default', 'mini', 'small', 'medium']" :key="item">
+                            <el-dropdown-item :command="item" :disabled="layoutSize === item">
+                                {{ item }}
+                            </el-dropdown-item>
+                        </template>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+            <el-dropdown
+                class="header-dropdown"
                 placement="bottom-end"
                 size="medium"
                 trigger="click"
@@ -80,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from "vue";
+import { defineComponent, ref, onMounted, computed, getCurrentInstance, ComponentInternalInstance } from "vue";
 import Collapse from "./components/Collapse.vue";
 import Screenfull from "./components/Screenfull.vue";
 import Breadcrumb from "./components/Breadcrumb.vue";
@@ -90,15 +110,30 @@ import { openWindow } from "@/util";
 import { useI18n } from "vue-i18n";
 import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
+import { successMessage } from "@/util/message"
 
 export default defineComponent({
     setup() {
         const store = useStore(),
-            router = useRouter();
+            // route = useRoute(),
+            router = useRouter(),
+            app = getCurrentInstance() as ComponentInternalInstance;
 
         const { locale } = useI18n();
 
-        let langIndex = computed(() => store.getters.lang);
+        const langIndex = computed(() => store.getters.lang),
+            layoutSize = computed(() => store.getters.layoutSize);
+
+        const changeLayoutSize = (e: string) => {
+            app.appContext.config.globalProperties.$ELEMENT.size = e;
+            successMessage("Switch Size Success")
+            store.dispatch("SET_LAYOUTSIZE", e);
+            window.location.reload();
+            // 3.0 replace 失效 
+            // router.replace({
+            //     path: "/redirect" + route.fullPath,
+            // });
+        };
 
         const changeLang = (e: string) => {
             locale.value = e;
@@ -152,7 +187,9 @@ export default defineComponent({
             messageNum,
             screenfull,
             langSetting,
-            availableLocales
+            availableLocales,
+            layoutSize,
+            changeLayoutSize,
         };
     },
     components: {
@@ -195,6 +232,10 @@ export default defineComponent({
 }
 .fullscreen {
     font-size: 22px;
+}
+.layout-size {
+    font-size: 22px;
+    color: #fff;
 }
 .lang-icon {
     color: #fff;

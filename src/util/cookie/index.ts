@@ -2,11 +2,11 @@ import Cookies from "js-cookie";
 
 const defaultTokenKey: string = "Admin-Token";
 
-export function getToken(tokenKey?: string) {
-    return Cookies.get(tokenKey ? tokenKey : defaultTokenKey);
+export function getCookie(key?: string) {
+    return Cookies.get(key ? key : defaultTokenKey);
 }
 
-export function setToken(...params: string[]) {
+export function setCookie(...params: string[]) {
     const [key, value] = params;
     if (key) {
         return Cookies.set(defaultTokenKey, key);
@@ -17,8 +17,8 @@ export function setToken(...params: string[]) {
     }
 }
 
-export function removeToken(tokenKey?: string) {
-    return Cookies.remove(tokenKey ? tokenKey : defaultTokenKey);
+export function removeCookie(key?: string) {
+    return Cookies.remove(key ? key : defaultTokenKey);
 }
 
 export default Cookies;

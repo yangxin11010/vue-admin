@@ -7,7 +7,6 @@ import { nprogress } from "@/config";
 
 NProgress.configure(nprogress);
 
-
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/",
@@ -41,6 +40,17 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/other/dashboard.vue"),
             },
             {
+                path: "/redirect/:path(.*)",
+                name: "Redirect",
+                alias: [],
+                meta: {
+                    requiresAuth: false,
+                    title: "",
+                    keepAlive: false,
+                },
+                component: () => import("@/views/other/redirect.vue"),
+            },
+            {
                 path: "svg",
                 name: "SvgPage",
                 alias: ["/icon"],
@@ -50,6 +60,17 @@ const routes: Array<RouteRecordRaw> = [
                     keepAlive: true,
                 },
                 component: () => import("@/views/other/svg.vue"),
+            },
+            {
+                path: "permissions",
+                name: "Permissions",
+                alias: [],
+                meta: {
+                    requiresAuth: true,
+                    title: "权限测试页",
+                    keepAlive: true,
+                },
+                component: () => import("@/views/other/permissions.vue"),
             },
             {
                 path: "clipboard",

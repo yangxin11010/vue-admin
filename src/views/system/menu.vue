@@ -37,13 +37,12 @@
                             </el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" width="150">
+                    <el-table-column label="操作" align="center" width="180">
                         <template v-slot="{ row }">
-                            <el-button size="mini" type="info" @click="operate(0, row)">
+                            <el-button type="info" @click="operate(0, row)">
                                 修改
                             </el-button>
                             <el-button
-                                size="mini"
                                 :type="row.status === 0 ? 'primary' : 'danger'"
                                 :disabled="row.status === 2"
                                 @click="operate(1, row)"

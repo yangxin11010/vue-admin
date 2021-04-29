@@ -138,11 +138,14 @@ export default {
             // 权限 [admin,]
             const userPermissions = Store.getters.permissions,
                 btnPermissions = binding.value;
-            let flag = 0;
-            userPermissions.forEach((item: string) => {
-                if (btnPermissions.includes(item)) flag = -1;
-            });
-            if (flag === 0) el.remove();
+            if (btnPermissions && btnPermissions instanceof Array) {
+                const flag = userPermissions.some((item: string) => {
+                    return btnPermissions.includes(item);
+                });
+                if (!flag) el.remove();
+            } else {
+                throw new Error(`need roles! Like v-permissions="['admin','editor']"`);
+            }
         });
     },
 };

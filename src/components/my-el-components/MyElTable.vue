@@ -1,6 +1,6 @@
 <template>
     <div class="my-el-table">
-        <el-table v-bind="$attrs">
+        <el-table v-bind="$attrs" size="medium">
             <slot></slot>
         </el-table>
         <div class="pagination" v-if="pagination">

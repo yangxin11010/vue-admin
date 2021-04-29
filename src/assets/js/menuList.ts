@@ -19,7 +19,16 @@ export default [
         status: 1,
         children: [],
     },
-
+    {
+        menuId: 8,
+        title: "权限测试页",
+        path: "/permissions",
+        icon: "el-icon-unlock",
+        parentMenuId: null,
+        keepAlive: false,
+        status: 1,
+        children: [],
+    },
     {
         menuId: 3,
         title: "Clipboard",

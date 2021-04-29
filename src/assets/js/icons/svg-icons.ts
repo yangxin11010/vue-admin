@@ -13,4 +13,5 @@ export default [
     "usergroup",
     "book",
     "language",
+    "layout-size"
 ];

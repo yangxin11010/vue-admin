@@ -5,6 +5,8 @@ import { InjectionKey } from "vue";
 import { Tabs } from "@/model/views";
 import { setting } from "@/config";
 
+export type LayoutSize = "default" | "medium" | "small" | "mini";
+
 export interface State {
     lang: string;
     isLogin: boolean;
@@ -14,6 +16,7 @@ export interface State {
     openTabs: boolean;
     tabsList: [Tabs[], Tabs[]];
     permissions: string[];
+    layoutSize: LayoutSize;
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -35,6 +38,8 @@ const store = createStore<State>({
                     collapse: state.collapse,
                     token: state.token,
                     tabsList: state.tabsList,
+                    permissions: state.permissions,
+                    layoutSize: state.layoutSize,
                 };
             },
         }),
@@ -58,6 +63,7 @@ const store = createStore<State>({
         openTabs: setting.openTabs,
         tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
         permissions: ["boss", "admin"],
+        layoutSize: "small",
     },
     getters: {
         lang: (state) => state.lang,
@@ -68,6 +74,7 @@ const store = createStore<State>({
         openLogo: (state) => state.openLogo,
         openTabs: (state) => state.openTabs,
         permissions: (state) => state.permissions,
+        layoutSize: (state) => state.layoutSize,
     },
     mutations: {
         SET_LANG(state, value: string) {
@@ -116,6 +123,9 @@ const store = createStore<State>({
         SET_PERMISSIONS(state, value: string[]) {
             state.permissions = value;
         },
+        SET_LAYOUTSIZE(state, value: LayoutSize) {
+            state.layoutSize = value;
+        },
     },
     actions: {
         SET_LANG({ commit }, value: string) {
@@ -158,7 +168,11 @@ const store = createStore<State>({
         SET_PERMISSIONS({ commit }, value: string[]) {
             commit("SET_PERMISSIONS", value);
         },
+        SET_LAYOUTSIZE({ commit }, value: LayoutSize) {
+            commit("SET_LAYOUTSIZE", value);
+        },
     },
+    modules: {},
 });
 
 export default store;

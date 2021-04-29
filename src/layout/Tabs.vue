@@ -207,7 +207,7 @@ export default defineComponent({
     border-bottom: 1px solid #d8dce5;
 }
 .tabs-l {
-    width: calc(100% - 105px);
+    flex: 1;
     padding-left: 10px;
     overflow-x: auto;
     user-select: none;

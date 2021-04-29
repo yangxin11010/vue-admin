@@ -113,7 +113,19 @@ export default defineComponent({
             border: none !important;
             overflow-x: hidden;
             overflow-y: auto;
-            @include scrollHide;
+            // @include scrollHide;
+            scrollbar-width: none; /*Firefox*/
+            -ms-overflow-style: none; /*IE10+*/
+            &::-webkit-scrollbar {
+                // 整个滚动条
+                // display: none;
+                width: 6px;
+            }
+            &::-webkit-scrollbar-thumb {
+                // 滚动条上的滚动滑块
+                background-color: #9093994d;
+                border-radius: 50px;
+            }
         }
         .asideMenu {
             width: 200px;

@@ -27,6 +27,7 @@
         "/message": "Message Center",
         "/dashboard": "Dashboard",
         "/svg": "Svg",
+        "/permissions": "Permissions Test",
         "/clipboard": "Clipboard",
         "/exportFile": "Export File",
         "/components": "Components",

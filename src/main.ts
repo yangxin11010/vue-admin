@@ -19,12 +19,13 @@ import VueI18n from "@/lang";
 
 import MyEl from "@/components/my-el-components";
 
+
 const app = createApp(App);
 
 app.use(Router)
     .use(Store, key)
     .use(ElementPlus, {
-        size: "small",
+        size: Store.getters.layoutSize,
         i18n: VueI18n.global.t,
     })
     .use(Svg)

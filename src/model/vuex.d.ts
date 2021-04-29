@@ -1,6 +1,8 @@
 // vuex.d.ts
 import { ComponentCustomProperties } from "vue";
 import { Store } from "vuex";
+import { LayoutSize } from "@/store"
+
 
 declare module "@vue/runtime-core" {
     // declare your own store states
@@ -13,6 +15,7 @@ declare module "@vue/runtime-core" {
         openTabs: boolean;
         tabsList: [Tabs[], Tabs[]];
         permissions: string[];
+        layoutSize: LayoutSize;
     }
 
     // provide typings for `this.$store`
