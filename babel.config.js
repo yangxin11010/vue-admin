@@ -4,5 +4,5 @@ module.exports = {
             plugins: ["dynamic-import-node"],
         },
     },
-    presets: ["@vue/cli-plugin-babel/preset"],
+    presets: ["@vue/cli-plugin-babel/preset"]
 };

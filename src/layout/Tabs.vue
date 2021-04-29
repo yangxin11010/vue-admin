@@ -202,7 +202,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/assets/css/variables.scss";
 .tabs {
-    height: 30px;
+    min-height: 30px;
     font-size: 12px;
     border-bottom: 1px solid #d8dce5;
 }

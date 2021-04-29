@@ -13,6 +13,7 @@ export interface State {
     openLogo: boolean;
     openTabs: boolean;
     tabsList: [Tabs[], Tabs[]];
+    permissions: string[];
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -56,6 +57,7 @@ const store = createStore<State>({
         openLogo: setting.openLogo,
         openTabs: setting.openTabs,
         tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
+        permissions: ["boss", "admin"],
     },
     getters: {
         lang: (state) => state.lang,
@@ -65,6 +67,7 @@ const store = createStore<State>({
         tabsList: (state) => state.tabsList,
         openLogo: (state) => state.openLogo,
         openTabs: (state) => state.openTabs,
+        permissions: (state) => state.permissions,
     },
     mutations: {
         SET_LANG(state, value: string) {
@@ -110,6 +113,9 @@ const store = createStore<State>({
         CHANGE_Tabs(state, value: boolean) {
             state.openTabs = value;
         },
+        SET_PERMISSIONS(state, value: string[]) {
+            state.permissions = value;
+        },
     },
     actions: {
         SET_LANG({ commit }, value: string) {
@@ -148,6 +154,9 @@ const store = createStore<State>({
         },
         CHANGE_Tabs({ commit }, value: boolean) {
             commit("CHANGE_Tabs", value);
+        },
+        SET_PERMISSIONS({ commit }, value: string[]) {
+            commit("SET_PERMISSIONS", value);
         },
     },
 });

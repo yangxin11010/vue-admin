@@ -69,7 +69,6 @@
 import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
 import { DashboardCard } from "@/model/views";
 // import {} from "@/assets/css/variables.scss";
-
 export default defineComponent({
     name: "Dashboard",
     setup() {
@@ -243,10 +242,6 @@ export default defineComponent({
     p {
         margin-bottom: 5px;
     }
-}
-.checked {
-    color: #999999;
-    text-decoration: line-through;
 }
 /deep/ {
     .el-card-item {

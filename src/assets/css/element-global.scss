@@ -1,0 +1,31 @@
+// 全局 element-ui 样式
+
+// 全局 el-table 滚动条样式
+.el-table__body-wrapper {
+    &::-webkit-scrollbar {
+        // 整个滚动条
+        // display: none;
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+        // 滚动条上的滚动滑块
+        background-color: #9093994d;
+        border-radius: 50px;
+    }
+}
+
+// 全局 分页样式
+.pagination {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 10px;
+}
+
+// 全局 el-dialog 超出滚动条样式
+.el-overlay {
+    &::-webkit-scrollbar {
+        display: none; /*ChromeSafari*/
+        scrollbar-width: none; /*Firefox*/
+        -ms-overflow-style: none; /*IE10+*/
+    }
+}

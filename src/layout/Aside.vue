@@ -1,7 +1,15 @@
 <template>
     <div class="aside">
+        <el-menu v-if="openLogo" class="asideMenu" style="height: 60px;overflow: hidden;" :collapse="collapse" router>
+            <el-menu-item class="logo-title" index="/">
+                <img class="logo" src="@imgs/logo.png" alt="vue-admin" />
+                <template #title>
+                    <span class="title">vue-admin</span>
+                </template>
+            </el-menu-item>
+        </el-menu>
         <el-menu
-            class="asideMenu overhide"
+            class="asideMenu"
             :uniqueOpened="true"
             :collapse="collapse"
             :default-active="defaultActive"
@@ -9,13 +17,10 @@
             text-color="#BFCBD9"
             active-text-color="#1890ff"
             router
+            :style="{
+                height: `calc(100% - ${openLogo ? 60 : 0}px)`,
+            }"
         >
-            <el-menu-item v-if="openLogo" class="logo-title" index="/">
-                <img class="logo" src="@imgs/logo.png" alt="vue-admin" />
-                <template #title>
-                    <span class="title">vue-admin</span>
-                </template>
-            </el-menu-item>
             <template v-for="item in menuList" :key="item.path">
                 <template v-if="item.children.length > 0">
                     <el-submenu class="submenu" :index="item.path">
@@ -106,11 +111,15 @@ export default defineComponent({
         .asideMenu {
             // 去掉el-menu 白色右边框
             border: none !important;
+            overflow-x: hidden;
+            overflow-y: auto;
+            @include scrollHide;
         }
-        .asideMenu:not(.el-menu--collapse) {
+        .asideMenu {
             width: 200px;
-            height: 100%;
-            overflow: hidden;
+        }
+        .el-menu--collapse {
+            width: 64px;
         }
         .el-menu--inline .el-menu-item {
             // 二级菜单 背景色

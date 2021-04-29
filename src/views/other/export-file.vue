@@ -1,22 +1,19 @@
 <template>
     <div class="exportExcel">
-        <div class="handle-box">
-            <div>
-                <el-input
-                    type="text"
-                    v-model="exportFileName"
-                    :placeholder="$t('export.input-plc')"
-                    clearable
-                ></el-input>
-            </div>
-            <div>
-                <el-button type="primary" @click="exportTable(0)">{{ $t("export.excel-btn") }}</el-button>
-            </div>
-            <div>
-                <el-button type="primary" @click="exportTable(1)">{{ $t("export.zip-btn") }}</el-button>
-            </div>
-        </div>
-        <el-table v-loading="loading" :data="tableData" border>
+        <handle-box>
+            <el-input type="text" v-model="exportFileName" :placeholder="$t('export.input-plc')" clearable></el-input>
+            <el-button type="primary" @click="exportTable(0)">{{ $t("export.excel-btn") }}</el-button>
+            <el-button type="primary" @click="exportTable(1)">{{ $t("export.zip-btn") }}</el-button>
+        </handle-box>
+        <my-el-table
+            v-loading="loading"
+            :data="tableData"
+            border
+            :page="page"
+            :total="total"
+            @page-change="pageChange"
+            @size-change="sizeChange"
+        >
             <el-table-column label="id" prop="_id" align="center" width="80" sortable></el-table-column>
             <el-table-column label="img_url" prop="img_url" align="center" width="80">
                 <template v-slot="{ row }">
@@ -40,18 +37,7 @@
                 </template>
             </el-table-column>
             <el-table-column label="supplier" prop="supplier" align="center"></el-table-column>
-        </el-table>
-        <div class="pagination">
-            <el-pagination
-                background
-                layout="total, sizes, prev, pager, next, jumper"
-                :page-sizes="[10, 20, 50, 100]"
-                v-model:current-page="page"
-                :total="total"
-                @current-change="handleCurrentChange"
-                @size-change="handleSizeChange"
-            ></el-pagination>
-        </div>
+        </my-el-table>
     </div>
 </template>
 
@@ -74,11 +60,11 @@ export default defineComponent({
             total: 0,
         });
 
-        const handleCurrentChange = (e: number) => {
+        const pageChange = (e: number) => {
             state.page = e;
             getData();
         };
-        const handleSizeChange = (e: number) => {
+        const sizeChange = (e: number) => {
             state.size = e;
             getData();
         };
@@ -132,8 +118,8 @@ export default defineComponent({
             ...toRefs(state),
             exportTable,
             exportFileName,
-            handleCurrentChange,
-            handleSizeChange,
+            pageChange,
+            sizeChange,
         };
     },
 });

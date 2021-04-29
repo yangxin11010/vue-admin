@@ -151,4 +151,8 @@ export default defineComponent({
 .svgicon {
     transform: scale(20);
 }
+.checked {
+    color: #999999;
+    text-decoration: line-through;
+}
 </style>

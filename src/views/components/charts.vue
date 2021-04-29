@@ -20,7 +20,6 @@ import { defineComponent, defineAsyncComponent, reactive } from "vue";
 import Options1 from "./common/options1";
 import Options2 from "./common/options2";
 import Options3 from "./common/options3";
-
 export default defineComponent({
     name: "Charts",
     setup() {

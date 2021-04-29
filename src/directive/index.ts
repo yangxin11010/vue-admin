@@ -1,5 +1,6 @@
 import { successMessage, errorMessage } from "@/util/message";
 import Clipboard from "clipboard";
+import Store from "@/store";
 import { App } from "vue";
 
 export default {
@@ -131,6 +132,17 @@ export default {
                 delete el._v_value;
                 delete el._v_event;
             },
+        });
+
+        app.directive("permissions", (el, binding) => {
+            // 权限 [admin,]
+            const userPermissions = Store.getters.permissions,
+                btnPermissions = binding.value;
+            let flag = 0;
+            userPermissions.forEach((item: string) => {
+                if (btnPermissions.includes(item)) flag = -1;
+            });
+            if (flag === 0) el.remove();
         });
     },
 };

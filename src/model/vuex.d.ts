@@ -12,6 +12,7 @@ declare module "@vue/runtime-core" {
         openLogo: boolean;
         openTabs: boolean;
         tabsList: [Tabs[], Tabs[]];
+        permissions: string[];
     }
 
     // provide typings for `this.$store`

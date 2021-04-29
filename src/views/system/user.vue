@@ -1,21 +1,19 @@
 <template>
     <div class="user">
-        <div class="handle-box">
-            <div>
-                <el-button type="primary" @click="addUser">新增用户</el-button>
-            </div>
-        </div>
-        <el-table :data="userlist" border>
+        <handle-box :wrap="true">
+            <el-button type="primary" @click="addUser">新增用户</el-button>
+        </handle-box>
+        <my-el-table :data="userlist" border :total="userlist.length" :page="1">
             <el-table-column label="id" prop="id" width="100" align="center" sortable></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
             <el-table-column label="注册日期" prop="registDate" align="center" width="250"></el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template v-slot="{ row }">
                     <el-button type="primary" @click="operate(0, row)">修改</el-button>
-                    <el-button type="danger" @click="operate(1, row)">删除</el-button>
+                    <el-button v-permissions="['boss']" type="danger" @click="operate(1, row)">删除</el-button>
                 </template>
             </el-table-column>
-        </el-table>
+        </my-el-table>
         <el-dialog :title="`${isAddUser ? '新增' : '修改'}用户`" v-model="dialogVisible" width="40%">
             <el-form :model="userForm" ref="userFormRef" label-width="80px" :rules="rules">
                 <el-form-item label="用户名" prop="username">
@@ -131,12 +129,11 @@ export default defineComponent({
                 menuTreeRef.value.setCheckedKeys(item.menu);
             } else if (type === 1) {
                 // 删除用户
-                warningMsgBox(`确定删除吗？`)
+                warningMsgBox('确定删除吗？')
                     .then(() => {
                         console.log(item);
                         successMessage(`删除成功！`);
-                    })
-                    .catch(() => {});
+                    });
             }
         };
 

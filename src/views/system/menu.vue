@@ -1,18 +1,19 @@
 <template>
     <div class="menu">
-        <div class="handle-box">
-            <div>
-                <el-button type="primary" @click="addMenu">添加菜单</el-button>
-            </div>
-        </div>
+        <handle-box>
+            <el-button type="primary" @click="addMenu">添加菜单</el-button>
+        </handle-box>
         <el-row>
             <el-col :span="24">
-                <el-table
+                <my-el-table
                     :data="menuList"
                     :show-header="true"
                     border
                     row-key="title"
                     :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+                    :total="menuList.length"
+                    @page-change="pageChange"
+                    @size-change="sizeChange"
                 >
                     <el-table-column label="菜单名称" prop="title" align="left">
                         <template v-slot="{ row }">
@@ -46,12 +47,13 @@
                                 :type="row.status === 0 ? 'primary' : 'danger'"
                                 :disabled="row.status === 2"
                                 @click="operate(1, row)"
+                                v-permissions="['admin', 'boss']"
                             >
                                 {{ row.status === 0 ? "启用" : "禁用" }}
                             </el-button>
                         </template>
                     </el-table-column>
-                </el-table>
+                </my-el-table>
             </el-col>
         </el-row>
 
@@ -221,7 +223,7 @@ export default defineComponent({
                         .then(() => {
                             dialogVisible.value = false;
                             updateMenu(menuForm);
-                            successMessage(`${isAddMenu.value ? "添加" : "修改"}成功！`)
+                            successMessage(`${isAddMenu.value ? "添加" : "修改"}成功！`);
                         })
                         .catch(() => {});
                 } else {
@@ -234,6 +236,14 @@ export default defineComponent({
             return new Promise((resolve) => {
                 resolve(MenuList);
             });
+        };
+
+        const pageChange = (value: number) => {
+            console.log(value);
+        };
+
+        const sizeChange = (value: number) => {
+            console.log(value);
         };
 
         onMounted(async () => {
@@ -251,6 +261,8 @@ export default defineComponent({
             isAddMenu,
             parentMenuPath,
             addMenu,
+            pageChange,
+            sizeChange,
         };
     },
 });
