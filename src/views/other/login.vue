@@ -186,6 +186,11 @@ export default defineComponent({
             border: none;
             color: #ffffff;
         }
+        i {
+            font-size: 18px !important;
+            position: relative;
+            top: 2px;
+        }
     }
 }
 </style>

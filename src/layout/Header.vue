@@ -42,8 +42,11 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <template v-for="item in ['default', 'mini', 'small', 'medium']" :key="item">
-                            <el-dropdown-item :command="item" :disabled="layoutSize === item">
+                        <template v-for="item in ['Mini', 'Small', 'Medium']" :key="item">
+                            <el-dropdown-item
+                                :command="item.toLowerCase()"
+                                :disabled="layoutSize === item.toLowerCase()"
+                            >
                                 {{ item }}
                             </el-dropdown-item>
                         </template>
@@ -110,7 +113,7 @@ import { openWindow } from "@/util";
 import { useI18n } from "vue-i18n";
 import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
-import { successMessage } from "@/util/message"
+import { successMessage } from "@/util/message";
 
 export default defineComponent({
     setup() {
@@ -126,10 +129,10 @@ export default defineComponent({
 
         const changeLayoutSize = (e: string) => {
             app.appContext.config.globalProperties.$ELEMENT.size = e;
-            successMessage("Switch Size Success")
+            successMessage("Switch Size Success");
             store.dispatch("SET_LAYOUTSIZE", e);
             window.location.reload();
-            // 3.0 replace 失效 
+            // 3.0 replace 失效
             // router.replace({
             //     path: "/redirect" + route.fullPath,
             // });

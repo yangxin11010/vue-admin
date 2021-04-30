@@ -39,7 +39,7 @@
                     </el-table-column>
                     <el-table-column label="操作" align="center" width="180">
                         <template v-slot="{ row }">
-                            <el-button type="info" @click="operate(0, row)">
+                            <el-button type="primary" @click="operate(0, row)">
                                 修改
                             </el-button>
                             <el-button
