@@ -65,13 +65,10 @@ export default defineComponent({
             { t: $t } = useI18n(),
             tabsRef = ref();
 
-        // 保持固定的数组
-        const keepTabsList = computed(() => store.getters.tabsList[0]);
-
-        // 为保持固定的数组
-        const tabsList = computed(() => store.getters.tabsList[1]);
-
-        const openTabs = computed(() => store.getters.openTabs);
+        // 保持固定的数组(keepTabsList)   未保持固定的数组(tabsList)
+        const keepTabsList = computed(() => store.getters.tabsList[0]),
+            tabsList = computed(() => store.getters.tabsList[1]),
+            openTabs = computed(() => store.getters.openTabs);
 
         // 点击跳转
         const tabsClick = (item: Tabs) => {
@@ -230,6 +227,9 @@ export default defineComponent({
     cursor: pointer;
     margin-right: 5px;
     border-radius: 2px;
+    &:hover {
+        @extend .tabs_hover;
+    }
 }
 .tab-text {
     white-space: nowrap;

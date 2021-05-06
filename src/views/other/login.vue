@@ -38,7 +38,7 @@
                 ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="submit" type="primary" :loading="loading" v-keyboard:Enter="submit" @click="submit">
+                <el-button class="submit" type="primary" :loading="loading" v-keyboard:enter="submit" @click="submit">
                     {{ $t("login.button") }}
                 </el-button>
             </el-form-item>

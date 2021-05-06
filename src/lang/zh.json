@@ -11,6 +11,9 @@
     },
     "system": {
         "title": "系统布局设置",
+        "hideBtn": "隐藏按钮",
+        "showTip": "显示提示",
+        "hideTip": "隐藏提示",
         "tagsView": "开启 Tags-View",
         "sidebarLogo": "侧边栏 Logo"
     },

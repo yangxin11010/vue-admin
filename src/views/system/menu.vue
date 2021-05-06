@@ -85,6 +85,23 @@
                 </el-form-item>
                 <el-form-item prop="icon" label="菜单图标">
                     <el-input v-model="menuForm.icon" clearable></el-input>
+                    <!-- <el-select
+                        v-model="menuForm.icon"
+                        clearable
+                        placeholder="请选择图标"
+                        popper-class="el-select-popper-group"
+                        style="width: 100%;"
+                    >
+                        <template v-for="(item, index) in menuIcons" :key="index">
+                            <el-option-group class="el-options-group" :label="item.label">
+                                <template v-for="item2 in item.options" :key="item2">
+                                    <el-option class="el-options-icon" :value="item2">
+                                        <i :class="item2"></i>
+                                    </el-option>
+                                </template>
+                            </el-option-group>
+                        </template>
+                    </el-select> -->
                 </el-form-item>
                 <el-form-item prop="keepAlive" label="缓存状态">
                     <el-switch
@@ -121,6 +138,8 @@ import { warningMsgBox } from "@/util/messageBox";
 import { successMessage, warningMessage } from "@/util/message";
 import { Menu } from "@/model/views";
 import MenuList from "@/assets/js/menuList";
+import elIcons from "@/assets/js/icons/el-icons";
+import npIcons from "@/assets/js/icons/np-icons";
 
 export default defineComponent({
     name: "MenuPage",
@@ -262,6 +281,16 @@ export default defineComponent({
             addMenu,
             pageChange,
             sizeChange,
+            menuIcons: [
+                {
+                    label: "np-icons",
+                    options: npIcons,
+                },
+                {
+                    label: "el-icons",
+                    options: elIcons,
+                },
+            ],
         };
     },
 });
@@ -271,5 +300,23 @@ export default defineComponent({
 .menu {
     width: 100%;
     height: 100%;
+}
+.el-options-icon {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 26px;
+}
+/deep/ {
+    // .el-select-group__wrap {
+    //     width: 40%;
+    // }
+    .el-select-group {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }
 </style>

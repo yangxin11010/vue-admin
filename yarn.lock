@@ -1114,6 +1114,11 @@
     "@types/ace" "*"
     ajv "^6.12.0"
 
+"@types/keypress.js@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/keypress.js/-/keypress.js-2.1.0.tgz#863839b78174d9f5c97f5c4d88e30a3f01ad6a4b"
+  integrity sha512-9OsDMd9mVNr5w9ROSO7JzRIQoquRWdVkRjVfT4A1VsxFAPPD+zDzdi0WSBPiXwlSZxojgRv22IqLuzyo1RPXBw==
+
 "@types/lodash@^4.14.161":
   version "4.14.168"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
@@ -5911,6 +5916,11 @@ jszip@^3.6.0:
     readable-stream "~2.3.6"
     set-immediate-shim "~1.0.1"
 
+keypress.js@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/keypress.js/-/keypress.js-2.1.5.tgz#38f96d1ded85f56115a0cafd9908e727bcd1b348"
+  integrity sha512-PQpeWxG6vNuTT0Gq20LyAzqSpeBWtQ6DTYIJB7JMJEetgF730Om9e6y82GdEv06o1iaJiH1hh2JpSOXK3zIAdA==
+
 killable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/killable/download/killable-1.0.1.tgz"
@@ -6662,9 +6672,9 @@ node-releases@^1.1.70:
   resolved "https://registry.npm.taobao.org/node-releases/download/node-releases-1.1.71.tgz"
   integrity sha1-yxM0sXmJaxyJ7P3UtyX7e738fbs=
 
-node-sass@^5.0.0:
+node-sass@5.0.0:
   version "5.0.0"
-  resolved "https://registry.npmjs.org/node-sass/-/node-sass-5.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-5.0.0.tgz#4e8f39fbef3bac8d2dc72ebe3b539711883a78d2"
   integrity sha512-opNgmlu83ZCF792U281Ry7tak9IbVC+AKnXGovcQ8LG8wFaJv6cLnRlc6DIHlmNxWEexB5bZxi9SZ9JyUuOYjw==
   dependencies:
     async-foreach "^0.1.3"

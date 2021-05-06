@@ -11,6 +11,9 @@
     },
     "system": {
         "title": "システムレイアウト設定",
+        "hideBtn": "隠しボタン",
+        "showTip": "ヒントを表示する",
+        "hideTip": "ヒントを隠す",
         "tagsView": "開く Tags-View",
         "sidebarLogo": "サイドバー Logo"
     },

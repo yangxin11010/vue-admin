@@ -11,6 +11,9 @@
     },
     "system": {
         "title": "System Layout Settings",
+        "hideBtn": "Hide Button",
+        "showTip": "Show Tip",
+        "hideTip": "Hide Tip",
         "tagsView": "Open Tags-View",
         "sidebarLogo": "Sidebar Logo"
     },

@@ -1,5 +1,7 @@
 import { successMessage, errorMessage } from "@/util/message";
 import Clipboard from "clipboard";
+// http://dmauro.github.io/Keypress/
+import Keypress from "keypress.js";
 import Store from "@/store";
 import { App } from "vue";
 
@@ -104,23 +106,39 @@ export default {
             },
         });
 
-        // v-keyboard:Enter="clickHandle"  Enter: 键盘事件的code值 clickHandle 为绑定的事件(事件擦参数(e,...))
-        // v-keyboard:text="value"  text必传 value 为键盘事件参数
+        /**
+         * v-keyboard:[params]="event"
+         *      @params: 键盘事件的code(支持组合按键 以+号分割)值
+         *      @event:  事件
+         *      .sequence 将组合按键改为连续按键
+         * v-keyboard:text="value"  text必传 value 为键盘事件参数
+         *      支持修饰符(1个 --> Object.keys(binding.modifiers)[0])
+         *      value 参数将以{ key(修饰符), value } 为键盘事件第二个参数 返回
+         */
         app.directive("keyboard", {
             mounted: (el, binding) => {
                 if (binding.arg === "text") {
-                    el._v_value = binding.value;
-                } else {
-                    const keyDown = (e: KeyboardEvent) => {
-                        const args = binding.arg as string,
-                            code = e.code;
-                        if (code.toLowerCase() === args.toLowerCase()) {
-                            binding.value && binding.value(e, el._v_value);
-                        }
-                    };
-                    el._v_event = keyDown;
-                    window && window.addEventListener("keydown", keyDown);
+                    const key = Object.keys(binding.modifiers)[0];
+                    if (!key) return;
+                    if (el._v_value) {
+                        el._v_value.key = binding.value;
+                    } else {
+                        el._v_value = { [key]: binding.value };
+                    }
+                    return;
                 }
+                if (binding.arg === "type") {
+                    el._listen_type = binding.value;
+                    return;
+                }
+                const args = (binding.arg as string).toLowerCase(),
+                    { sequence } = binding.modifiers;
+                el._listener = new Keypress.Listener();
+                el._listener[`${sequence ? "sequence_combo" : "simple_combo"}`](args.split("+").join(" "), function(
+                    e: KeyboardEvent
+                ) {
+                    binding.value && binding.value(e, { ...el._v_value });
+                });
             },
             updated: (el, binding) => {
                 if (binding.arg === "text") {
@@ -128,9 +146,8 @@ export default {
                 }
             },
             unmounted: (el) => {
-                window && window.removeEventListener("keydown", el._v_event);
                 delete el._v_value;
-                delete el._v_event;
+                el._listener.destroy();
             },
         });
 
