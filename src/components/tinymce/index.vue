@@ -91,7 +91,7 @@ export default defineComponent({
             },
         });
 
-        let _window: any = window;
+        let _window = window;
 
         const containerWidth = computed(() => {
             const width = props.width as string;

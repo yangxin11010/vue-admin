@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { ElIcons, SvgIcons, NpIcons } from "@/assets/js/icons";
 import { copyText } from "@/util/clipboard";
 export default defineComponent({
@@ -74,9 +74,9 @@ export default defineComponent({
         };
 
         return {
-            ElIcons: ref(ElIcons),
-            SvgIcons: ref(SvgIcons),
-            NpIcons: ref(NpIcons),
+            ElIcons,
+            SvgIcons,
+            NpIcons,
             copy,
         };
     },

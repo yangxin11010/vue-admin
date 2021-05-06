@@ -5,6 +5,9 @@
             <Breadcrumb></Breadcrumb>
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
+            <div class="" style="padding: 0;">
+                <Search></Search>
+            </div>
             <el-tooltip
                 effect="dark"
                 :content="messageNum !== 0 ? $t('message.have', { value: messageNum }) : $t('message.no')"
@@ -107,6 +110,7 @@ import { defineComponent, ref, onMounted, computed, getCurrentInstance, Componen
 import Collapse from "./components/Collapse.vue";
 import Screenfull from "./components/Screenfull.vue";
 import Breadcrumb from "./components/Breadcrumb.vue";
+import Search from "./components/Search.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
 import { openWindow } from "@/util";
@@ -199,6 +203,7 @@ export default defineComponent({
         Collapse,
         Screenfull,
         Breadcrumb,
+        Search,
     },
 });
 </script>

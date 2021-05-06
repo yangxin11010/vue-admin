@@ -2,7 +2,7 @@
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import { InjectionKey } from "vue";
-import { Tabs } from "@/model/views";
+import { Menu, Tabs } from "@/model/views";
 import { setting } from "@/config";
 
 export type LayoutSize = "default" | "medium" | "small" | "mini";
@@ -17,6 +17,7 @@ export interface State {
     tabsList: [Tabs[], Tabs[]];
     permissions: string[];
     layoutSize: LayoutSize;
+    menuList: Menu[];
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -64,6 +65,7 @@ const store = createStore<State>({
         tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
         permissions: ["boss", "admin"],
         layoutSize: "small",
+        menuList: [],
     },
     getters: {
         lang: (state) => state.lang,
@@ -75,6 +77,7 @@ const store = createStore<State>({
         openTabs: (state) => state.openTabs,
         permissions: (state) => state.permissions,
         layoutSize: (state) => state.layoutSize,
+        menuList: (state) => state.menuList,
     },
     mutations: {
         SET_LANG(state, value: string) {
@@ -126,6 +129,9 @@ const store = createStore<State>({
         SET_LAYOUTSIZE(state, value: LayoutSize) {
             state.layoutSize = value;
         },
+        SET_MENULIST(state, value: Menu[]) {
+            state.menuList = value;
+        },
     },
     actions: {
         SET_LANG({ commit }, value: string) {
@@ -170,6 +176,9 @@ const store = createStore<State>({
         },
         SET_LAYOUTSIZE({ commit }, value: LayoutSize) {
             commit("SET_LAYOUTSIZE", value);
+        },
+        SET_MENULIST({ commit }, value: Menu[]) {
+            commit("SET_MENULIST", value);
         },
     },
     modules: {},

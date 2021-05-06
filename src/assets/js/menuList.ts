@@ -7,6 +7,7 @@ export default [
         parentMenuId: null,
         keepAlive: true,
         status: 1,
+        sort: 1,
         children: [],
     },
     {
@@ -17,6 +18,7 @@ export default [
         parentMenuId: null,
         keepAlive: true,
         status: 1,
+        sort: 2,
         children: [],
     },
     {
@@ -27,6 +29,7 @@ export default [
         parentMenuId: null,
         keepAlive: false,
         status: 1,
+        sort: 3,
         children: [],
     },
     {
@@ -37,6 +40,7 @@ export default [
         parentMenuId: null,
         keepAlive: true,
         status: 1,
+        sort: 4,
         children: [],
     },
     {
@@ -47,6 +51,7 @@ export default [
         parentMenuId: null,
         keepAlive: true,
         status: 1,
+        sort: 5,
         children: [],
     },
     {
@@ -57,6 +62,7 @@ export default [
         parentMenuId: null,
         keepAlive: true,
         status: 1,
+        sort: 6,
         children: [
             {
                 menuId: 51,
@@ -66,6 +72,7 @@ export default [
                 parentMenuId: 5,
                 keepAlive: true,
                 status: 1,
+                sort: 1,
                 children: [],
             },
             {
@@ -76,6 +83,7 @@ export default [
                 parentMenuId: 5,
                 keepAlive: true,
                 status: 1,
+                sort: 2,
                 children: [],
             },
             {
@@ -86,6 +94,7 @@ export default [
                 parentMenuId: 5,
                 keepAlive: true,
                 status: 1,
+                sort: 3,
                 children: [],
             },
         ],
@@ -98,6 +107,7 @@ export default [
         parentMenuId: null,
         keepAlive: true,
         status: 1,
+        sort: 7,
         children: [
             {
                 menuId: 61,
@@ -107,6 +117,7 @@ export default [
                 parentMenuId: 6,
                 keepAlive: true,
                 status: 1,
+                sort: 1,
                 children: [],
             },
             {
@@ -117,6 +128,7 @@ export default [
                 parentMenuId: 6,
                 keepAlive: true,
                 status: 1,
+                sort: 2,
                 children: [],
             },
         ],
@@ -129,6 +141,7 @@ export default [
         parentMenuId: null,
         keepAlive: true,
         status: 1,
+        sort: 8,
         children: [
             {
                 menuId: 71,
@@ -138,6 +151,7 @@ export default [
                 parentMenuId: 7,
                 keepAlive: true,
                 status: 1,
+                sort: 1,
                 children: [],
             },
             {
@@ -148,6 +162,7 @@ export default [
                 parentMenuId: 7,
                 keepAlive: true,
                 status: 1,
+                sort: 2,
                 children: [],
             },
             {
@@ -158,6 +173,7 @@ export default [
                 parentMenuId: 7,
                 keepAlive: true,
                 status: 1,
+                sort: 3,
                 children: [],
             },
         ],

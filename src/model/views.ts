@@ -26,5 +26,6 @@ export interface Menu {
     parentMenuId: number | null;
     keepAlive: boolean;
     status: number;
+    sort?: number,
     children: Menu[];
 }

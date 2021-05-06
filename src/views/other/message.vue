@@ -1,6 +1,6 @@
 <template>
     <div class="message" v-loading="loading">
-        <el-table :data="tableData">
+        <el-table :data="tableData" size="medium">
             <el-table-column type="expand">
                 <template v-slot="{ row }">
                     <el-card shadow="hover">
@@ -31,9 +31,9 @@
                     </el-popconfirm>
                 </template>
                 <template v-slot="{ $index }">
-                    <el-tag :type="$index < messageNum ? 'danger' : 'success'">{{
-                        $index >= messageNum ? "已读" : "未读"
-                    }}</el-tag>
+                    <el-tag :type="$index < messageNum ? 'danger' : 'success'">
+                        {{ $index >= messageNum ? "已读" : "未读" }}
+                    </el-tag>
                 </template>
             </el-table-column>
         </el-table>

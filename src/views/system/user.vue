@@ -7,6 +7,7 @@
             <el-table-column label="id" prop="id" width="100" align="center" sortable></el-table-column>
             <el-table-column label="用户名" prop="username" align="center"></el-table-column>
             <el-table-column label="注册日期" prop="registDate" align="center" width="250"></el-table-column>
+            <el-table-column label="描述" prop="desc" align="center" width="250"></el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template v-slot="{ row }">
                     <el-button type="primary" @click="operate(0, row)">修改</el-button>
@@ -24,6 +25,7 @@
                 </el-form-item>
                 <el-form-item label="权限" prop="menu">
                     <el-tree
+                        class="form-tree"
                         :data="totalMenuList"
                         show-checkbox
                         default-expand-all
@@ -33,6 +35,9 @@
                         :props="{ children: 'children', label: 'title' }"
                     >
                     </el-tree>
+                </el-form-item>
+                <el-form-item label="描述" prop="desc">
+                    <el-input type="textarea" v-model="userForm.desc" autosize></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -58,6 +63,7 @@ interface Admin {
     password?: string;
     registDate?: string;
     menu: number[];
+    desc: string;
 }
 
 export default defineComponent({
@@ -94,6 +100,7 @@ export default defineComponent({
             username: "",
             password: "",
             menu: [],
+            desc: "",
         });
 
         const addUser = async () => {
@@ -129,11 +136,10 @@ export default defineComponent({
                 menuTreeRef.value.setCheckedKeys(item.menu);
             } else if (type === 1) {
                 // 删除用户
-                warningMsgBox('确定删除吗？')
-                    .then(() => {
-                        console.log(item);
-                        successMessage(`删除成功！`);
-                    });
+                warningMsgBox("确定删除吗？").then(() => {
+                    console.log(item);
+                    successMessage(`删除成功！`);
+                });
             }
         };
 
@@ -146,6 +152,7 @@ export default defineComponent({
                         password: "123456",
                         registDate: "2021-04-20",
                         menu: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                        desc: "你好！",
                     },
                     {
                         id: 2,
@@ -153,15 +160,23 @@ export default defineComponent({
                         password: "123456",
                         registDate: "2021-04-21",
                         menu: [1, 2, 3, 4, 5, 6, 8, 9, 10],
+                        desc: "好的！",
                     },
                 ];
                 resolve(list);
             });
         };
 
+        const getMenuList = () => {
+            return new Promise<Menu[]>((resolve) => {
+                resolve(MenuList);
+            });
+        };
+
         onMounted(async () => {
-            userlist.value = await getData();
-            totalMenuList.value = MenuList;
+            const [userList, menuList] = await Promise.all([getData(), getMenuList()]);
+            userlist.value = userList;
+            totalMenuList.value = menuList;
         });
 
         return {

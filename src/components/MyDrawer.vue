@@ -1,5 +1,5 @@
 <template>
-    <div class="MyDrawer" v-keyboard:s+e+t.sequence="keyboardEvent">
+    <div class="MyDrawer" v-keyboard:s+e+t.press="keyboardEvent">
         <div v-if="modal" class="drawer-back" @click.stop="toggle" :class="{ showBack: open }"></div>
         <div class="drawer-box" :class="drawerBoxclassName" :style="{ width: defaultWidth }">
             <div v-if="showClose && showDrawerIcon" class="drawer-icon-box" :class="drawerIconClassName">
@@ -107,11 +107,11 @@ export default defineComponent({
         const defaultWidth = computed(() => {
             if (typeof props.width === "number") {
                 return props.width + "px";
-            } else if (typeof props.width === "string") {
-                return props.width;
-            } else {
-                return "260px";
             }
+            if (typeof props.width === "string") {
+                return props.width;
+            }
+            return "260px";
         });
 
         const toggle = () => {
@@ -129,10 +129,12 @@ export default defineComponent({
         const handleCommand = (e: number) => {
             if (e === 0) {
                 keyboardEvent();
+                return;
             }
             if (e === 1) {
                 tipDisabled.value = !tipDisabled.value;
                 location.setItem("global-setting-tip", tipDisabled.value);
+                return;
             }
         };
 
@@ -142,10 +144,8 @@ export default defineComponent({
         };
 
         onMounted(() => {
-            const tip: boolean = location.getItem("global-setting-tip"),
-                icon: boolean = location.getItem("global-setting-icon");
-            tip && (tipDisabled.value = tip);
-            icon && (showDrawerIcon.value = icon);
+            tipDisabled.value = location.getItem("global-setting-tip");
+            showDrawerIcon.value = location.getItem("global-setting-icon");
         });
 
         return {

@@ -68,6 +68,7 @@ export default defineComponent({
 
         onMounted(async () => {
             menuList.value = await getMenuList();
+            store.dispatch("SET_MENULIST", menuList.value);
         });
 
         return {

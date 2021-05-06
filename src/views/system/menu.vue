@@ -23,6 +23,7 @@
                     </el-table-column>
                     <el-table-column label="菜单路径" prop="path" align="left"></el-table-column>
                     <el-table-column label="菜单图标" prop="icon" align="left"></el-table-column>
+                    <el-table-column label="排序" prop="sort" align="center" width="100" sortable></el-table-column>
                     <el-table-column label="缓存状态" prop="keepAlive" align="center" width="100">
                         <template v-slot="{ row }">
                             <el-tag :type="row.keepAlive ? 'success' : 'danger'">
@@ -61,7 +62,7 @@
                 <el-form-item label="上级菜单" prop="parentMenuId">
                     <el-select v-model="menuForm.parentMenuId" clearable>
                         <template v-for="item in parentMenuIdOptions" :key="item.title">
-                            <el-option :label="item.title + ' --> ' + item.path" :value="item.menuId"></el-option>
+                            <el-option :label="item.path" :value="item.menuId"></el-option>
                         </template>
                     </el-select>
                 </el-form-item>
@@ -84,24 +85,18 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="icon" label="菜单图标">
-                    <el-input v-model="menuForm.icon" clearable></el-input>
-                    <!-- <el-select
+                    <el-input
+                        class="icon-input"
+                        ref="iconInputRef"
                         v-model="menuForm.icon"
                         clearable
-                        placeholder="请选择图标"
-                        popper-class="el-select-popper-group"
-                        style="width: 100%;"
+                        @focus="choseIconInputFocus"
                     >
-                        <template v-for="(item, index) in menuIcons" :key="index">
-                            <el-option-group class="el-options-group" :label="item.label">
-                                <template v-for="item2 in item.options" :key="item2">
-                                    <el-option class="el-options-icon" :value="item2">
-                                        <i :class="item2"></i>
-                                    </el-option>
-                                </template>
-                            </el-option-group>
-                        </template>
-                    </el-select> -->
+                        <template v-if="menuForm.icon" #prepend><i :class="menuForm.icon"></i></template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item v-if="!isAddMenu" prop="icon" label="排序">
+                    <el-input v-model="menuForm.sort" clearable> </el-input>
                 </el-form-item>
                 <el-form-item prop="keepAlive" label="缓存状态">
                     <el-switch
@@ -129,27 +124,46 @@
                 </span>
             </template>
         </el-dialog>
+        <el-drawer title="请选择图标" v-model="choseIconDrawer">
+            <el-tabs type="border-card" tab-position="top">
+                <el-tab-pane label="Element-UI Icons">
+                    <el-space wrap size="large">
+                        <template v-for="(item, index) in ElIcons" :key="index">
+                            <div class="chose-icon" @click="changeIcon(item)"><i :class="item" /></div>
+                        </template>
+                    </el-space>
+                </el-tab-pane>
+                <el-tab-pane label="Np-Icons">
+                    <el-space wrap size="large">
+                        <template v-for="(item, index) in NpIcons" :key="index">
+                            <div class="chose-icon" @click="changeIcon(item)"><i :class="item" /></div>
+                        </template>
+                    </el-space>
+                </el-tab-pane>
+            </el-tabs>
+        </el-drawer>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, reactive, ref } from "vue";
+import { computed, defineComponent, nextTick, reactive, ref } from "vue";
 import { warningMsgBox } from "@/util/messageBox";
 import { successMessage, warningMessage } from "@/util/message";
 import { Menu } from "@/model/views";
-import MenuList from "@/assets/js/menuList";
-import elIcons from "@/assets/js/icons/el-icons";
-import npIcons from "@/assets/js/icons/np-icons";
+import ElIcons from "@/assets/js/icons/el-icons";
+import NpIcons from "@/assets/js/icons/np-icons";
+import { useStore } from "@/store";
 
 export default defineComponent({
     name: "MenuPage",
     setup() {
-        let menuList = ref<Menu[]>([]);
+        const store = useStore();
+        const menuList = computed<Menu[]>(() => store.getters.menuList);
 
-        let menuFormRef = ref();
+        const menuFormRef = ref();
         const dialogVisible = ref(false);
 
-        let isAddMenu = ref(true);
+        const isAddMenu = ref(true);
 
         let menuForm = reactive<Menu>({
             title: "",
@@ -158,6 +172,7 @@ export default defineComponent({
             parentMenuId: null,
             keepAlive: true,
             status: 1,
+            sort: 0,
             children: [],
         });
 
@@ -250,12 +265,6 @@ export default defineComponent({
             });
         };
 
-        const getMenuList = (): Promise<Menu[]> => {
-            return new Promise((resolve) => {
-                resolve(MenuList);
-            });
-        };
-
         const pageChange = (value: number) => {
             console.log(value);
         };
@@ -264,9 +273,17 @@ export default defineComponent({
             console.log(value);
         };
 
-        onMounted(async () => {
-            menuList.value = await getMenuList();
-        });
+        // 选择菜单
+        const iconInputRef = ref();
+        const choseIconDrawer = ref(false);
+        const choseIconInputFocus = () => {
+            choseIconDrawer.value = true;
+            iconInputRef.value.blur();
+        };
+        const changeIcon = (item: string) => {
+            menuForm.icon = item;
+            choseIconDrawer.value = false;
+        };
 
         return {
             menuList,
@@ -281,16 +298,12 @@ export default defineComponent({
             addMenu,
             pageChange,
             sizeChange,
-            menuIcons: [
-                {
-                    label: "np-icons",
-                    options: npIcons,
-                },
-                {
-                    label: "el-icons",
-                    options: elIcons,
-                },
-            ],
+            choseIconDrawer,
+            iconInputRef,
+            choseIconInputFocus,
+            NpIcons,
+            ElIcons,
+            changeIcon,
         };
     },
 });
@@ -301,22 +314,19 @@ export default defineComponent({
     width: 100%;
     height: 100%;
 }
-.el-options-icon {
-    width: 50px;
-    height: 50px;
-    padding: 0;
-    line-height: 50px;
-    text-align: center;
-    cursor: pointer;
+.chose-icon {
+    padding: 5px;
     font-size: 26px;
+    cursor: pointer;
+    &:hover {
+        background-color: #f5f7fa;
+    }
 }
 /deep/ {
-    // .el-select-group__wrap {
-    //     width: 40%;
-    // }
-    .el-select-group {
-        display: flex;
-        flex-wrap: wrap;
+    .icon-input .el-input-group__prepend {
+        background-color: #ffffff !important;
+        font-size: 24px;
+        padding: 0 10px;
     }
 }
 </style>

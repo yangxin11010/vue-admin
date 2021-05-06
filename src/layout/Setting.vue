@@ -39,8 +39,11 @@ export default defineComponent({
         const switchChange = (e: boolean, index: number) => {
             if (index === 0) {
                 store.dispatch("CHANGE_LOGO", e);
-            } else if (index === 1) {
+                return;
+            }
+            if (index === 1) {
                 store.dispatch("CHANGE_Tabs", e);
+                return;
             }
         };
 
@@ -54,7 +57,7 @@ export default defineComponent({
             openLogo,
             openTabs,
             switchChange,
-            setting
+            setting,
         };
     },
     components: {
