@@ -1,11 +1,113 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Store from "@/store";
-import Layout from "@/layout/index.vue";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { nprogress } from "@/config";
 
 NProgress.configure(nprogress);
+
+// const routes: Array<RouteRecordRaw> = [
+//     {
+//         path: "/",
+//         redirect: "/dashboard",
+//     },
+//     {
+//         path: "/login",
+//         name: "Login",
+//         alias: [],
+//         meta: {
+//             requiresAuth: false,
+//             title: "",
+//             keepAlive: false,
+//         },
+//         component: () => import("@/views/other/login.vue"),
+//     },
+//     {
+//         path: "/",
+//         name: "Home",
+//         component: () => import("@/layout/index.vue"),
+//         children: [
+//             {
+//                 path: "/redirect/:path(.*)",
+//                 name: "Redirect",
+//                 alias: [],
+//                 meta: {
+//                     requiresAuth: false,
+//                     title: "",
+//                     keepAlive: false,
+//                 },
+//                 component: () => import("@/views/other/redirect.vue"),
+//             },
+//             {
+//                 path: "dashboard",
+//                 name: "Dashboard",
+//                 alias: ["/index", "/dashboard"],
+//                 meta: {
+//                     requiresAuth: true,
+//                     title: "首页",
+//                     keepAlive: true,
+//                 },
+//                 component: () => import("@/views/other/dashboard.vue"),
+//             },
+//             {
+//                 path: "personCenter",
+//                 name: "PersonCenter",
+//                 alias: ["/person", "/center"],
+//                 meta: {
+//                     requiresAuth: true,
+//                     title: "个人中心",
+//                     keepAlive: true,
+//                 },
+//                 component: () => import("@/views/other/person-center.vue"),
+//             },
+//             {
+//                 path: "message",
+//                 name: "Message",
+//                 alias: [],
+//                 meta: {
+//                     requiresAuth: true,
+//                     title: "消息中心",
+//                     keepAlive: true,
+//                 },
+//                 component: () => import("@/views/other/message.vue"),
+//             },
+//         ],
+//     },
+//     {
+//         path: "/error",
+//         name: "Error",
+//         component: () => import("@/layout/index.vue"),
+//         meta: {
+//             requiresAuth: true,
+//             title: "错误页面",
+//             keepAlive: true,
+//         },
+//         children: [
+//             {
+//                 path: "notFound",
+//                 name: "NotFound",
+//                 meta: {
+//                     requiresAuth: true,
+//                     title: "404",
+//                     keepAlive: true,
+//                 },
+//                 alias: [],
+//                 component: () => import("@/views/error/404.vue"),
+//             },
+//             {
+//                 path: "notPermission",
+//                 name: "NotPermission",
+//                 meta: {
+//                     requiresAuth: true,
+//                     title: "401",
+//                     keepAlive: true,
+//                 },
+//                 alias: [],
+//                 component: () => import("@/views/error/401.vue"),
+//             },
+//         ],
+//     },
+// ];
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -26,19 +128,8 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/",
         name: "Home",
-        component: Layout,
+        component: () => import("@/layout/index.vue"),
         children: [
-            {
-                path: "dashboard",
-                name: "Dashboard",
-                alias: ["/index", "/dashboard"],
-                meta: {
-                    requiresAuth: true,
-                    title: "首页",
-                    keepAlive: true,
-                },
-                component: () => import("@/views/other/dashboard.vue"),
-            },
             {
                 path: "/redirect/:path(.*)",
                 name: "Redirect",
@@ -51,6 +142,28 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/other/redirect.vue"),
             },
             {
+                path: "dashboard",
+                name: "Dashboard",
+                alias: ["/index", "/dashboard"],
+                meta: {
+                    requiresAuth: true,
+                    title: "首页",
+                    keepAlive: true,
+                },
+                component: () => import("@/views/other/dashboard.vue"),
+            },
+            {
+                path: "personCenter",
+                name: "PersonCenter",
+                alias: ["/person", "/center"],
+                meta: {
+                    requiresAuth: true,
+                    title: "个人中心",
+                    keepAlive: true,
+                },
+                component: () => import("@/views/other/person-center.vue"),
+            },
+            {
                 path: "icons",
                 name: "IconsPage",
                 alias: [],
@@ -59,7 +172,7 @@ const routes: Array<RouteRecordRaw> = [
                     title: "图标",
                     keepAlive: true,
                 },
-                component: () => import("@/views/other/svg.vue"),
+                component: () => import("@/views/other/icons.vue"),
             },
             {
                 path: "permissions",
@@ -95,17 +208,6 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/other/export-file.vue"),
             },
             {
-                path: "personCenter",
-                name: "PersonCenter",
-                alias: ["/person", "/center"],
-                meta: {
-                    requiresAuth: true,
-                    title: "个人中心",
-                    keepAlive: true,
-                },
-                component: () => import("@/views/other/person-center.vue"),
-            },
-            {
                 path: "message",
                 name: "Message",
                 alias: [],
@@ -121,7 +223,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/setting",
         name: "Setting",
-        component: Layout,
+        component: () => import("@/layout/index.vue"),
         meta: {
             requiresAuth: true,
             title: "设置",
@@ -166,7 +268,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/components",
         name: "Components",
-        component: Layout,
+        component: () => import("@/layout/index.vue"),
         meta: {
             requiresAuth: true,
             title: "组件",
@@ -211,7 +313,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/error",
         name: "Error",
-        component: Layout,
+        component: () => import("@/layout/index.vue"),
         meta: {
             requiresAuth: true,
             title: "错误页面",

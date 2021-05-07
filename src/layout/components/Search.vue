@@ -35,7 +35,6 @@ import router from "@/router";
 
 export default defineComponent({
     name: "Search",
-    props: {},
     setup() {
         const store = useStore(),
             inputRef = ref(),

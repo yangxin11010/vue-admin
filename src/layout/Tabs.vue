@@ -7,14 +7,14 @@
         <ul class="tabs-l disflex align-it-cen" ref="tabsRef">
             <template v-for="item in keepTabsList" :key="item.path">
                 <li class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
-                    <span class="tab-text" :class="{ 'tabs-black-circle': $route.path === item.path }">
+                    <span class="tab-text" :class="{ 'tabs-keep-circle': $route.path === item.path }">
                         {{ $t(`aside.${item.path}`) }}
                     </span>
                 </li>
             </template>
             <template v-for="(item, index) in tabsList" :key="item.path">
                 <li class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
-                    <span class="tab-text" :class="{ 'tabs-white-circle': $route.path === item.path }">
+                    <span class="tab-text" :class="{ 'tabs-active-circle': $route.path === item.path }">
                         {{ $t(`aside.${item.path}`) }}
                     </span>
                     <span class="tab-close" @click.stop="closeTabs(index)"><i class="el-icon-close"></i></span>
@@ -54,6 +54,7 @@ import { useRouter, useRoute } from "vue-router";
 import ElMessageBox from "@/util/messageBox";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
+import { globalColor } from "@/config";
 
 import { Tabs } from "@/model/views";
 
@@ -191,6 +192,12 @@ export default defineComponent({
             handleCommand,
             mouseOperate,
             tabsRef,
+            tabsBColor: globalColor.tabsBColor,
+            tabsTColor: globalColor.tabsTColor,
+            tabsAColor: globalColor.tabsAColor,
+            tabsATColor: globalColor.tabsATColor,
+            tabsBeforKColor: globalColor.tabsBeforKColor,
+            tabsBeforAColor: globalColor.tabsBeforAColor,
         };
     },
 });
@@ -221,8 +228,8 @@ export default defineComponent({
     flex-wrap: nowrap;
     height: 25px;
     border: 1px solid #d8dce5;
-    color: #495060;
-    background: #fff;
+    color: v-bind(tabsTColor);
+    background: v-bind(tabsBColor);
     padding: 0 8px;
     cursor: pointer;
     margin-right: 5px;
@@ -254,8 +261,8 @@ export default defineComponent({
         color: #fff;
     }
 }
-.tabs-black-circle::before,
-.tabs-white-circle::before {
+.tabs-keep-circle::before,
+.tabs-active-circle::before {
     content: "";
     display: inline-block;
     width: 8px;
@@ -265,11 +272,11 @@ export default defineComponent({
     margin-right: 5px;
 }
 
-.tabs-black-circle::before {
-    background: #fff;
+.tabs-keep-circle::before {
+    background: v-bind(tabsBeforKColor);
 }
-.tabs-white-circle::before {
-    background: #fff;
+.tabs-active-circle::before {
+    background: v-bind(tabsBeforAColor);
 }
 .tabs-r {
     height: 100%;
@@ -284,7 +291,6 @@ export default defineComponent({
     height: 100%;
     text-align: center;
     line-height: 26px;
-    color: #fff;
     border-radius: 2px;
     font-size: 12px;
     display: flex;
@@ -295,15 +301,16 @@ export default defineComponent({
     margin-left: 5px;
 }
 .tabs_hover {
-    background-color: $main-color !important;
-    color: #fff !important;
+    background-color: v-bind(tabsAColor) !important;
+    color: v-bind(tabsATColor) !important;
 }
 /deep/ {
     .tabs-dropdown {
         height: 24px;
         padding-left: 10px;
         padding-right: 10px;
-        background-color: $main-color !important;
+        background-color: v-bind(tabsAColor) !important;
+        color: v-bind(tabsATColor) !important;
     }
 }
 </style>

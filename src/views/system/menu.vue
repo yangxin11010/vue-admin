@@ -15,15 +15,30 @@
                     @page-change="pageChange"
                     @size-change="sizeChange"
                 >
-                    <el-table-column label="菜单名称" prop="title" align="left">
+                    <el-table-column label="排序" prop="sort" align="center" width="100" sortable></el-table-column>
+                    <el-table-column label="菜单名称" prop="title" align="left" min-width="150">
                         <template v-slot="{ row }">
                             <i :class="row.icon"></i>
                             <span style="margin-left: 5px;">{{ row.title }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="菜单路径" prop="path" align="left"></el-table-column>
-                    <el-table-column label="菜单图标" prop="icon" align="left"></el-table-column>
-                    <el-table-column label="排序" prop="sort" align="center" width="100" sortable></el-table-column>
+                    <el-table-column label="菜单路径" prop="path" align="left" min-width="150"></el-table-column>
+                    <el-table-column label="菜单图标" prop="icon" align="left" min-width="200"></el-table-column>
+                    <el-table-column label="菜单别名" prop="alias" align="left" min-width="150">
+                        <template v-slot="{ row }">
+                            <el-space wrap>
+                                <template v-for="(item, index) in row.alias" :key="index">
+                                    <el-tag size="small" effect="plain">{{ item }}</el-tag>
+                                </template>
+                            </el-space>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="菜单项目路径"
+                        prop="realPath"
+                        align="left"
+                        min-width="250"
+                    ></el-table-column>
                     <el-table-column label="缓存状态" prop="keepAlive" align="center" width="100">
                         <template v-slot="{ row }">
                             <el-tag :type="row.keepAlive ? 'success' : 'danger'">
@@ -97,6 +112,35 @@
                 </el-form-item>
                 <el-form-item v-if="!isAddMenu" prop="icon" label="排序">
                     <el-input v-model="menuForm.sort" clearable> </el-input>
+                </el-form-item>
+                <el-form-item prop="alias" label="别名">
+                    <el-space class="space" wrap>
+                        <template v-for="(item, index) in menuForm.alias" :key="index">
+                            <el-tag
+                                size="large"
+                                closable
+                                effect="plain"
+                                :disable-transitions="false"
+                                @close="aliasTagClose(index)"
+                            >
+                                {{ item }}
+                            </el-tag>
+                        </template>
+                        <el-input
+                            class="alias-input"
+                            v-if="aliasInputShow"
+                            v-model="alias"
+                            ref="aliasInputRef"
+                            size="small"
+                            @keyup.enter="aliasInputConfirm"
+                            @blur="aliasInputConfirm"
+                        >
+                        </el-input>
+                        <el-button v-else class="alias-btn" size="small" @click="showAliasInput">+ New Alias</el-button>
+                    </el-space>
+                </el-form-item>
+                <el-form-item prop="realPath" label="项目路径">
+                    <el-input v-model="menuForm.realPath" clearable> </el-input>
                 </el-form-item>
                 <el-form-item prop="keepAlive" label="缓存状态">
                     <el-switch
@@ -173,6 +217,8 @@ export default defineComponent({
             keepAlive: true,
             status: 1,
             sort: 0,
+            alias: [],
+            realPath: "",
             children: [],
         });
 
@@ -238,7 +284,7 @@ export default defineComponent({
                 await nextTick();
                 menuFormRef.value.clearValidate();
                 isAddMenu.value = false;
-                menuForm = Object.assign(menuForm, item);
+                menuForm = Object.assign(menuForm, JSON.parse(JSON.stringify(item)));
             } else if (type === 1) {
                 // 禁用/启用菜单
                 dialogVisible.value = false;
@@ -285,6 +331,27 @@ export default defineComponent({
             choseIconDrawer.value = false;
         };
 
+        // 新增别名
+        const aliasInputRef = ref();
+        const aliasInputShow = ref(false);
+        const alias = ref("");
+        const aliasTagClose = (index: number) => {
+            menuForm.alias.splice(index, 1);
+        };
+        const aliasInputConfirm = () => {
+            const val = "/" + alias.value.replace(/\//, "");
+            if (alias.value && !menuForm.alias.includes(val)) {
+                menuForm.alias.push(val);
+            }
+            aliasInputShow.value = false;
+            alias.value = "";
+        };
+        const showAliasInput = async () => {
+            aliasInputShow.value = true;
+            await nextTick();
+            aliasInputRef.value.focus();
+        };
+
         return {
             menuList,
             operate,
@@ -304,6 +371,12 @@ export default defineComponent({
             NpIcons,
             ElIcons,
             changeIcon,
+            aliasInputRef,
+            aliasInputShow,
+            alias,
+            aliasInputConfirm,
+            showAliasInput,
+            aliasTagClose,
         };
     },
 });
@@ -321,6 +394,10 @@ export default defineComponent({
     &:hover {
         background-color: #f5f7fa;
     }
+}
+.alias-input,
+.alias-btn {
+    width: 90px;
 }
 /deep/ {
     .icon-input .el-input-group__prepend {

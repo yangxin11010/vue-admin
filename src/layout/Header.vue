@@ -5,9 +5,11 @@
             <Breadcrumb></Breadcrumb>
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
+            <!-- 搜索 -->
             <div class="" style="padding: 0;">
                 <Search></Search>
             </div>
+            <!-- 消息 -->
             <el-tooltip
                 effect="dark"
                 :content="messageNum !== 0 ? $t('message.have', { value: messageNum }) : $t('message.no')"
@@ -24,6 +26,7 @@
                     </div>
                 </router-link>
             </el-tooltip>
+            <!-- 全屏 -->
             <el-tooltip
                 effect="dark"
                 :content="isScreenfull ? $t('fullscreen.exit') : $t('fullscreen.full')"
@@ -33,6 +36,7 @@
                     <Screenfull parent @screenfull="screenfull"></Screenfull>
                 </div>
             </el-tooltip>
+            <!-- element-ui 组件大小 -->
             <el-dropdown
                 class="header-dropdown"
                 placement="bottom"
@@ -45,7 +49,7 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <template v-for="item in ['Mini', 'Small', 'Medium']" :key="item">
+                        <template v-for="item in ['Mini', 'Small', 'Medium', 'large']" :key="item">
                             <el-dropdown-item
                                 :command="item.toLowerCase()"
                                 :disabled="layoutSize === item.toLowerCase()"
@@ -56,6 +60,7 @@
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
+            <!-- 语言 -->
             <el-dropdown
                 class="header-dropdown"
                 placement="bottom-end"
@@ -76,6 +81,7 @@
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
+            <!-- 头像 -->
             <el-dropdown
                 class="header-dropdown"
                 placement="bottom-end"
@@ -118,6 +124,7 @@ import { useI18n } from "vue-i18n";
 import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
 import { successMessage } from "@/util/message";
+import { globalColor } from "@/config";
 
 export default defineComponent({
     setup() {
@@ -197,6 +204,9 @@ export default defineComponent({
             availableLocales,
             layoutSize,
             changeLayoutSize,
+            headerBColor: globalColor.headerBColor,
+            headerTColor: globalColor.headerTColor,
+            headerHColor: globalColor.headerHColor,
         };
     },
     components: {
@@ -213,17 +223,14 @@ export default defineComponent({
 .header {
     width: 100%;
     height: 100%;
-    background-color: $main-color;
-    color: #ffffff;
+    background-color: v-bind(headerBColor);
+    color: v-bind(headerTColor) !important;
     user-select: none;
     a {
-        color: #ffffff;
+        color: v-bind(headerTColor) !important;
     }
 }
 
-.breadcrumb {
-    color: #fff;
-}
 .header-r {
     padding-right: 10px;
     height: 100%;
@@ -235,7 +242,7 @@ export default defineComponent({
     align-items: center;
     cursor: pointer;
     &:hover {
-        background-color: #263445;
+        background-color: v-bind(headerHColor) !important;
     }
 }
 .fullscreen {

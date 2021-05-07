@@ -8,6 +8,8 @@ export default [
         keepAlive: true,
         status: 1,
         sort: 1,
+        alias: ["/index", "/dashboard"],
+        realPath: "@/views/other/dashboard.vue",
         children: [],
     },
     {
@@ -19,6 +21,8 @@ export default [
         keepAlive: true,
         status: 1,
         sort: 2,
+        alias: ["/svg"],
+        realPath: "@/views/other/icons.vue",
         children: [],
     },
     {
@@ -30,6 +34,8 @@ export default [
         keepAlive: false,
         status: 1,
         sort: 3,
+        alias: [],
+        realPath: "@/views/other/permissions.vue",
         children: [],
     },
     {
@@ -41,6 +47,8 @@ export default [
         keepAlive: true,
         status: 1,
         sort: 4,
+        alias: [],
+        realPath: "@/views/other/clipboard.vue",
         children: [],
     },
     {
@@ -52,6 +60,8 @@ export default [
         keepAlive: true,
         status: 1,
         sort: 5,
+        alias: ["/export", "/excel", "/zip"],
+        realPath: "@/views/other/export-file.vue",
         children: [],
     },
     {
@@ -63,6 +73,8 @@ export default [
         keepAlive: true,
         status: 1,
         sort: 6,
+        alias: [],
+        realPath: "@/layout/index.vue",
         children: [
             {
                 menuId: 51,
@@ -73,6 +85,8 @@ export default [
                 keepAlive: true,
                 status: 1,
                 sort: 1,
+                alias: [],
+                realPath: "@/views/components/tinymce-page.vue",
                 children: [],
             },
             {
@@ -84,6 +98,8 @@ export default [
                 keepAlive: true,
                 status: 1,
                 sort: 2,
+                alias: [],
+                realPath: "@/views/components/jsoneditor-page.vue",
                 children: [],
             },
             {
@@ -95,6 +111,8 @@ export default [
                 keepAlive: true,
                 status: 1,
                 sort: 3,
+                alias: [],
+                realPath: "@/views/components/charts.vue",
                 children: [],
             },
         ],
@@ -108,6 +126,8 @@ export default [
         keepAlive: true,
         status: 1,
         sort: 7,
+        alias: ["/wrong"],
+        realPath: "@/layout/index.vue",
         children: [
             {
                 menuId: 61,
@@ -118,6 +138,8 @@ export default [
                 keepAlive: true,
                 status: 1,
                 sort: 1,
+                alias: ["/404"],
+                realPath: "@/views/error/404.vue",
                 children: [],
             },
             {
@@ -129,6 +151,8 @@ export default [
                 keepAlive: true,
                 status: 1,
                 sort: 2,
+                alias: ["/401"],
+                realPath: "@/views/error/401.vue",
                 children: [],
             },
         ],
@@ -142,6 +166,8 @@ export default [
         keepAlive: true,
         status: 1,
         sort: 8,
+        alias: ["/set"],
+        realPath: "@/layout/index.vue",
         children: [
             {
                 menuId: 71,
@@ -152,6 +178,8 @@ export default [
                 keepAlive: true,
                 status: 1,
                 sort: 1,
+                alias: [],
+                realPath: "@/views/system/system.vue",
                 children: [],
             },
             {
@@ -163,6 +191,8 @@ export default [
                 keepAlive: true,
                 status: 1,
                 sort: 2,
+                alias: [],
+                realPath: "@/views/system/menu.vue",
                 children: [],
             },
             {
@@ -174,6 +204,8 @@ export default [
                 keepAlive: true,
                 status: 1,
                 sort: 3,
+                alias: [],
+                realPath: "@/views/system/user.vue",
                 children: [],
             },
         ],

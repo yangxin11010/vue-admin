@@ -2,9 +2,9 @@
     <div class="aside">
         <el-menu v-if="openLogo" class="asideMenu" style="height: 60px;overflow: hidden;" :collapse="collapse" router>
             <el-menu-item class="logo-title" index="/">
-                <img class="logo" src="@imgs/logo.png" alt="vue-admin" />
+                <img class="logo" :src="setting.logo" alt="vue-admin" />
                 <template #title>
-                    <span class="title">vue-admin</span>
+                    <span class="title">{{ setting.logoText }}</span>
                 </template>
             </el-menu-item>
         </el-menu>
@@ -13,9 +13,9 @@
             :uniqueOpened="true"
             :collapse="collapse"
             :default-active="defaultActive"
-            background-color="#304156"
-            text-color="#BFCBD9"
-            active-text-color="#1890ff"
+            :background-color="globalColor.asideBColor"
+            :text-color="globalColor.asideTColor"
+            :active-text-color="globalColor.asideATColor"
             router
             :style="{
                 height: `calc(100% - ${openLogo ? 60 : 0}px)`,
@@ -49,14 +49,17 @@
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "@/store";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { Menu } from "@/model/views";
 import MenuList from "@/assets/js/menuList";
+import { globalColor, setting } from "@/config";
+// import { RouteRecordRaw } from "vue-router";
 
 export default defineComponent({
     setup() {
-        const store = useStore();
-        const route = useRoute();
+        const store = useStore(),
+            route = useRoute(),
+            router = useRouter();
 
         const menuList = ref<Menu[]>([]);
 
@@ -66,9 +69,68 @@ export default defineComponent({
             });
         };
 
+        // const getNameByPath = (value: string) => {
+        //     value = value.replace(/\//, "");
+        //     return value.slice(0, 1).toUpperCase() + value.slice(1, value.length);
+        // };
+
+        // const formateRouter = (list: Menu[]): RouteRecordRaw[] => {
+        //     if (list.length > 0) {
+        //         let routerList: RouteRecordRaw[] = [];
+        //         list.forEach((item) => {
+        //             const router: RouteRecordRaw = {
+        //                 path: item.path,
+        //                 name: getNameByPath(item.path),
+        //                 alias: item.alias,
+        //                 meta: {
+        //                     requiresAuth: false,
+        //                     title: item.title,
+        //                     keepAlive: item.keepAlive,
+        //                 },
+        //                 // component: () => import(item.realPath),
+        //                 component: () => import(item.realPath),
+        //                 children: formateRouter(item.children),
+        //             };
+        //             // console.log(import(item.realPath));
+        //             routerList.push(router);
+        //         });
+        //         const path = "views/other/login.vue";
+        //         console.log((resolve: any) => require([`@/${path}`], resolve));
+        //         return routerList;
+        //     }
+        //     return [];
+        // };
+
+        // const addRoute = (list: RouteRecordRaw[]) => {
+        //     list.forEach((item) => {
+        //         if (!router.hasRoute(item.name as string) && item.children?.length === 0) {
+        //             router.addRoute(item);
+        //         }
+        //         item.children?.forEach((item2) => {
+        //             if (router.hasRoute(item.name as string)) {
+        //                 router.addRoute(item.name as string, item2);
+        //             }
+        //         });
+        //     });
+        //     router.addRoute({
+        //         path: "/:pathMatch(.*)*",
+        //         name: "FourZeroFour",
+        //         redirect: "/error/notFound",
+        //         meta: {
+        //             requiresAuth: false,
+        //             title: "404",
+        //             keepAlive: true,
+        //         },
+        //         alias: [],
+        //     });
+        // };
+
         onMounted(async () => {
-            menuList.value = await getMenuList();
+            const result = await getMenuList();
+            // addRoute(formateRouter(result));
+            menuList.value = result;
             store.dispatch("SET_MENULIST", menuList.value);
+            console.log(router.getRoutes());
         });
 
         return {
@@ -76,6 +138,10 @@ export default defineComponent({
             collapse: computed(() => store.getters.collapse),
             defaultActive: computed(() => route.path),
             openLogo: computed(() => store.getters.openLogo),
+            globalColor,
+            setting,
+            asideNextBColor: globalColor.asideNextBColor,
+            asideNextAColor: globalColor.asideNextAColor,
         };
     },
 });
@@ -136,10 +202,11 @@ export default defineComponent({
         }
         .el-menu--inline .el-menu-item {
             // 二级菜单 背景色
-            background-color: #1f2f3f !important;
+
+            background-color: v-bind(asideNextBColor) !important;
             &:hover {
-                // 二级菜单鼠标移除背景色
-                background-color: #001528 !important;
+                // 二级菜单鼠标移入背景色
+                background-color: v-bind(asideNextAColor) !important;
             }
         }
         .el-menu-item [class^="np-icon-"],

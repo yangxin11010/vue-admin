@@ -33,8 +33,8 @@ import { setting } from "@/config";
 export default defineComponent({
     setup() {
         const store = useStore();
-        let openLogo = computed(() => store.getters.openLogo);
-        let openTabs = computed(() => store.getters.openTabs);
+        let openLogo = computed(() => store.getters.openLogo),
+            openTabs = computed(() => store.getters.openTabs);
 
         const switchChange = (e: boolean, index: number) => {
             if (index === 0) {
