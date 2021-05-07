@@ -5,9 +5,9 @@
         </handle-box>
         <my-el-table :data="userlist" border :total="userlist.length" :page="1">
             <el-table-column label="id" prop="id" width="100" align="center" sortable></el-table-column>
-            <el-table-column label="用户名" prop="username" align="center"></el-table-column>
-            <el-table-column label="注册日期" prop="registDate" align="center" width="250"></el-table-column>
-            <el-table-column label="描述" prop="desc" align="center" width="250"></el-table-column>
+            <el-table-column label="用户名" prop="username" align="center" width="200"></el-table-column>
+            <el-table-column label="注册日期" prop="registDate" align="center" width="200"></el-table-column>
+            <el-table-column label="描述" prop="desc" align="center" show-overflow-tooltip></el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template v-slot="{ row }">
                     <el-button type="primary" @click="operate(0, row)">修改</el-button>

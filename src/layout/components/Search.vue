@@ -1,16 +1,6 @@
 <template>
     <div class="search">
         <transition name="fade">
-            <!-- <el-input
-                ref="inputRef"
-                v-show="showInput"
-                class="search-input"
-                v-model="searchValue"
-                clearable
-                size="mini"
-                placeholder="Search"
-                @blur="inputOperate(1)"
-            ></el-input> -->
             <el-select
                 ref="inputRef"
                 class="search-input"
@@ -29,8 +19,8 @@
                 <el-option
                     v-for="item in searchResult"
                     :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    :label="item.title + ' > ' + item.path"
+                    :value="item.path"
                 ></el-option>
             </el-select>
         </transition>
@@ -41,37 +31,66 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref } from "vue";
+import { computed, defineComponent, nextTick, ref, watch } from "vue";
+import MenuList from "@/assets/js/menuList";
 import { Menu } from "@/model/views";
 import { useStore } from "@/store";
+import router from "@/router";
 
 export default defineComponent({
     name: "Search",
     props: {},
     setup() {
         const store = useStore();
+        const menuList = computed<Menu[]>(() => store.getters.menuList);
         const showInput = ref(false);
         const inputRef = ref();
-
+        const loading = ref(false);
         const searchValue = ref("");
-
-        const menuList = computed<Menu[]>(() => store.getters.menuList);
+        const searchResult = ref<Menu[]>([]);
 
         const inputOperate = async (type: number) => {
-            console.log(type);
             // showInput.value = !showInput.value;
             if (type === 0) {
                 showInput.value = true;
                 await nextTick();
                 inputRef.value.focus();
-            }else {
+            } else {
                 showInput.value = false;
+                setTimeout(() => {
+                    searchResult.value = [];
+                }, 500);
             }
         };
 
-        const loading = ref(false);
-        const remoteMethod = () => {};
-        const searchResult = ref<Menu[]>([]);
+        const search = (s: string) => {
+            return new Promise<Menu[]>((resolve) => {
+                const result = MenuList.filter((item) => {
+                    return item.children.length === 0 && (item.path.includes(s) || item.title.includes(s));
+                });
+                setTimeout(() => {
+                    resolve(result);
+                }, 2000);
+            });
+        };
+
+        const remoteMethod = async (e: string) => {
+            if (e) {
+                loading.value = true;
+                searchResult.value = await search(e);
+                loading.value = false;
+            } else {
+                searchResult.value = [];
+            }
+        };
+
+        watch(searchValue, (value) => {
+            if (value) {
+                router.push(value);
+                searchValue.value = "";
+                searchResult.value = [];
+            }
+        });
 
         return {
             inputRef,

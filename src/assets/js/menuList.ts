@@ -13,7 +13,7 @@ export default [
     {
         menuId: 2,
         title: "图标",
-        path: "/svg",
+        path: "/icons",
         icon: "np-icon-icon",
         parentMenuId: null,
         keepAlive: true,

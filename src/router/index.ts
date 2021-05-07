@@ -51,9 +51,9 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("@/views/other/redirect.vue"),
             },
             {
-                path: "svg",
-                name: "SvgPage",
-                alias: ["/icon"],
+                path: "icons",
+                name: "IconsPage",
+                alias: [],
                 meta: {
                     requiresAuth: true,
                     title: "图标",
