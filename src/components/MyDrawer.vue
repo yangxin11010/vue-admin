@@ -89,7 +89,7 @@ export default defineComponent({
         const iconDrawerRef = ref(),
             open = ref(false),
             tipDisabled = ref(false),
-            showDrawerIcon = ref(false);
+            showDrawerIcon = ref(true);
 
         const drawerIconClassName = computed(() => {
             if (!props.showClose) return [];
@@ -144,8 +144,10 @@ export default defineComponent({
         };
 
         onMounted(() => {
-            tipDisabled.value = location.getItem("global-setting-tip");
-            showDrawerIcon.value = location.getItem("global-setting-icon");
+            const tipValue = location.getItem("global-setting-tip"),
+                iconValue = location.getItem("global-setting-icon");
+            tipValue !== null && (tipDisabled.value = tipValue);
+            iconValue !== null && (showDrawerIcon.value = iconValue);
         });
 
         return {

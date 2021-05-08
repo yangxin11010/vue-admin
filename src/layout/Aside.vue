@@ -10,7 +10,7 @@
         </el-menu>
         <el-menu
             class="asideMenu"
-            :uniqueOpened="true"
+            :uniqueOpened="uniqueOpened"
             :collapse="collapse"
             :default-active="defaultActive"
             :background-color="globalColor.asideBColor"
@@ -29,16 +29,48 @@
                             <span>{{ $t(`aside.${item.path}`) }}</span>
                         </template>
                         <template v-for="item2 in item.children" :key="item2.path">
-                            <el-menu-item :index="item.path + item2.path">
-                                {{ $t(`aside.${item.path + item2.path}`) }}
-                            </el-menu-item>
+                            <template v-if="item2.children.length > 0">
+                                <el-submenu class="submenu-next" :index="item.path + item2.path">
+                                    <template #title>
+                                        <!-- <i :class="item2.icon"></i> -->
+                                        <span>{{ $t(`aside.${item.path + item2.path}`) }}</span>
+                                    </template>
+                                    <template
+                                        v-for="item3 in item2.children"
+                                        :key="item.path + item2.path + item3.path"
+                                    >
+                                        <el-menu-item v-if="checkLink(item3.realPath)" @click="jumpUrl(item3.realPath)">
+                                            {{ $t(`aside.${item.path + item2.path + item3.path}`) }}
+                                        </el-menu-item>
+                                        <el-menu-item v-else :index="item.path + item2.path + item3.path">
+                                            {{ $t(`aside.${item.path + item2.path + item3.path}`) }}
+                                        </el-menu-item>
+                                    </template>
+                                </el-submenu>
+                            </template>
+                            <template v-else>
+                                <el-menu-item v-if="checkLink(item2.realPath)" @click="jumpUrl(item2.realPath)">
+                                    {{ $t(`aside.${item.path + item2.path}`) }}
+                                </el-menu-item>
+                                <el-menu-item v-else :index="item.path + item2.path">
+                                    {{ $t(`aside.${item.path + item2.path}`) }}
+                                </el-menu-item>
+                            </template>
                         </template>
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.path">
+                    <el-menu-item v-if="checkLink(item.realPath)" @click="jumpUrl(item.realPath)">
                         <i :class="item.icon"></i>
-                        <template #title>{{ $t(`aside.${item.path}`) }}</template>
+                        <template #title>
+                            <span>{{ $t(`aside.${item.path}`) }}</span>
+                        </template>
+                    </el-menu-item>
+                    <el-menu-item v-else :index="item.path">
+                        <i :class="item.icon"></i>
+                        <template #title>
+                            <span>{{ $t(`aside.${item.path}`) }}</span>
+                        </template>
                     </el-menu-item>
                 </template>
             </template>
@@ -53,6 +85,10 @@ import { useRoute, useRouter } from "vue-router";
 import { Menu } from "@/model/views";
 import MenuList from "@/assets/js/menuList";
 import { globalColor, setting } from "@/config";
+import { checkLink } from "@/util/validata";
+import { openWindow } from "@/util";
+import { location } from "@/util/storage";
+import mitter from "@/plugins/mitt";
 // import { RouteRecordRaw } from "vue-router";
 
 export default defineComponent({
@@ -62,6 +98,8 @@ export default defineComponent({
             router = useRouter();
 
         const menuList = ref<Menu[]>([]);
+        const openLogo = ref(setting.openLogo),
+            uniqueOpened = ref(true);
 
         const getMenuList = (): Promise<Menu[]> => {
             return new Promise((resolve) => {
@@ -125,23 +163,44 @@ export default defineComponent({
         //     });
         // };
 
+        const jumpUrl = (value: string) => {
+            openWindow(value);
+        };
+
         onMounted(async () => {
             const result = await getMenuList();
             // addRoute(formateRouter(result));
             menuList.value = result;
             store.dispatch("SET_MENULIST", menuList.value);
             console.log(router.getRoutes());
+
+            const openLogoValue = location.getItem("global-setting-openLogo"),
+                uniqueOpenedValue = location.getItem("global-setting-uniqueOpened");
+
+            // 侧边栏Logo
+            openLogoValue !== null && (openLogo.value = openLogoValue);
+            mitter.$on("changeOpenLogo", (value) => {
+                openLogo.value = value;
+            });
+            // 是否保持一个子菜单的展开
+            uniqueOpenedValue !== null && (uniqueOpened.value = uniqueOpenedValue);
+            mitter.$on("changeUniqueOpened", (value) => {
+                uniqueOpened.value = value;
+            });
         });
 
         return {
             menuList,
             collapse: computed(() => store.getters.collapse),
             defaultActive: computed(() => route.path),
-            openLogo: computed(() => store.getters.openLogo),
+            openLogo,
             globalColor,
             setting,
             asideNextBColor: globalColor.asideNextBColor,
             asideNextAColor: globalColor.asideNextAColor,
+            checkLink,
+            jumpUrl,
+            uniqueOpened,
         };
     },
 });
@@ -174,6 +233,10 @@ export default defineComponent({
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+    .link {
+        width: 100%;
+        height: 100%;
+    }
     /deep/ {
         .asideMenu {
             // 去掉el-menu 白色右边框
@@ -195,12 +258,13 @@ export default defineComponent({
             }
         }
         .asideMenu {
-            width: 200px;
+            width: 250px;
         }
         .el-menu--collapse {
             width: 64px;
         }
-        .el-menu--inline .el-menu-item {
+        .el-menu--inline .el-menu-item,
+        .el-menu--inline .el-submenu__title {
             // 二级菜单 背景色
 
             background-color: v-bind(asideNextBColor) !important;

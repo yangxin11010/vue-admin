@@ -3,74 +3,65 @@
         <handle-box>
             <el-button type="primary" @click="addMenu">添加菜单</el-button>
         </handle-box>
-        <el-row>
-            <el-col :span="24">
-                <my-el-table
-                    :data="menuList"
-                    :show-header="true"
-                    border
-                    row-key="title"
-                    :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-                    :total="menuList.length"
-                    @page-change="pageChange"
-                    @size-change="sizeChange"
-                >
-                    <el-table-column label="排序" prop="sort" align="center" width="100" sortable></el-table-column>
-                    <el-table-column label="菜单名称" prop="title" align="left" min-width="150">
-                        <template v-slot="{ row }">
-                            <i :class="row.icon"></i>
-                            <span style="margin-left: 5px;">{{ row.title }}</span>
+        <my-el-table
+            :data="menuList"
+            :show-header="true"
+            border
+            row-key="title"
+            :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+            :total="menuList.length"
+            @page-change="pageChange"
+            @size-change="sizeChange"
+        >
+            <el-table-column label="排序" prop="sort" align="center" width="100" sortable></el-table-column>
+            <el-table-column label="菜单名称" prop="title" align="left" min-width="150">
+                <template v-slot="{ row }">
+                    <i :class="row.icon"></i>
+                    <span style="margin-left: 5px;">{{ row.title }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="菜单路径" prop="path" align="left" min-width="150"></el-table-column>
+            <el-table-column label="菜单图标" prop="icon" align="left" min-width="200"></el-table-column>
+            <el-table-column label="菜单别名" prop="alias" align="left" min-width="200">
+                <template v-slot="{ row }">
+                    <el-space wrap>
+                        <template v-for="(item, index) in row.alias" :key="index">
+                            <el-tag size="small" effect="plain">{{ item }}</el-tag>
                         </template>
-                    </el-table-column>
-                    <el-table-column label="菜单路径" prop="path" align="left" min-width="150"></el-table-column>
-                    <el-table-column label="菜单图标" prop="icon" align="left" min-width="200"></el-table-column>
-                    <el-table-column label="菜单别名" prop="alias" align="left" min-width="150">
-                        <template v-slot="{ row }">
-                            <el-space wrap>
-                                <template v-for="(item, index) in row.alias" :key="index">
-                                    <el-tag size="small" effect="plain">{{ item }}</el-tag>
-                                </template>
-                            </el-space>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        label="菜单项目路径"
-                        prop="realPath"
-                        align="left"
-                        min-width="250"
-                    ></el-table-column>
-                    <el-table-column label="缓存状态" prop="keepAlive" align="center" width="100">
-                        <template v-slot="{ row }">
-                            <el-tag :type="row.keepAlive ? 'success' : 'danger'">
-                                {{ row.keepAlive ? "开启" : "关闭" }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="菜单状态" prop="status" width="150" align="center">
-                        <template v-slot="{ row }">
-                            <el-tag :type="row.status === 0 ? 'danger' : 'success'">
-                                {{ row.status === 0 ? "已禁用" : "已启用" }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="操作" align="center" width="180">
-                        <template v-slot="{ row }">
-                            <el-button type="primary" @click="operate(0, row)">
-                                修改
-                            </el-button>
-                            <el-button
-                                :type="row.status === 0 ? 'primary' : 'danger'"
-                                :disabled="row.status === 2"
-                                @click="operate(1, row)"
-                                v-permissions="['admin', 'boss']"
-                            >
-                                {{ row.status === 0 ? "启用" : "禁用" }}
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </my-el-table>
-            </el-col>
-        </el-row>
+                    </el-space>
+                </template>
+            </el-table-column>
+            <el-table-column label="菜单项目路径" prop="realPath" align="left" min-width="250"></el-table-column>
+            <el-table-column label="缓存状态" prop="keepAlive" align="center" fixed="right">
+                <template v-slot="{ row }">
+                    <el-tag :type="row.keepAlive ? 'success' : 'danger'">
+                        {{ row.keepAlive ? "开启" : "关闭" }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="菜单状态" prop="status" align="center" fixed="right">
+                <template v-slot="{ row }">
+                    <el-tag :type="row.status === 0 ? 'danger' : 'success'">
+                        {{ row.status === 0 ? "已禁用" : "已启用" }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" width="180" fixed="right">
+                <template v-slot="{ row }">
+                    <el-button type="primary" @click="operate(0, row)">
+                        修改
+                    </el-button>
+                    <el-button
+                        :type="row.status === 0 ? 'primary' : 'danger'"
+                        :disabled="row.status === 2"
+                        @click="operate(1, row)"
+                        v-permissions="['admin', 'boss']"
+                    >
+                        {{ row.status === 0 ? "启用" : "禁用" }}
+                    </el-button>
+                </template>
+            </el-table-column>
+        </my-el-table>
 
         <el-dialog :title="`${isAddMenu ? '添加' : '修改'}菜单`" v-model="dialogVisible" width="40%">
             <el-form :model="menuForm" ref="menuFormRef" label-width="80px">
@@ -297,17 +288,14 @@ export default defineComponent({
 
         const submit = () => {
             menuFormRef.value.validate((valid: boolean) => {
-                if (valid) {
-                    warningMsgBox(`确定${isAddMenu.value ? "添加" : "修改"}吗？`)
-                        .then(() => {
-                            dialogVisible.value = false;
-                            updateMenu(menuForm);
-                            successMessage(`${isAddMenu.value ? "添加" : "修改"}成功！`);
-                        })
-                        .catch(() => {});
-                } else {
-                    return false;
-                }
+                if (!valid) return false;
+                warningMsgBox(`确定${isAddMenu.value ? "添加" : "修改"}吗？`)
+                    .then(() => {
+                        dialogVisible.value = false;
+                        updateMenu(menuForm);
+                        successMessage(`${isAddMenu.value ? "添加" : "修改"}成功！`);
+                    })
+                    .catch(() => {});
             });
         };
 
@@ -319,7 +307,7 @@ export default defineComponent({
             console.log(value);
         };
 
-        // 选择菜单
+        // 选择菜单图标
         const iconInputRef = ref();
         const choseIconDrawer = ref(false);
         const choseIconInputFocus = () => {

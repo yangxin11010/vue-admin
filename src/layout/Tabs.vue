@@ -32,14 +32,14 @@
                         <el-dropdown-item v-if="keepTabsIndex === -1" :command="0">
                             {{ $t("tabs.closeNow") }}
                         </el-dropdown-item>
-                        <el-dropdown-item v-if="keepTabsIndex === -1" :command="1">
-                            {{ $t("tabs.keepFixed") }}
-                        </el-dropdown-item>
-                        <el-dropdown-item v-if="tabsIndex === -1 && $route.path !== '/dashboard'" :command="2">
-                            {{ $t("tabs.removeFixed") }}
-                        </el-dropdown-item>
                         <el-dropdown-item :command="3">{{ $t("tabs.closeOther") }}</el-dropdown-item>
                         <el-dropdown-item :command="4">{{ $t("tabs.closeAll") }}</el-dropdown-item>
+                        <el-dropdown-item v-if="keepTabsIndex === -1" :command="1" divided>
+                            {{ $t("tabs.keepFixed") }}
+                        </el-dropdown-item>
+                        <el-dropdown-item v-if="tabsIndex === -1 && $route.path !== '/dashboard'" :command="2" divided>
+                            {{ $t("tabs.removeFixed") }}
+                        </el-dropdown-item>
                         <el-dropdown-item :command="5" divided>{{ $t("tabs.clear") }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>

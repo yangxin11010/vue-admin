@@ -4,7 +4,7 @@
             <el-col :span="6">
                 <el-card shadow="hover">
                     <template #header>
-                        <span>About Me</span>
+                        <span>{{ $t("personCenter.cardTitle") }}</span>
                     </template>
                     <div class="about-box">
                         <el-avatar
@@ -17,16 +17,7 @@
                     <div class="about-item">
                         <div class="about-item-top">
                             <svg-icon class="icon" icon-class="book" />
-                            <span>Description</span>
-                        </div>
-                        <div class="about-item-content">
-                            Are you ok?
-                        </div>
-                    </div>
-                    <div class="about-item">
-                        <div class="about-item-top">
-                            <svg-icon class="icon" icon-class="book" />
-                            <span>Description</span>
+                            <span>{{ $t("personCenter.description") }}</span>
                         </div>
                         <div class="about-item-content">
                             Are you ok?
@@ -37,7 +28,7 @@
             <el-col :span="18">
                 <el-card shadow="hover">
                     <el-tabs>
-                        <el-tab-pane label="Timeline">
+                        <el-tab-pane :label="$t('personCenter.loginRecord')">
                             <el-timeline>
                                 <el-timeline-item
                                     v-for="(item, index) in loginTime"
@@ -55,41 +46,69 @@
                                 </el-timeline-item>
                             </el-timeline>
                         </el-tab-pane>
-                        <el-tab-pane label="Account">
-                            <el-form>
-                                <el-form-item>
+                        <el-tab-pane :label="$t('personCenter.account')">
+                            <el-form label-width="100px">
+                                <el-form-item label="Name：">
                                     <template #label>
-                                        <span class="font_wb">Name</span>
+                                        <span class="font_wb">{{ $t("personCenter.accountInfo.name") }}：</span>
                                     </template>
-                                    <el-input v-model="name"></el-input>
+                                    <el-input class="form-input" v-model="name"></el-input>
+                                </el-form-item>
+                                <el-form-item label="Sex：">
+                                    <template #label>
+                                        <span class="font_wb">{{ $t("personCenter.accountInfo.sex") }}：</span>
+                                    </template>
+                                    <el-select class="form-input" v-model="sex">
+                                        <el-option :label="$t('sex.male')" :value="1"></el-option>
+                                        <el-option :label="$t('sex.female')" :value="0"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Eamil：">
+                                    <template #label>
+                                        <span class="font_wb">{{ $t("personCenter.accountInfo.email") }}：</span>
+                                    </template>
+                                    <el-input class="form-input" v-model="email"></el-input>
+                                </el-form-item>
+                                <el-form-item label="Introduction：">
+                                    <template #label>
+                                        <span class="font_wb">{{ $t("personCenter.accountInfo.introduction") }}：</span>
+                                    </template>
+                                    <el-input type="textarea" class="form-input" v-model="introduction"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <template #label>
-                                        <span class="font_wb">Email</span>
-                                    </template>
-                                    <el-input v-model="email"></el-input>
+                                    <el-button type="primary">{{ $t("button.save") }}</el-button>
                                 </el-form-item>
                             </el-form>
                         </el-tab-pane>
-                        <el-tab-pane label="Edit password">
-                            <el-form :model="passWord" ref="passFormRef" :rules="rules">
+                        <el-tab-pane :label="$t('personCenter.editPwd')">
+                            <el-form :model="passWord" ref="passFormRef" :rules="rules" label-width="150px">
                                 <el-form-item prop="oldPass">
                                     <template #label>
-                                        <span class="font_wb">Old Password</span>
+                                        <span class="font_wb">{{ $t("personCenter.editPwdInfo.oldPwd") }}：</span>
                                     </template>
-                                    <el-input v-model="passWord.oldPass" show-password></el-input>
+                                    <el-input
+                                        class="form-input"
+                                        v-model="passWord.oldPass"
+                                        show-password
+                                        clearable
+                                    ></el-input>
                                 </el-form-item>
                                 <el-form-item prop="newPass">
                                     <template #label>
-                                        <span class="font_wb">New Password</span>
+                                        <span class="font_wb">{{ $t("personCenter.editPwdInfo.newPwd") }}：</span>
                                     </template>
-                                    <el-input v-model="passWord.newPass" show-password></el-input>
+                                    <el-input
+                                        class="form-input"
+                                        v-model="passWord.newPass"
+                                        show-password
+                                        clearable
+                                    ></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" :loading="updateLoading" @click="updatePass"
-                                        >update</el-button
-                                    >
-                                    <el-button @click="reset">reset</el-button>
+                                    <el-button type="primary" :loading="updateLoading" @click="updatePass">
+                                        {{ $t("button.update") }}
+                                    </el-button>
+                                    <el-button @click="reset">{{ $t("button.reset") }}</el-button>
                                 </el-form-item>
                             </el-form>
                         </el-tab-pane>
@@ -103,10 +122,13 @@
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from "vue";
 import { successMessage } from "@/util/message";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
     name: "PsersonCenter",
     setup() {
+        const { t: $t } = useI18n();
+
         const loginTime = ref([
             {
                 ip: "183.195.52.197,106.13.130.94",
@@ -136,7 +158,9 @@ export default defineComponent({
 
         let states = reactive({
             name: "Super Admin",
+            sex: 1,
             email: "yx17714503091@163.com",
+            introduction: "又是充满希望的一天！",
         });
 
         let passWord = reactive({
@@ -151,13 +175,15 @@ export default defineComponent({
             oldPass: [
                 {
                     required: true,
-                    message: "The Old Password cannot be empty",
+                    message: $t("personCenter.editPwdInfo.requireError"),
                     trigger: "change",
                 },
                 {
                     validator: (rule: any, value: string, callback: any) => {
-                        if (value !== "" && value !== passWord.newPass) {
-                            callback(new Error("Inconsistent passwords entered twice!"));
+                        if (value.length < 6) {
+                            callback(new Error($t("personCenter.editPwdInfo.less6Error")));
+                        } else if (value !== "" && value !== passWord.newPass) {
+                            callback(new Error($t("personCenter.editPwdInfo.differentError")));
                         } else {
                             passFormRef.value.clearValidate();
                             callback();
@@ -169,13 +195,15 @@ export default defineComponent({
             newPass: [
                 {
                     required: true,
-                    message: "The New Password cannot be empty",
+                    message: $t("personCenter.editPwdInfo.requireError"),
                     trigger: "change",
                 },
                 {
                     validator: (rule: any, value: string, callback: any) => {
-                        if (value !== "" && value !== passWord.oldPass) {
-                            callback(new Error("Inconsistent passwords entered twice!"));
+                        if (value.length < 6) {
+                            callback(new Error($t("personCenter.editPwdInfo.less6Error")));
+                        } else if (value !== "" && value !== passWord.oldPass) {
+                            callback(new Error($t("personCenter.editPwdInfo.differentError")));
                         } else {
                             passFormRef.value.clearValidate();
                             callback();
@@ -227,7 +255,9 @@ export default defineComponent({
         margin-top: 10px;
     }
 }
-
+.form-input {
+    width: 350px;
+}
 .about-item {
     font-size: 14px;
     padding: 15px 0;

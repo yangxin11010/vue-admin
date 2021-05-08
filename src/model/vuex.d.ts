@@ -11,8 +11,6 @@ declare module "@vue/runtime-core" {
         isLogin: boolean;
         collapse: boolean;
         token: string | null;
-        openLogo: boolean;
-        openTabs: boolean;
         tabsList: [Tabs[], Tabs[]];
         permissions: string[];
         layoutSize: LayoutSize;

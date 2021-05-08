@@ -14,8 +14,33 @@
         "hideBtn": "隐藏按钮",
         "showTip": "显示提示",
         "hideTip": "隐藏提示",
+        "sidebarLogo": "侧边栏 Logo",
         "tagsView": "开启 Tags-View",
-        "sidebarLogo": "侧边栏 Logo"
+        "asideOpen": "保持一个子菜单的展开"
+    },
+    "personCenter": {
+        "cardTitle": "关于我",
+        "description": "描述",
+        "loginRecord": "登录记录",
+        "account": "账号信息",
+        "editPwd": "修改密码",
+        "accountInfo": {
+            "name": "姓名",
+            "sex": "性别",
+            "email": "邮箱",
+            "introduction": "个人简介"
+        },
+        "editPwdInfo": {
+            "oldPwd": "旧密码",
+            "newPwd": "新密码",
+            "less6Error": "密码不能少于6位数!",
+            "requireError": "密码不能为空!",
+            "differentError": "2次输入的密码不一致!"
+        }
+    },
+    "sex": {
+        "male": "男",
+        "female": "女"
     },
     "message": {
         "have": "{value}条未读消息",
@@ -33,6 +58,13 @@
         "/permissions": "权限测试页",
         "/clipboard": "clipboard",
         "/exportFile": "导出",
+        "/link": "外链",
+        "/router": "路由嵌套",
+        "/router/router1": "菜单1",
+        "/router/router2": "菜单2",
+        "/router/router1/router11": "菜单1-1",
+        "/router/router1/router12": "菜单1-2",
+        "/router/router1/router13": "菜单1-3",
         "/components": "组件",
         "/components/tinymce": "富文本编辑器",
         "/components/jsoneditor": "JSON 编辑器",
@@ -90,6 +122,7 @@
         "reset": "重 置",
         "cancel": "取 消",
         "confirm": "确 定",
-        "operate" : "操 作"
+        "operate": "操 作",
+        "save": "保 存"
     }
 }

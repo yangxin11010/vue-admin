@@ -3,7 +3,6 @@ import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import { InjectionKey } from "vue";
 import { Menu, Tabs } from "@/model/views";
-import { setting } from "@/config";
 
 export type LayoutSize = "default" | "medium" | "small" | "mini";
 
@@ -12,8 +11,6 @@ export interface State {
     isLogin: boolean;
     collapse: boolean;
     token: string | null;
-    openLogo: boolean;
-    openTabs: boolean;
     tabsList: [Tabs[], Tabs[]];
     permissions: string[];
     layoutSize: LayoutSize;
@@ -47,11 +44,8 @@ const store = createStore<State>({
         // local 存储
         createPersistedState({
             storage: window.localStorage,
-            reducer(state) {
-                return {
-                    openLogo: state.openLogo,
-                    openTabs: state.openTabs,
-                };
+            reducer() {
+                return {};
             },
         }),
     ],
@@ -60,8 +54,6 @@ const store = createStore<State>({
         isLogin: false,
         collapse: true,
         token: null,
-        openLogo: setting.openLogo,
-        openTabs: setting.openTabs,
         tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
         permissions: ["boss", "admin"],
         layoutSize: "small",
@@ -73,8 +65,6 @@ const store = createStore<State>({
         collapse: (state) => state.collapse,
         token: (state) => state.token,
         tabsList: (state) => state.tabsList,
-        openLogo: (state) => state.openLogo,
-        openTabs: (state) => state.openTabs,
         permissions: (state) => state.permissions,
         layoutSize: (state) => state.layoutSize,
         menuList: (state) => state.menuList,
@@ -117,12 +107,6 @@ const store = createStore<State>({
         INIT_TABS(state) {
             state.tabsList = [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []];
         },
-        CHANGE_LOGO(state, value: boolean) {
-            state.openLogo = value;
-        },
-        CHANGE_Tabs(state, value: boolean) {
-            state.openTabs = value;
-        },
         SET_PERMISSIONS(state, value: string[]) {
             state.permissions = value;
         },
@@ -164,12 +148,6 @@ const store = createStore<State>({
         },
         INIT_TABS({ commit }) {
             commit("INIT_TABS");
-        },
-        CHANGE_LOGO({ commit }, value: boolean) {
-            commit("CHANGE_LOGO", value);
-        },
-        CHANGE_Tabs({ commit }, value: boolean) {
-            commit("CHANGE_Tabs", value);
         },
         SET_PERMISSIONS({ commit }, value: string[]) {
             commit("SET_PERMISSIONS", value);

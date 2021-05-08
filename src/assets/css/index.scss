@@ -34,6 +34,17 @@ ul {
 	list-style: none;
 }
 
+[class^="np-icon-"] {
+	font-family: "np-icon" !important;
+	font-style: normal;
+	font-weight: normal;
+	text-transform: none;
+	line-height: 1;
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
 .w100p {
 	width: 100%;
 }

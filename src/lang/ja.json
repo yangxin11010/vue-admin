@@ -14,8 +14,30 @@
         "hideBtn": "隠しボタン",
         "showTip": "ヒントを表示する",
         "hideTip": "ヒントを隠す",
+        "sidebarLogo": "サイドバー Logo",
         "tagsView": "開く Tags-View",
-        "sidebarLogo": "サイドバー Logo"
+        "asideOpen": "1つのサブメニューの展開を維持する"
+    },
+    "personCenter": {
+        "cardTitle": "私について",
+        "description": "描写",
+        "loginRecord": "登録記録",
+        "account": "アカウント情報",
+        "editPwd": "パスワードを修正する",
+        "accountInfo": {
+            "name": "名前",
+            "sex": "性別",
+            "email": "メール",
+            "introduction": "プロフィール"
+        },
+        "editPwdInfo": {
+            "oldPwd": "古い暗号",
+            "newPwd": "新しい暗号"
+        }
+    },
+    "sex": {
+        "male": "男",
+        "female": "女"
     },
     "message": {
         "have": "未読メッセージ{value}件",
@@ -33,6 +55,13 @@
         "/permissions": "権限テストページ",
         "/clipboard": "clipboard",
         "/exportFile": "エクスポート",
+        "/link": "外の鎖",
+        "/router": "ルーティングネスティング",
+        "/router/router1": "メニュー1",
+        "/router/router2": "メニュー2",
+        "/router/router1/router11": "メニュー1-1",
+        "/router/router1/router12": "メニュー1-2",
+        "/router/router1/router13": "メニュー1-3",
         "/components": "コンポーネント",
         "/components/tinymce": "リッチテキストエディタ",
         "/components/jsoneditor": "JSON エディタ",
@@ -81,7 +110,10 @@
     },
     "error": {
         "backHome": "トップページに戻る",
-        "backLast": "前のページに戻る"
+        "backLast": "前のページに戻る",
+        "less6Error": "パスワードは6桁以下であってはならない!",
+        "requireError": "パスワードを空にしてはいけません!",
+        "differentError": "2回入力したパスワードが一致しません!"
     },
     "button": {
         "add": "新急増",
@@ -90,6 +122,7 @@
         "reset": "リセット",
         "cancel": "キャンセル",
         "confirm": "確 定",
-        "operate" : "操 作"
+        "operate": "操 作",
+        "save": "保 存"
     }
 }

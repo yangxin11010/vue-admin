@@ -9,13 +9,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mainStyleList } from "@/config"
+import { mainStyleList, globalColor } from "@/config";
 
 export default defineComponent({
     setup() {
-
         return {
             mainStyleList,
+            backTopBColor: globalColor.backTopBColor,
+            backTopTColor: globalColor.backTopTColor,
         };
     },
 });
@@ -39,8 +40,8 @@ export default defineComponent({
     border-radius: 5px;
 }
 .backtop {
-    background-color: $main-color;
-    color: #fff;
+    background-color: v-bind(backTopBColor);
+    color: v-bind(backTopTColor);
     opacity: 0.3;
     &:hover {
         opacity: 1;

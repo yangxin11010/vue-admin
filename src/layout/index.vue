@@ -5,7 +5,7 @@
             <el-main
                 class="main overhide"
                 :style="{
-                    width: `calc(100% - ${collapse ? '64' : '200'}px)`,
+                    width: `calc(100% - ${collapse ? '64' : '250'}px)`,
                 }"
             >
                 <el-header height="60px" class="header">
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, onMounted, ref } from "vue";
 import Header from "./Header.vue";
 import Aside from "./Aside.vue";
 import Tabs from "./Tabs.vue";
@@ -32,14 +32,26 @@ import Main from "./Main.vue";
 import Setting from "./Setting.vue";
 import { useStore } from "@/store";
 import MyRouterView from "@/components/MyRouterView.vue";
+import { location } from "@/util/storage";
+import mitter from "@/plugins/mitt";
+import { setting } from "@/config";
 
 export default defineComponent({
     setup() {
         const store = useStore();
+        const openTabs = ref(setting.openTabs);
+
+        onMounted(() => {
+            const openLogoValue = location.getItem("global-setting-openTabs");
+            openLogoValue !== null && (openTabs.value = openLogoValue);
+            mitter.$on("changeOpenTabs", (value) => {
+                openTabs.value = value;
+            });
+        });
 
         return {
             collapse: computed(() => store.getters.collapse),
-            openTabs: computed(() => store.getters.openTabs),
+            openTabs,
         };
     },
     components: {
