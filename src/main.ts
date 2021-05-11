@@ -19,7 +19,6 @@ import VueI18n from "@/lang";
 
 import MyEl from "@/components/my-el-components";
 
-
 const app = createApp(App);
 
 app.use(Router)
