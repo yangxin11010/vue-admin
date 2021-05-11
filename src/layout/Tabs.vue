@@ -4,6 +4,7 @@
         class="tabs disflex ju_bt align-it-cen"
         @mouseenter="mouseOperate(0, $event)"
         @mouseleave="mouseOperate(1, $event)"
+        @contextmenu.prevent
     >
         <div class="tabs-l disflex align-it-cen" ref="tabsRef">
             <!-- 固定标签 -->

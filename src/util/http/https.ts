@@ -21,12 +21,17 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
     (response) => {
-        const data = response.data;
+        const {
+            data,
+            config: {
+                params: { showElMsg },
+            },
+        } = response;
         switch (data.code) {
             case 0:
                 return data;
             case 1:
-                errorMessage(data.info);
+                showElMsg && errorMessage(data.info);
                 return Promise.reject(data);
             default:
                 return data;

@@ -42,15 +42,19 @@
                     </template>
                     <div class="bottom-el-card-item">
                         <p>Vue</p>
-                        <el-progress :percentage="70"></el-progress>
+                        <el-progress :percentage="52.6"></el-progress>
+                    </div>
+                    <div class="bottom-el-card-item">
+                        <p>TypeScript</p>
+                        <el-progress :percentage="42.1"></el-progress>
                     </div>
                     <div class="bottom-el-card-item">
                         <p>JavaScript</p>
-                        <el-progress :percentage="18"></el-progress>
+                        <el-progress :percentage="1.3"></el-progress>
                     </div>
                     <div class="bottom-el-card-item">
-                        <p>Css</p>
-                        <el-progress :percentage="12"></el-progress>
+                        <p>Scss</p>
+                        <el-progress :percentage="3.7"></el-progress>
                     </div>
                     <div class="bottom-el-card-item">
                         <p>ESLint</p>

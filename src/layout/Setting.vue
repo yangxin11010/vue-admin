@@ -80,7 +80,7 @@ export default defineComponent({
                     eventName = "changeHeaderMenu";
                     break;
             }
-            eventName && mitter.$emit(eventName, e);
+            eventName && mitter.$emit<boolean>(eventName, e);
             locationName && location.setItem(`global-setting-${locationName}`, e);
         };
 

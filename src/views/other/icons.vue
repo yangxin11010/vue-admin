@@ -1,6 +1,6 @@
 <template>
     <div class="svgpage">
-        <el-tabs type="border-card" tab-position="top">
+        <el-tabs type="border-card" tab-position="top" :before-leave="beforeLeave">
             <el-tab-pane label="Element-UI Icons">
                 <el-space wrap size="large">
                     <template v-for="(item, index) in ElIcons" :key="index">
@@ -8,9 +8,9 @@
                             class="item"
                             effect="dark"
                             :content="`<i class=&quot;${item}&quot; />`"
-                            placement="top"
+                            :placement="index < ElIcons.length / 2 ? 'bottom' : 'top'"
                         >
-                            <div class="icon-item" @click="copy(`<i class=&quot;${item}&quot; />`)">
+                            <div class="icon-item" @click="copy(copyType ? item : `<i class=&quot;${item}&quot; />`)">
                                 <i :class="item" />
                                 <span>{{ item }}</span>
                             </div>
@@ -25,9 +25,12 @@
                             class="item"
                             effect="dark"
                             :content="`<svg-icon icon-class=&quot;${item}&quot; />`"
-                            placement="top"
+                            :placement="index < SvgIcons.length / 2 ? 'bottom' : 'top'"
                         >
-                            <div class="icon-item" @click="copy(`<svg-icon icon-class=&quot;${item}&quot; />`)">
+                            <div
+                                class="icon-item"
+                                @click="copy(copyType ? item : `<svg-icon icon-class=&quot;${item}&quot; />`)"
+                            >
                                 <i><svg-icon :icon-class="item"></svg-icon></i>
                                 <span>{{ item }}</span>
                             </div>
@@ -42,9 +45,9 @@
                             class="item"
                             effect="dark"
                             :content="`<i class=&quot;${item}&quot; />`"
-                            placement="top"
+                            :placement="index < NpIcons.length / 2 ? 'bottom' : 'top'"
                         >
-                            <div class="icon-item" @click="copy(`<i class=&quot;${item}&quot; />`)">
+                            <div class="icon-item" @click="copy(copyType ? item : `<i class=&quot;${item}&quot; />`)">
                                 <i :class="item" />
                                 <span>{{ item }}</span>
                             </div>
@@ -52,12 +55,23 @@
                     </template>
                 </el-space>
             </el-tab-pane>
+            <el-tab-pane label="switch">
+                <template #label>
+                    <div style="width: 100%;background: #FFF;padding: 0 20px;">
+                        <el-switch
+                            v-model="copyType"
+                            active-text="Copy ClassName"
+                            inactive-text="Copy HtmlLabel"
+                        ></el-switch>
+                    </div>
+                </template>
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { ElIcons, SvgIcons, NpIcons } from "@/assets/js/icons";
 import { copyText } from "@/util/clipboard";
 export default defineComponent({
@@ -73,11 +87,19 @@ export default defineComponent({
                 });
         };
 
+        const copyType = ref(false);
+
+        const beforeLeave = (activeName: string) => {
+            if (activeName === "3") return false;
+        };
+
         return {
             ElIcons,
             SvgIcons,
             NpIcons,
             copy,
+            beforeLeave,
+            copyType,
         };
     },
 });
