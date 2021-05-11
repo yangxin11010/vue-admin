@@ -75,16 +75,16 @@
                 <el-form-item
                     prop="title"
                     label="菜单名称"
-                    :rules="[{ required: true, message: '请输入菜单名称', trigger: 'blur' }]"
+                    :rules="[{ required: true, message: '菜单名称不能为空', trigger: 'blur' }]"
                 >
-                    <el-input v-model="menuForm.title" clearable></el-input>
+                    <el-input v-model="menuForm.title" clearable placeholder="请输入名称"></el-input>
                 </el-form-item>
                 <el-form-item
                     prop="path"
                     label="菜单路径"
-                    :rules="[{ required: true, message: '请输入菜单路径', trigger: 'blur' }]"
+                    :rules="[{ required: true, message: '菜单路径不能为空', trigger: 'blur' }]"
                 >
-                    <el-input v-model="menuForm.path" clearable>
+                    <el-input v-model="menuForm.path" clearable placeholder="请输入路径">
                         <template v-if="menuForm.parentMenuId !== null" #prepend>
                             {{ parentMenuPath(menuForm.parentMenuId) }}
                         </template>
@@ -95,6 +95,7 @@
                         class="icon-input"
                         ref="iconInputRef"
                         v-model="menuForm.icon"
+                        placeholder="请选择"
                         clearable
                         @focus="choseIconInputFocus"
                     >
@@ -193,7 +194,7 @@ export default defineComponent({
     name: "MenuPage",
     setup() {
         const store = useStore();
-        const menuList = computed<Menu[]>(() => store.getters.menuList);
+        const menuList = computed<Array<Menu>>(() => store.getters.menuList);
 
         const menuFormRef = ref();
         const dialogVisible = ref(false);
@@ -215,7 +216,7 @@ export default defineComponent({
 
         // 一级菜单 列表
         const parentMenuIdOptions = computed(() => {
-            let val: Menu[] = [];
+            let val: Array<Menu> = [];
             menuList.value.forEach((item: Menu) => {
                 val.push(Object.assign(JSON.parse(JSON.stringify(item)), { children: [] }));
             });

@@ -8,4 +8,8 @@ export default [
     "np-icon-excel",
     "np-icon-nested",
     "np-icon-link",
+    "np-icon-dangqian",
+    "np-icon-dangqianlouceng",
+    "np-icon-baocun",
+    "np-icon-qingli",
 ];

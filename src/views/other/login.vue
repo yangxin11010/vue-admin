@@ -10,7 +10,7 @@
                         </div>
                         <template #dropdown>
                             <template v-for="locale in availableLocales" :key="`locale-${locale}`">
-                                <el-dropdown-item :command="locale" :disabled="langIndex === locale">
+                                <el-dropdown-item :command="locale" :disabled="lang === locale">
                                     {{ langSetting[locale] }}
                                 </el-dropdown-item>
                             </template>
@@ -57,22 +57,20 @@ import { useI18n } from "vue-i18n";
 export default defineComponent({
     name: "Login",
     setup() {
-        const router = useRouter();
-        const route = useRoute();
-        const store = useStore();
-        const { t: $t } = useI18n();
+        const router = useRouter(),
+            route = useRoute(),
+            store = useStore(),
+            { t: $t } = useI18n();
 
-        let langIndex = computed(() => store.getters.lang);
+        const loginFormRef = ref(),
+            lang = computed<string>(() => store.getters.lang),
+            loading = ref(false);
 
         const changeLang = async (e: string) => {
             await store.dispatch("SET_LANG", e);
             window.location.reload();
             // locale.value = e;
         };
-
-        const loading = ref(false);
-
-        const loginFormRef = ref();
 
         // 表单数据
         const formData = reactive({
@@ -127,7 +125,7 @@ export default defineComponent({
         };
 
         return {
-            langIndex,
+            lang,
             changeLang,
             loginFormRef,
             formData,

@@ -16,7 +16,8 @@
         "hideTip": "隐藏提示",
         "sidebarLogo": "侧边栏 Logo",
         "tagsView": "开启 Tags-View",
-        "asideOpen": "保持一个子菜单的展开"
+        "asideOpen": "保持一个子菜单的展开",
+        "headerMenu": "Header 菜单"
     },
     "personCenter": {
         "cardTitle": "关于我",
@@ -89,6 +90,8 @@
         "closeNow": "关闭当前",
         "keepFixed": "保持固定",
         "removeFixed": "解除固定",
+        "closeLeft": "关闭左侧",
+        "closeRight": "关闭右侧",
         "closeOther": "关闭其他",
         "closeAll": "关闭所有",
         "clear": "一键清除",

@@ -29,6 +29,15 @@
                     @change="switchChange($event, 2)"
                 ></el-switch>
             </div>
+            <div class="set-item">
+                <div>{{ $t("system.headerMenu") }}</div>
+                <el-switch
+                    :value="headerMenu"
+                    active-color="#1890ff"
+                    inactive-color="#dcdfe6"
+                    @change="switchChange($event, 3)"
+                ></el-switch>
+            </div>
         </div>
     </my-drawer>
 </template>
@@ -44,7 +53,8 @@ export default defineComponent({
     setup() {
         const openLogo = ref(setting.openLogo),
             openTabs = ref(setting.openTabs),
-            uniqueOpened = ref(true);
+            uniqueOpened = ref(true),
+            headerMenu = ref(false);
 
         const switchChange = (e: boolean, index: number) => {
             let eventName = "",
@@ -65,9 +75,13 @@ export default defineComponent({
                     eventName = "changeUniqueOpened";
                     locationName = "uniqueOpened";
                     break;
+                case 3:
+                    headerMenu.value = e;
+                    eventName = "changeHeaderMenu";
+                    break;
             }
-            mitter.$emit(eventName, e);
-            location.setItem(`global-setting-${locationName}`, e);
+            eventName && mitter.$emit(eventName, e);
+            locationName && location.setItem(`global-setting-${locationName}`, e);
         };
 
         onMounted(() => {
@@ -95,6 +109,7 @@ export default defineComponent({
             switchChange,
             setting,
             uniqueOpened,
+            headerMenu,
         };
     },
     components: {

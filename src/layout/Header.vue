@@ -2,7 +2,12 @@
     <div class="header disflex ju_bt align-it-cen">
         <div class="header-l disflex align-it-cen">
             <Collapse></Collapse>
-            <Breadcrumb></Breadcrumb>
+            <template v-if="!headerMenu">
+                <Breadcrumb></Breadcrumb>
+            </template>
+            <template v-else>
+                <HeaderMenu style="margin-left: -10px;"></HeaderMenu>
+            </template>
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
             <!-- 搜索 -->
@@ -116,6 +121,7 @@ import { defineComponent, ref, onMounted, computed, getCurrentInstance, Componen
 import Collapse from "./components/Collapse.vue";
 import Screenfull from "./components/Screenfull.vue";
 import Breadcrumb from "./components/Breadcrumb.vue";
+import HeaderMenu from "./components/HeaderMenu.vue";
 import Search from "./components/Search.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
@@ -135,8 +141,9 @@ export default defineComponent({
 
         const { locale } = useI18n();
 
-        const langIndex = computed(() => store.getters.lang),
-            layoutSize = computed(() => store.getters.layoutSize);
+        const langIndex = computed<string>(() => store.getters.lang),
+            layoutSize = computed<string>(() => store.getters.layoutSize),
+            headerMenu = ref(false);
 
         const changeLayoutSize = (e: string) => {
             app.appContext.config.globalProperties.$ELEMENT.size = e;
@@ -191,6 +198,9 @@ export default defineComponent({
             mitter.$on("clearNoReadMessage", () => {
                 messageNum.value = 0;
             });
+            mitter.$on("changeHeaderMenu", (value) => {
+                headerMenu.value = value;
+            });
         });
 
         return {
@@ -204,6 +214,7 @@ export default defineComponent({
             availableLocales,
             layoutSize,
             changeLayoutSize,
+            headerMenu,
             headerBColor: globalColor.headerBColor,
             headerTColor: globalColor.headerTColor,
             headerHColor: globalColor.headerHColor,
@@ -214,6 +225,7 @@ export default defineComponent({
         Screenfull,
         Breadcrumb,
         Search,
+        HeaderMenu,
     },
 });
 </script>

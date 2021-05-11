@@ -94,6 +94,11 @@ const store = createStore<State>({
                 state.tabsList[1] = [];
             }
         },
+        REMOVE_LEFT_RIGHT_TABS(state, value: { type: "left" | "right"; index: number }) {
+            const begin = value.type === "left" ? 0 : value.index + 1,
+                end = value.type === "left" ? value.index : state.tabsList[1].length - 1;
+            state.tabsList[1].splice(begin, end);
+        },
         REMOVE_OTHER_TABS(state, value: number) {
             state.tabsList[1] = [state.tabsList[1][value]];
         },
@@ -135,6 +140,9 @@ const store = createStore<State>({
         },
         REMOVE_TABS({ commit }, value?: number) {
             commit("REMOVE_TABS", value);
+        },
+        REMOVE_LEFT_RIGHT_TABS({ commit }, value: { type: "left" | "right"; index: number }) {
+            commit("REMOVE_LEFT_RIGHT_TABS", value);
         },
         REMOVE_OTHER_TABS({ commit }, value: number) {
             commit("REMOVE_OTHER_TABS", value);

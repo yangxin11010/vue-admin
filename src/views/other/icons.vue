@@ -61,7 +61,7 @@ import { defineComponent } from "vue";
 import { ElIcons, SvgIcons, NpIcons } from "@/assets/js/icons";
 import { copyText } from "@/util/clipboard";
 export default defineComponent({
-    name: "SvgPage",
+    name: "IconsPage",
     setup() {
         const copy = (val: string) => {
             copyText(val)

@@ -2,9 +2,25 @@
 
 @font-face {
     font-family: "np-icon"; /* Project id 2481366 */
-    src: url("//at.alicdn.com/t/font_2481366_45z62ooeaci.woff2?t=1620453407423") format("woff2"),
-        url("//at.alicdn.com/t/font_2481366_45z62ooeaci.woff?t=1620453407423") format("woff"),
-        url("//at.alicdn.com/t/font_2481366_45z62ooeaci.ttf?t=1620453407423") format("truetype");
+    src: url("//at.alicdn.com/t/font_2481366_1re6gsus72y.woff2?t=1620697048131") format("woff2"),
+        url("//at.alicdn.com/t/font_2481366_1re6gsus72y.woff?t=1620697048131") format("woff"),
+        url("//at.alicdn.com/t/font_2481366_1re6gsus72y.ttf?t=1620697048131") format("truetype");
+}
+
+.np-icon-dangqian:before {
+    content: "\e64a";
+}
+
+.np-icon-dangqianlouceng:before {
+    content: "\e62c";
+}
+
+.np-icon-baocun:before {
+    content: "\e645";
+}
+
+.np-icon-qingli:before {
+    content: "\e62b";
 }
 
 .np-icon-link:before {

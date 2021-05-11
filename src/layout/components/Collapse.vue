@@ -18,7 +18,7 @@ export default defineComponent({
     },
     setup() {
         const store = useStore();
-        const collapse = computed(() => store.getters.collapse);
+        const collapse = computed<boolean>(() => store.getters.collapse);
 
         const click = () => {
             store.dispatch("SET_COLLAPSE", !collapse.value);

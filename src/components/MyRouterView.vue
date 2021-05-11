@@ -9,16 +9,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, onMounted, ref } from "vue";
 import { useStore } from "@/store";
 import { Tabs } from "@/model/views";
+import { location } from "@/util/storage";
+import { setting } from "@/config";
+import mitter from "@/plugins/mitt";
 
 export default defineComponent({
     name: "MyRouterView",
     setup() {
         const store = useStore();
-
-        const openTabs = computed(() => store.getters.openTabs);
+        const openTabs = ref(setting.openTabs);
 
         const keepAliveList = computed(() => {
             if (openTabs.value) {
@@ -35,6 +37,15 @@ export default defineComponent({
                 return [];
             }
         });
+
+        onMounted(() => {
+            const openLogoValue = location.getItem("global-setting-openTabs");
+            openLogoValue !== null && (openTabs.value = openLogoValue);
+            mitter.$on("changeOpenTabs", (value) => {
+                openTabs.value = value;
+            });
+        });
+
         return {
             keepAliveList,
         };

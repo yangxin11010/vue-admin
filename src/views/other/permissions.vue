@@ -17,7 +17,7 @@
             </el-button-group>
         </div>
         <el-divider content-position="left">演示</el-divider>
-        <div class="item" v-permissions="['boss','admin']">
+        <div class="item" v-permissions="['boss', 'admin']">
             <el-alert type="success" class="alert" :closable="false">
                 <p>Both <el-tag> boss </el-tag> and <el-tag> admin </el-tag> can see this</p>
             </el-alert>
@@ -46,14 +46,14 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { successMessage } from "@/util/message"
+import { successMessage } from "@/util/message";
 import { useStore } from "@/store";
 export default defineComponent({
     name: "Permissions",
     setup() {
         const store = useStore();
 
-        const userPermissions = computed(() => store.getters.permissions);
+        const userPermissions = computed<string[]>(() => store.getters.permissions);
 
         const changePermission = (item: string) => {
             store.dispatch("SET_PERMISSIONS", item);

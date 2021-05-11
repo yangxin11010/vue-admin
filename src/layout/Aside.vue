@@ -191,7 +191,7 @@ export default defineComponent({
 
         return {
             menuList,
-            collapse: computed(() => store.getters.collapse),
+            collapse: computed<boolean>(() => store.getters.collapse),
             defaultActive: computed(() => route.path),
             openLogo,
             globalColor,

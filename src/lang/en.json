@@ -16,7 +16,8 @@
         "hideTip": "Hide Tip",
         "sidebarLogo": "Sidebar Logo",
         "tagsView": "Open Tags-View",
-        "asideOpen": "Keep a submenu open"
+        "asideOpen": "Keep a submenu open",
+        "headerMenu": "Header menu"
     },
     "personCenter": {
         "cardTitle": "About Me",
@@ -85,10 +86,12 @@
         "logOut": "Login Out"
     },
     "tabs": {
-        "title": "LabelOptions",
+        "title": "Label Options",
         "closeNow": "Close This",
         "keepFixed": "Keep Fixed",
         "removeFixed": "Remove Fixed",
+        "closeLeft": "Close Left",
+        "closeRight": "Close Right",
         "closeOther": "Close Other",
         "closeAll": "Close All",
         "clear": "Clear",

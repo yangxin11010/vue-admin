@@ -16,7 +16,8 @@
         "hideTip": "ヒントを隠す",
         "sidebarLogo": "サイドバー Logo",
         "tagsView": "開く Tags-View",
-        "asideOpen": "1つのサブメニューの展開を維持する"
+        "asideOpen": "1つのサブメニューの展開を維持する",
+        "headerMenu": "Header メニュー"
     },
     "personCenter": {
         "cardTitle": "私について",
@@ -86,6 +87,8 @@
         "closeNow": "現在を閉じる",
         "keepFixed": "固定を保つ",
         "removeFixed": "固定解除",
+        "closeLeft": "左側を閉じる",
+        "closeRight": "右側を閉じる",
         "closeOther": "その他閉鎖",
         "closeAll": "すべてを閉じる",
         "clear": "ワンクリックでクリア",
