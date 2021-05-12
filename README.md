@@ -11,7 +11,7 @@ git clone https://github.com/yangxin11010/vue-admin.git
 cd vue-admin
 
 npm install
-或
+or
 yarn / yarn add
 ```
 
@@ -19,7 +19,7 @@ yarn / yarn add
 
 ```
 npm run dev
-或
+or
 yarn dev
 ```
 
