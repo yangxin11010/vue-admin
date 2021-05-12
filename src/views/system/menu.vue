@@ -1,89 +1,138 @@
 <template>
     <div class="menu">
-        <div class="handle-box">
-            <div>
-                <el-button type="primary" @click="addMenu">添加菜单</el-button>
-            </div>
-        </div>
-        <el-row>
-            <el-col :span="24">
-                <el-table
-                    :data="menuList"
-                    :show-header="true"
-                    border
-                    row-key="title"
-                    :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-                >
-                    <el-table-column label="菜单名称" prop="title" align="left">
-                        <template v-slot="{ row }">
-                            <i :class="row.icon"></i>
-                            <span style="margin-left: 5px;">{{ row.title }}</span>
+        <handle-box>
+            <el-button type="primary" @click="addMenu">添加菜单</el-button>
+        </handle-box>
+        <my-el-table
+            :data="menuList"
+            :show-header="true"
+            border
+            row-key="title"
+            :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+            :total="menuList.length"
+            @page-change="pageChange"
+            @size-change="sizeChange"
+        >
+            <el-table-column label="排序" prop="sort" align="center" width="100" sortable></el-table-column>
+            <el-table-column label="菜单名称" prop="title" align="left" min-width="150">
+                <template v-slot="{ row }">
+                    <i :class="row.icon"></i>
+                    <span style="margin-left: 5px;">{{ row.title }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="菜单路径" prop="path" align="left" min-width="150"></el-table-column>
+            <el-table-column label="菜单图标" prop="icon" align="left" min-width="200"></el-table-column>
+            <el-table-column label="菜单别名" prop="alias" align="left" min-width="200">
+                <template v-slot="{ row }">
+                    <el-space wrap>
+                        <template v-for="(item, index) in row.alias" :key="index">
+                            <el-tag size="small" effect="plain">{{ item }}</el-tag>
                         </template>
-                    </el-table-column>
-                    <el-table-column label="菜单路径" prop="path" align="left"></el-table-column>
-                    <el-table-column label="菜单图标" prop="icon" align="left"></el-table-column>
-                    <el-table-column label="缓存状态" prop="keepAlive" align="center" width="100">
-                        <template v-slot="{ row }">
-                            <el-tag :type="row.keepAlive ? 'success' : 'danger'">
-                                {{ row.keepAlive ? "开启" : "关闭" }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="菜单状态" prop="status" width="150" align="center">
-                        <template v-slot="{ row }">
-                            <el-tag :type="row.status === 0 ? 'danger' : 'success'">
-                                {{ row.status === 0 ? "已禁用" : "已启用" }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="操作" align="center" width="150">
-                        <template v-slot="{ row }">
-                            <el-button size="mini" type="info" @click="operate(0, row)">
-                                修改
-                            </el-button>
-                            <el-button
-                                size="mini"
-                                :type="row.status === 0 ? 'primary' : 'danger'"
-                                :disabled="row.status === 2"
-                                @click="operate(1, row)"
-                            >
-                                {{ row.status === 0 ? "启用" : "禁用" }}
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </el-col>
-        </el-row>
+                    </el-space>
+                </template>
+            </el-table-column>
+            <el-table-column label="菜单项目路径" prop="realPath" align="left" min-width="250"></el-table-column>
+            <el-table-column label="缓存状态" prop="keepAlive" align="center" fixed="right">
+                <template v-slot="{ row }">
+                    <el-tag :type="row.keepAlive ? 'success' : 'danger'">
+                        {{ row.keepAlive ? "开启" : "关闭" }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="菜单状态" prop="status" align="center" fixed="right">
+                <template v-slot="{ row }">
+                    <el-tag :type="row.status === 0 ? 'danger' : 'success'">
+                        {{ row.status === 0 ? "已禁用" : "已启用" }}
+                    </el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" width="180" fixed="right">
+                <template v-slot="{ row }">
+                    <el-button type="primary" @click="operate(0, row)">
+                        修改
+                    </el-button>
+                    <el-button
+                        :type="row.status === 0 ? 'primary' : 'danger'"
+                        :disabled="row.status === 2"
+                        @click="operate(1, row)"
+                        v-permissions="['admin', 'boss']"
+                    >
+                        {{ row.status === 0 ? "启用" : "禁用" }}
+                    </el-button>
+                </template>
+            </el-table-column>
+        </my-el-table>
 
         <el-dialog :title="`${isAddMenu ? '添加' : '修改'}菜单`" v-model="dialogVisible" width="40%">
             <el-form :model="menuForm" ref="menuFormRef" label-width="80px">
                 <el-form-item label="上级菜单" prop="parentMenuId">
                     <el-select v-model="menuForm.parentMenuId" clearable>
                         <template v-for="item in parentMenuIdOptions" :key="item.title">
-                            <el-option :label="item.title + ' --> ' + item.path" :value="item.menuId"></el-option>
+                            <el-option :label="item.path" :value="item.menuId"></el-option>
                         </template>
                     </el-select>
                 </el-form-item>
                 <el-form-item
                     prop="title"
                     label="菜单名称"
-                    :rules="[{ required: true, message: '请输入菜单名称', trigger: 'blur' }]"
+                    :rules="[{ required: true, message: '菜单名称不能为空', trigger: 'blur' }]"
                 >
-                    <el-input v-model="menuForm.title" clearable></el-input>
+                    <el-input v-model="menuForm.title" clearable placeholder="请输入名称"></el-input>
                 </el-form-item>
                 <el-form-item
                     prop="path"
                     label="菜单路径"
-                    :rules="[{ required: true, message: '请输入菜单路径', trigger: 'blur' }]"
+                    :rules="[{ required: true, message: '菜单路径不能为空', trigger: 'blur' }]"
                 >
-                    <el-input v-model="menuForm.path" clearable>
+                    <el-input v-model="menuForm.path" clearable placeholder="请输入路径">
                         <template v-if="menuForm.parentMenuId !== null" #prepend>
                             {{ parentMenuPath(menuForm.parentMenuId) }}
                         </template>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="icon" label="菜单图标">
-                    <el-input v-model="menuForm.icon" clearable></el-input>
+                    <el-input
+                        class="icon-input"
+                        ref="iconInputRef"
+                        v-model="menuForm.icon"
+                        placeholder="请选择"
+                        clearable
+                        @focus="choseIconInputFocus"
+                    >
+                        <template v-if="menuForm.icon" #prepend><i :class="menuForm.icon"></i></template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item v-if="!isAddMenu" prop="icon" label="排序">
+                    <el-input v-model="menuForm.sort" clearable> </el-input>
+                </el-form-item>
+                <el-form-item prop="alias" label="别名">
+                    <el-space class="space" wrap>
+                        <template v-for="(item, index) in menuForm.alias" :key="index">
+                            <el-tag
+                                size="large"
+                                closable
+                                effect="plain"
+                                :disable-transitions="false"
+                                @close="aliasTagClose(index)"
+                            >
+                                {{ item }}
+                            </el-tag>
+                        </template>
+                        <el-input
+                            class="alias-input"
+                            v-if="aliasInputShow"
+                            v-model="alias"
+                            ref="aliasInputRef"
+                            size="small"
+                            @keyup.enter="aliasInputConfirm"
+                            @blur="aliasInputConfirm"
+                        >
+                        </el-input>
+                        <el-button v-else class="alias-btn" size="small" @click="showAliasInput">+ New Alias</el-button>
+                    </el-space>
+                </el-form-item>
+                <el-form-item prop="realPath" label="项目路径">
+                    <el-input v-model="menuForm.realPath" clearable> </el-input>
                 </el-form-item>
                 <el-form-item prop="keepAlive" label="缓存状态">
                     <el-switch
@@ -111,25 +160,46 @@
                 </span>
             </template>
         </el-dialog>
+        <el-drawer title="请选择图标" v-model="choseIconDrawer">
+            <el-tabs type="border-card" tab-position="top">
+                <el-tab-pane label="Element-UI Icons">
+                    <el-space wrap size="large">
+                        <template v-for="(item, index) in ElIcons" :key="index">
+                            <div class="chose-icon" @click="changeIcon(item)"><i :class="item" /></div>
+                        </template>
+                    </el-space>
+                </el-tab-pane>
+                <el-tab-pane label="Np-Icons">
+                    <el-space wrap size="large">
+                        <template v-for="(item, index) in NpIcons" :key="index">
+                            <div class="chose-icon" @click="changeIcon(item)"><i :class="item" /></div>
+                        </template>
+                    </el-space>
+                </el-tab-pane>
+            </el-tabs>
+        </el-drawer>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, reactive, ref } from "vue";
+import { computed, defineComponent, nextTick, reactive, ref } from "vue";
 import { warningMsgBox } from "@/util/messageBox";
 import { successMessage, warningMessage } from "@/util/message";
-import { Menu } from "@model/views";
-import MenuList from "@/assets/js/menuList";
+import { Menu } from "@/model/views";
+import ElIcons from "@/assets/js/icons/el-icons";
+import NpIcons from "@/assets/js/icons/np-icons";
+import { useStore } from "@/store";
 
 export default defineComponent({
     name: "MenuPage",
     setup() {
-        let menuList = ref<Menu[]>([]);
+        const store = useStore();
+        const menuList = computed<Array<Menu>>(() => store.getters.menuList);
 
-        let menuFormRef = ref();
+        const menuFormRef = ref();
         const dialogVisible = ref(false);
 
-        let isAddMenu = ref(true);
+        const isAddMenu = ref(true);
 
         let menuForm = reactive<Menu>({
             title: "",
@@ -138,12 +208,15 @@ export default defineComponent({
             parentMenuId: null,
             keepAlive: true,
             status: 1,
+            sort: 0,
+            alias: [],
+            realPath: "",
             children: [],
         });
 
         // 一级菜单 列表
         const parentMenuIdOptions = computed(() => {
-            let val: Menu[] = [];
+            let val: Array<Menu> = [];
             menuList.value.forEach((item: Menu) => {
                 val.push(Object.assign(JSON.parse(JSON.stringify(item)), { children: [] }));
             });
@@ -203,7 +276,7 @@ export default defineComponent({
                 await nextTick();
                 menuFormRef.value.clearValidate();
                 isAddMenu.value = false;
-                menuForm = Object.assign(menuForm, item);
+                menuForm = Object.assign(menuForm, JSON.parse(JSON.stringify(item)));
             } else if (type === 1) {
                 // 禁用/启用菜单
                 dialogVisible.value = false;
@@ -216,29 +289,57 @@ export default defineComponent({
 
         const submit = () => {
             menuFormRef.value.validate((valid: boolean) => {
-                if (valid) {
-                    warningMsgBox(`确定${isAddMenu.value ? "添加" : "修改"}吗？`)
-                        .then(() => {
-                            dialogVisible.value = false;
-                            updateMenu(menuForm);
-                            successMessage(`${isAddMenu.value ? "添加" : "修改"}成功！`)
-                        })
-                        .catch(() => {});
-                } else {
-                    return false;
-                }
+                if (!valid) return false;
+                warningMsgBox(`确定${isAddMenu.value ? "添加" : "修改"}吗？`)
+                    .then(() => {
+                        dialogVisible.value = false;
+                        updateMenu(menuForm);
+                        successMessage(`${isAddMenu.value ? "添加" : "修改"}成功！`);
+                    })
+                    .catch(() => {});
             });
         };
 
-        const getMenuList = (): Promise<Menu[]> => {
-            return new Promise((resolve) => {
-                resolve(MenuList);
-            });
+        const pageChange = (value: number) => {
+            console.log(value);
         };
 
-        onMounted(async () => {
-            menuList.value = await getMenuList();
-        });
+        const sizeChange = (value: number) => {
+            console.log(value);
+        };
+
+        // 选择菜单图标
+        const iconInputRef = ref();
+        const choseIconDrawer = ref(false);
+        const choseIconInputFocus = () => {
+            choseIconDrawer.value = true;
+            iconInputRef.value.blur();
+        };
+        const changeIcon = (item: string) => {
+            menuForm.icon = item;
+            choseIconDrawer.value = false;
+        };
+
+        // 新增别名
+        const aliasInputRef = ref();
+        const aliasInputShow = ref(false);
+        const alias = ref("");
+        const aliasTagClose = (index: number) => {
+            menuForm.alias.splice(index, 1);
+        };
+        const aliasInputConfirm = () => {
+            const val = "/" + alias.value.replace(/\//, "");
+            if (alias.value && !menuForm.alias.includes(val)) {
+                menuForm.alias.push(val);
+            }
+            aliasInputShow.value = false;
+            alias.value = "";
+        };
+        const showAliasInput = async () => {
+            aliasInputShow.value = true;
+            await nextTick();
+            aliasInputRef.value.focus();
+        };
 
         return {
             menuList,
@@ -251,6 +352,20 @@ export default defineComponent({
             isAddMenu,
             parentMenuPath,
             addMenu,
+            pageChange,
+            sizeChange,
+            choseIconDrawer,
+            iconInputRef,
+            choseIconInputFocus,
+            NpIcons,
+            ElIcons,
+            changeIcon,
+            aliasInputRef,
+            aliasInputShow,
+            alias,
+            aliasInputConfirm,
+            showAliasInput,
+            aliasTagClose,
         };
     },
 });
@@ -260,5 +375,24 @@ export default defineComponent({
 .menu {
     width: 100%;
     height: 100%;
+}
+.chose-icon {
+    padding: 5px;
+    font-size: 26px;
+    cursor: pointer;
+    &:hover {
+        background-color: #f5f7fa;
+    }
+}
+.alias-input,
+.alias-btn {
+    width: 90px;
+}
+/deep/ {
+    .icon-input .el-input-group__prepend {
+        background-color: #ffffff !important;
+        font-size: 24px;
+        padding: 0 10px;
+    }
 }
 </style>

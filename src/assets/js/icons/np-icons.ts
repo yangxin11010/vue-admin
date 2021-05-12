@@ -6,4 +6,10 @@ export default [
     "np-icon-bg-pdf",
     "np-icon-icon",
     "np-icon-excel",
+    "np-icon-nested",
+    "np-icon-link",
+    "np-icon-dangqian",
+    "np-icon-dangqianlouceng",
+    "np-icon-baocun",
+    "np-icon-qingli",
 ];

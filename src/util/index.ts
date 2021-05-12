@@ -1,11 +1,10 @@
-
 /**
  * url参数拼接
  * @param {String} url
  * @param {Object} params  "session" | "location"
  * @returns {string}
  */
-export const urlPlus = (url: string, params: { [key: string]: any }) => {
+export const urlPlus = (url: string, params: CustomData) => {
     Object.keys(params).forEach((item: string, index: number) => {
         url += `${index === 0 ? "?" : "&"}${item}=${params[item]}`;
     });
@@ -30,7 +29,7 @@ export const openWindow = (url: string, flag = true) => {
  * @param {Object} params
  */
 
-export const setDomStyles = (el: any, params: { [key: string]: string }) => {
+export const setDomStyles = (el: any, params: CustomData) => {
     const vm: HTMLElement = document.querySelector(el);
     Object.keys(params).forEach((item: any) => {
         vm.style[item] = params[item];

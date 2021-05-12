@@ -1,27 +1,7 @@
-import request from '@/util/http'
+import request from "@/util/http";
+import { QueryGoods, ShopGood } from "@/model/shopGood";
 
-interface QueryGoods {
-	page?: number;
-	size?: number;
-	typeOneId?: number;
-	typeTwoId?: number;
-}
-
-interface Goods {
-	img_list_url: string;
-	img_url: string;
-	mack: string;
-	nice: string;
-	price: string;
-	supplier: string;
-	title: string;
-	type_one_id: number;
-	type_two_id: number;
-}
-
-const goods = {
-	queryGoods: (params: QueryGoods) => request.get('/queryGoods', params),
-	addGoods: (params: Goods) => request.post('/addGoods', params),
-}
-
-export default goods
+export default {
+    queryGoods: (params: QueryGoods) => request.get<ReqRes.ListData<ShopGood>>("/queryGoods", params),
+    addGoods: (params: ShopGood) => request.post("/addGoods", params),
+};

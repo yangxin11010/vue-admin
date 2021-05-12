@@ -11,8 +11,37 @@
     },
     "system": {
         "title": "System Layout Settings",
+        "hideBtn": "Hide Button",
+        "showTip": "Show Tip",
+        "hideTip": "Hide Tip",
+        "sidebarLogo": "Sidebar Logo",
         "tagsView": "Open Tags-View",
-        "sidebarLogo": "Sidebar Logo"
+        "asideOpen": "Keep a submenu open",
+        "headerMenu": "Header menu"
+    },
+    "personCenter": {
+        "cardTitle": "About Me",
+        "description": "Description",
+        "loginRecord": "Login Record",
+        "account": "Account",
+        "editPwd": "Edit Password",
+        "accountInfo": {
+            "name": "Name",
+            "sex": "Sex",
+            "email": "Email",
+            "introduction": "Introduction"
+        },
+        "editPwdInfo": {
+            "oldPwd": "Old Password",
+            "newPwd": "New Password",
+            "less6Error": "The password must be no less than 6 characters!",
+            "requireError": "The Password cannot be empty!",
+            "differentError": "Inconsistent passwords entered twice!"
+        }
+    },
+    "sex": {
+        "male": "Male",
+        "female": "Female"
     },
     "message": {
         "have": "{value} messages",
@@ -26,9 +55,17 @@
         "/personCenter": "Person Center",
         "/message": "Message Center",
         "/dashboard": "Dashboard",
-        "/svg": "Svg",
+        "/icons": "Icons",
+        "/permissions": "Permissions Test",
         "/clipboard": "Clipboard",
         "/exportFile": "Export File",
+        "/link": "Link",
+        "/router": "Nested Rrouting",
+        "/router/router1": "Menu1",
+        "/router/router2": "Menu2",
+        "/router/router1/router11": "Menu1-1",
+        "/router/router1/router12": "Menu2-2",
+        "/router/router1/router13": "Menu3-3",
         "/components": "Components",
         "/components/tinymce": "Tinymce",
         "/components/jsoneditor": "JSON Editor",
@@ -49,10 +86,12 @@
         "logOut": "Login Out"
     },
     "tabs": {
-        "title": "LabelOptions",
+        "title": "Label Options",
         "closeNow": "Close This",
         "keepFixed": "Keep Fixed",
         "removeFixed": "Remove Fixed",
+        "closeLeft": "Close Left",
+        "closeRight": "Close Right",
         "closeOther": "Close Other",
         "closeAll": "Close All",
         "clear": "Clear",
@@ -86,6 +125,7 @@
         "reset": "reset",
         "cancel": "cancel",
         "confirm": "confirm",
-        "operate": "operate"
+        "operate": "operate",
+        "save": "save"
     }
 }

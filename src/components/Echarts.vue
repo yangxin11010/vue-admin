@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, PropType, watch, onUnmounted } from "vue";
+import { defineComponent, ref, onMounted, PropType, watch, onUnmounted, onActivated } from "vue";
 import * as Echarts from "echarts";
 import { useStore } from "@/store";
 
@@ -27,13 +27,21 @@ export default defineComponent({
 
         let echarts: Echarts.ECharts;
 
+        const refresh = () => {
+            echarts.clear();
+            echarts.resize();
+            echarts.setOption(props.options);
+        };
+
+        const resize = () => {
+            echarts.resize();
+        };
+
         watch(
             () => store.getters.collapse,
             () => {
                 setTimeout(() => {
-                    echarts.clear();
-                    echarts.resize();
-                    echarts.setOption(props.options);
+                    refresh();
                 }, 400);
             }
         );
@@ -48,9 +56,9 @@ export default defineComponent({
             }
         );
 
-        const resize = () => {
-            echarts.resize();
-        };
+        onActivated(() => {
+            refresh();
+        });
 
         onMounted(() => {
             echarts = Echarts.init(echartsRef.value);
@@ -64,7 +72,7 @@ export default defineComponent({
 
         return {
             echartsRef,
-            resize,
+            refresh,
         };
     },
 });

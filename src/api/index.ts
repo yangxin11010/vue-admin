@@ -2,7 +2,7 @@
 import goods from '@/api/goods'
 
 const index = {
-	goods, 
+	goods
 }
 
 

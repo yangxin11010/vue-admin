@@ -1,8 +1,7 @@
 <template>
     <div class="tinymce">
         <div class="disflex ju_bt" style="450px">
-            <Tinymce width="650px" v-model="textarea"></Tinymce>
-            <div class="content">{{ textarea }}</div>
+            <Tinymce width="100%" v-model="textarea"></Tinymce>
         </div>
         <div class="htmlContent" v-html="textarea"></div>
     </div>
@@ -29,11 +28,6 @@ export default defineComponent({
 .tinymce {
     width: 100%;
     min-height: calc(100vh - 120px);
-}
-.content {
-    flex: 0.9;
-    border: 1px solid #ddd;
-    padding: 20px;
 }
 .htmlContent {
     width: 100%;

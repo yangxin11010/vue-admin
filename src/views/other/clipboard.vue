@@ -3,7 +3,7 @@
         <el-tabs>
             <el-tab-pane label="use clipboard by function">
                 <el-input class="input-box" v-model="text"></el-input>
-                <el-button type="primary" @click="copyInput">copy</el-button>
+                <el-button type="primary" icon="np-icon-fuzhi" @click="copyInput">&nbsp;&nbsp;copy</el-button>
             </el-tab-pane>
             <el-tab-pane label="use clipboard by v-directive">
                 <el-input class="input-box" v-model="text"></el-input>
@@ -12,8 +12,9 @@
                     v-clipboard="text"
                     v-clipboard:success="copySuccess"
                     v-clipboard:error="copyError"
+                    icon="np-icon-fuzhi"
                 >
-                    copy
+                     &nbsp;copy
                 </el-button>
             </el-tab-pane>
         </el-tabs>

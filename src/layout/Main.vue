@@ -9,19 +9,21 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mainStyleList, globalColor } from "@/config";
 
 export default defineComponent({
     setup() {
-        const mainStyleList: string[] = ["/dashboard", "/personCenter"];
-
         return {
             mainStyleList,
+            backTopBColor: globalColor.backTopBColor,
+            backTopTColor: globalColor.backTopTColor,
         };
     },
 });
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
 .main {
     background-color: #f0f2f5;
     padding: 10px 10px 0 !important;
@@ -38,8 +40,8 @@ export default defineComponent({
     border-radius: 5px;
 }
 .backtop {
-    background-color: $main-color;
-    color: #fff;
+    background-color: v-bind(backTopBColor);
+    color: v-bind(backTopTColor);
     opacity: 0.3;
     &:hover {
         opacity: 1;

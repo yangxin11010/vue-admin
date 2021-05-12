@@ -2,9 +2,19 @@
     <div class="header disflex ju_bt align-it-cen">
         <div class="header-l disflex align-it-cen">
             <Collapse></Collapse>
-            <Breadcrumb></Breadcrumb>
+            <template v-if="!headerMenu">
+                <Breadcrumb></Breadcrumb>
+            </template>
+            <template v-else>
+                <HeaderMenu style="margin-left: -10px;"></HeaderMenu>
+            </template>
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
+            <!-- 搜索 -->
+            <div class="" style="padding: 0;">
+                <Search></Search>
+            </div>
+            <!-- 消息 -->
             <el-tooltip
                 effect="dark"
                 :content="messageNum !== 0 ? $t('message.have', { value: messageNum }) : $t('message.no')"
@@ -21,6 +31,7 @@
                     </div>
                 </router-link>
             </el-tooltip>
+            <!-- 全屏 -->
             <el-tooltip
                 effect="dark"
                 :content="isScreenfull ? $t('fullscreen.exit') : $t('fullscreen.full')"
@@ -30,6 +41,31 @@
                     <Screenfull parent @screenfull="screenfull"></Screenfull>
                 </div>
             </el-tooltip>
+            <!-- element-ui 组件大小 -->
+            <el-dropdown
+                class="header-dropdown"
+                placement="bottom"
+                size="medium"
+                trigger="click"
+                @command="changeLayoutSize"
+            >
+                <div class="header-r-item layout-size">
+                    <svg-icon icon-class="layout-size" />
+                </div>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <template v-for="item in ['Mini', 'Small', 'Medium', 'large']" :key="item">
+                            <el-dropdown-item
+                                :command="item.toLowerCase()"
+                                :disabled="layoutSize === item.toLowerCase()"
+                            >
+                                {{ item }}
+                            </el-dropdown-item>
+                        </template>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+            <!-- 语言 -->
             <el-dropdown
                 class="header-dropdown"
                 placement="bottom-end"
@@ -50,6 +86,7 @@
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
+            <!-- 头像 -->
             <el-dropdown
                 class="header-dropdown"
                 placement="bottom-end"
@@ -80,24 +117,44 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from "vue";
+import { defineComponent, ref, onMounted, computed, getCurrentInstance, ComponentInternalInstance } from "vue";
 import Collapse from "./components/Collapse.vue";
 import Screenfull from "./components/Screenfull.vue";
 import Breadcrumb from "./components/Breadcrumb.vue";
+import HeaderMenu from "./components/HeaderMenu.vue";
+import Search from "./components/Search.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
-import { openWindow } from "@/util/util";
+import { openWindow } from "@/util";
 import { useI18n } from "vue-i18n";
 import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
+import { successMessage } from "@/util/message";
+import { globalColor } from "@/config";
+
 export default defineComponent({
     setup() {
         const store = useStore(),
-            router = useRouter();
+            // route = useRoute(),
+            router = useRouter(),
+            app = getCurrentInstance() as ComponentInternalInstance;
 
         const { locale } = useI18n();
 
-        let langIndex = computed(() => store.getters.lang);
+        const langIndex = computed<string>(() => store.getters.lang),
+            layoutSize = computed<string>(() => store.getters.layoutSize),
+            headerMenu = ref(false);
+
+        const changeLayoutSize = (e: string) => {
+            app.appContext.config.globalProperties.$ELEMENT.size = e;
+            successMessage("Switch Size Success");
+            store.dispatch("SET_LAYOUTSIZE", e);
+            window.location.reload();
+            // 3.0 replace 失效
+            // router.replace({
+            //     path: "/redirect" + route.fullPath,
+            // });
+        };
 
         const changeLang = (e: string) => {
             locale.value = e;
@@ -141,6 +198,9 @@ export default defineComponent({
             mitter.$on("clearNoReadMessage", () => {
                 messageNum.value = 0;
             });
+            mitter.$on("changeHeaderMenu", (value) => {
+                headerMenu.value = value;
+            });
         });
 
         return {
@@ -151,32 +211,38 @@ export default defineComponent({
             messageNum,
             screenfull,
             langSetting,
-            availableLocales
+            availableLocales,
+            layoutSize,
+            changeLayoutSize,
+            headerMenu,
+            headerBColor: globalColor.headerBColor,
+            headerTColor: globalColor.headerTColor,
+            headerHColor: globalColor.headerHColor,
         };
     },
     components: {
         Collapse,
         Screenfull,
         Breadcrumb,
+        Search,
+        HeaderMenu,
     },
 });
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
 .header {
     width: 100%;
     height: 100%;
-    background-color: $main-color;
-    color: #ffffff;
+    background-color: v-bind(headerBColor);
+    color: v-bind(headerTColor) !important;
     user-select: none;
     a {
-        color: #ffffff;
+        color: v-bind(headerTColor) !important;
     }
 }
 
-.breadcrumb {
-    color: #fff;
-}
 .header-r {
     padding-right: 10px;
     height: 100%;
@@ -188,11 +254,15 @@ export default defineComponent({
     align-items: center;
     cursor: pointer;
     &:hover {
-        background-color: #263445;
+        background-color: v-bind(headerHColor) !important;
     }
 }
 .fullscreen {
     font-size: 22px;
+}
+.layout-size {
+    font-size: 22px;
+    color: #fff;
 }
 .lang-icon {
     color: #fff;

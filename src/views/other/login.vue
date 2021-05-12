@@ -10,7 +10,7 @@
                         </div>
                         <template #dropdown>
                             <template v-for="locale in availableLocales" :key="`locale-${locale}`">
-                                <el-dropdown-item :command="locale" :disabled="langIndex === locale">
+                                <el-dropdown-item :command="locale" :disabled="lang === locale">
                                     {{ langSetting[locale] }}
                                 </el-dropdown-item>
                             </template>
@@ -38,7 +38,7 @@
                 ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="submit" type="primary" :loading="loading" v-keyboard:Enter="submit" @click="submit">
+                <el-button class="submit" type="primary" :loading="loading" v-keyboard:enter="submit" @click="submit">
                     {{ $t("login.button") }}
                 </el-button>
             </el-form-item>
@@ -57,22 +57,20 @@ import { useI18n } from "vue-i18n";
 export default defineComponent({
     name: "Login",
     setup() {
-        const router = useRouter();
-        const route = useRoute();
-        const store = useStore();
-        const { t: $t } = useI18n();
+        const router = useRouter(),
+            route = useRoute(),
+            store = useStore(),
+            { t: $t } = useI18n();
 
-        let langIndex = computed(() => store.getters.lang);
+        const loginFormRef = ref(),
+            lang = computed<string>(() => store.getters.lang),
+            loading = ref(false);
 
         const changeLang = async (e: string) => {
             await store.dispatch("SET_LANG", e);
             window.location.reload();
             // locale.value = e;
         };
-
-        const loading = ref(false);
-
-        const loginFormRef = ref();
 
         // 表单数据
         const formData = reactive({
@@ -127,7 +125,7 @@ export default defineComponent({
         };
 
         return {
-            langIndex,
+            lang,
             changeLang,
             loginFormRef,
             formData,
@@ -185,6 +183,11 @@ export default defineComponent({
             background-color: rgb(40, 52, 67);
             border: none;
             color: #ffffff;
+        }
+        i {
+            font-size: 18px !important;
+            position: relative;
+            top: 2px;
         }
     }
 }

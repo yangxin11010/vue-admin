@@ -3,6 +3,9 @@ $text-color: #2c3e50;
 // $main-color: #545c64;
 $main-color: #304156;
 
+//
+$theme-color: #409eff;
+
 // 除了主色外的场景色，需要在不同的场景中使用（例如危险色表示危险的操作）。
 $color-success: #67c23a;
 $color-warning: #e6a23c;
@@ -30,6 +33,8 @@ $font-size-title-m: 20px; //主标题
 
 // 主体部分  滚动条样式
 @mixin scrollStyle {
+    scrollbar-width: none; /*Firefox*/
+    -ms-overflow-style: none; /*IE10+*/
     &::-webkit-scrollbar {
         // 整个滚动条
         // display: none;
@@ -56,4 +61,17 @@ $font-size-title-m: 20px; //主标题
     // &::-webkit-resizer {
     //     // 某些元素的corner部分的部分样式(例:textarea的可拖动按钮).
     // }
+}
+
+@mixin scrollHide {
+    scrollbar-width: none; /*Firefox*/
+    -ms-overflow-style: none; /*IE10+*/
+    &::-webkit-scrollbar {
+        display: none; /*ChromeSafari*/
+    }
+}
+
+:export {
+    textColor: $text-color;
+    mainColor: $main-color;
 }

@@ -1,46 +1,128 @@
 <template>
     <div
+        v-if="openTabs"
         class="tabs disflex ju_bt align-it-cen"
         @mouseenter="mouseOperate(0, $event)"
         @mouseleave="mouseOperate(1, $event)"
+        @contextmenu.prevent
     >
-        <ul class="tabs-l disflex align-it-cen" ref="tabsRef">
-            <template v-for="item in keepTabsList" :key="item.path">
-                <li class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
-                    <span class="tab-text" :class="{ 'tabs-black-circle': $route.path === item.path }">
-                        {{ $t(`aside.${item.path}`) }}
-                    </span>
-                </li>
+        <div class="tabs-l disflex align-it-cen" ref="tabsRef">
+            <!-- 固定标签 -->
+            <template v-for="(item, index) in keepTabsList" :key="item.path">
+                <template v-if="index === 0">
+                    <div class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
+                        <span class="tab-text" :class="{ 'tabs-keep-circle': $route.path === item.path }">
+                            {{ $t(`aside.${item.path}`) }}
+                        </span>
+                    </div>
+                </template>
+                <template v-else>
+                    <el-dropdown
+                        placement="bottom"
+                        size="medium"
+                        @command="handleCommand($event, index)"
+                        trigger="contextmenu"
+                    >
+                        <div
+                            class="tab-item"
+                            :class="{ tabs_hover: $route.path === item.path }"
+                            @click="tabsClick(item)"
+                        >
+                            <span class="tab-text" :class="{ 'tabs-keep-circle': $route.path === item.path }">
+                                {{ $t(`aside.${item.path}`) }}
+                            </span>
+                        </div>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item :command="2" icon="el-icon-remove">{{
+                                    $t("tabs.removeFixed")
+                                }}</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </template>
             </template>
+            <!-- 活动标签 -->
             <template v-for="(item, index) in tabsList" :key="item.path">
-                <li class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
-                    <span class="tab-text" :class="{ 'tabs-white-circle': $route.path === item.path }">
-                        {{ $t(`aside.${item.path}`) }}
-                    </span>
-                    <span class="tab-close" @click.stop="closeTabs(index)"><i class="el-icon-close"></i></span>
-                </li>
+                <el-dropdown
+                    placement="bottom"
+                    size="medium"
+                    @command="handleCommand($event, index)"
+                    trigger="contextmenu"
+                >
+                    <div class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
+                        <span class="tab-text" :class="{ 'tabs-active-circle': $route.path === item.path }">
+                            {{ $t(`aside.${item.path}`) }}
+                        </span>
+                        <span class="tab-close" @click.stop="closeTabs(index)"><i class="el-icon-close"></i></span>
+                    </div>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item :command="0" icon="el-icon-circle-close">
+                                {{ $t("tabs.closeNow") }}
+                            </el-dropdown-item>
+                            <template v-if="index > 0">
+                                <el-dropdown-item :command="6" icon="el-icon-back">
+                                    {{ $t("tabs.closeLeft") }}
+                                </el-dropdown-item>
+                            </template>
+                            <template v-if="index < tabsList.length - 1">
+                                <el-dropdown-item :command="7" icon="el-icon-right">
+                                    {{ $t("tabs.closeRight") }}
+                                </el-dropdown-item>
+                            </template>
+                            <el-dropdown-item :command="3" icon="el-icon-top">
+                                {{ $t("tabs.closeOther") }}
+                            </el-dropdown-item>
+                            <el-dropdown-item :command="1" divided icon="el-icon-circle-plus">
+                                {{ $t("tabs.keepFixed") }}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </template>
-        </ul>
+        </div>
+        <!-- 标签选项 -->
         <div class="tabs-r disflex align-it-cen">
-            <el-dropdown class="tabs-dropdown" placement="bottom" size="medium" @command="handleCommand">
+            <el-dropdown class="tabs-dropdown" placement="bottom" size="medium" @command="handleCommand($event, null)">
                 <span class="tabs-dropdown-title">
                     <span>{{ $t("tabs.title") }}</span>
                     <i class="el-icon-arrow-down"></i>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item v-if="keepTabsIndex === -1" :command="0">
-                            {{ $t("tabs.closeNow") }}
+                        <template v-if="keepTabsIndex === -1">
+                            <el-dropdown-item :command="0" icon="el-icon-circle-close">
+                                {{ $t("tabs.closeNow") }}
+                            </el-dropdown-item>
+                        </template>
+                        <template v-if="keepTabsIndex === -1 && tabsIndex > 0">
+                            <el-dropdown-item :command="6" icon="el-icon-back">
+                                {{ $t("tabs.closeLeft") }}
+                            </el-dropdown-item>
+                        </template>
+                        <template v-if="keepTabsIndex === -1 && tabsIndex < tabsList.length - 1">
+                            <el-dropdown-item :command="7" icon="el-icon-right">
+                                {{ $t("tabs.closeRight") }}
+                            </el-dropdown-item>
+                        </template>
+                        <el-dropdown-item :command="3" icon="el-icon-top">{{ $t("tabs.closeOther") }}</el-dropdown-item>
+                        <el-dropdown-item :command="4" icon="el-icon-bottom">
+                            {{ $t("tabs.closeAll") }}
                         </el-dropdown-item>
-                        <el-dropdown-item v-if="keepTabsIndex === -1" :command="1">
-                            {{ $t("tabs.keepFixed") }}
+                        <template v-if="keepTabsIndex === -1">
+                            <el-dropdown-item :command="1" divided icon="el-icon-circle-plus">
+                                {{ $t("tabs.keepFixed") }}
+                            </el-dropdown-item>
+                        </template>
+                        <template v-if="tabsIndex === -1 && $route.path !== '/dashboard'">
+                            <el-dropdown-item :command="2" divided icon="el-icon-remove">
+                                {{ $t("tabs.removeFixed") }}
+                            </el-dropdown-item>
+                        </template>
+                        <el-dropdown-item :command="5" divided icon="np-icon-qingli">
+                            {{ $t("tabs.clear") }}
                         </el-dropdown-item>
-                        <el-dropdown-item v-if="tabsIndex === -1 && $route.path !== '/dashboard'" :command="2">
-                            {{ $t("tabs.removeFixed") }}
-                        </el-dropdown-item>
-                        <el-dropdown-item :command="3">{{ $t("tabs.closeOther") }}</el-dropdown-item>
-                        <el-dropdown-item :command="4">{{ $t("tabs.closeAll") }}</el-dropdown-item>
-                        <el-dropdown-item :command="5" divided>{{ $t("tabs.clear") }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -49,13 +131,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from "vue";
+import { defineComponent, computed, ref, watch, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import ElMessageBox from "@/util/messageBox";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
-
-import { Tabs } from "@model/views";
+import { globalColor } from "@/config";
+import { location } from "@/util/storage";
+import mitter from "@/plugins/mitt";
+import { setting } from "@/config";
+import { Tabs } from "@/model/views";
 
 export default defineComponent({
     setup() {
@@ -65,13 +150,10 @@ export default defineComponent({
             { t: $t } = useI18n(),
             tabsRef = ref();
 
-        // 保持固定的数组
-        const keepTabsList = computed(() => store.getters.tabsList[0]);
-
-        // 为保持固定的数组
-        const tabsList = computed(() => store.getters.tabsList[1]);
-
-        const openTabs = computed(() => store.getters.openTabs);
+        // 保持固定的数组(keepTabsList)   未保持固定的数组(tabsList)
+        const keepTabsList = computed<Array<Tabs>>(() => store.getters.tabsList[0]),
+            tabsList = computed<Array<Tabs>>(() => store.getters.tabsList[1]),
+            openTabs = ref(setting.openTabs);
 
         // 点击跳转
         const tabsClick = (item: Tabs) => {
@@ -79,29 +161,34 @@ export default defineComponent({
         };
 
         // 未定固tab所在未固定数组的下标
-        const tabsIndex = computed(() => store.getters.tabsList[1].findIndex((item: Tabs) => item.path === route.path));
+        const tabsIndex = computed<number>(() =>
+            store.getters.tabsList[1].findIndex((item: Tabs) => item.path === route.path)
+        );
         // 固tab所在固定数组的下标
-        const keepTabsIndex = computed(() =>
+        const keepTabsIndex = computed<number>(() =>
             store.getters.tabsList[0].findIndex((item: Tabs) => item.path === route.path)
         );
 
         // 下拉操作
-        const handleCommand = (e: number) => {
+        const handleCommand = (e: number, index: number | null) => {
             switch (e) {
                 case 0:
-                    closeTabs(tabsIndex.value);
+                    closeTabs(index !== null ? index : tabsIndex.value);
                     break;
                 case 1:
-                    store.dispatch("KEPP_TABS", tabsIndex.value);
+                    store.dispatch("KEPP_TABS", index !== null ? index : tabsIndex.value);
                     break;
                 case 2:
-                    store.dispatch("REMOVE_KEEP_TABS", keepTabsIndex.value);
+                    store.dispatch("REMOVE_KEEP_TABS", index !== null ? index : keepTabsIndex.value);
                     break;
                 case 3:
-                    if (keepTabsIndex.value !== -1 && tabsIndex.value === -1) {
+                    if (keepTabsIndex.value !== -1 || tabsIndex.value === -1) {
+                        // 固定
                         store.dispatch("REMOVE_TABS");
                     } else {
-                        store.dispatch("REMOVE_OTHER_TABS", tabsIndex.value);
+                        // 活跃
+                        index !== null && router.push(tabsList.value[index].path);
+                        store.dispatch("REMOVE_OTHER_TABS", index ? index : tabsIndex.value);
                     }
                     break;
                 case 4:
@@ -124,6 +211,24 @@ export default defineComponent({
                             router.push("/dashboard");
                         })
                         .catch(() => {});
+                    break;
+                case 6:
+                    if (index !== null && tabsIndex.value !== -1 && tabsIndex.value < index) {
+                        router.push(tabsList.value[index].path);
+                    }
+                    store.dispatch("REMOVE_LEFT_RIGHT_TABS", {
+                        type: "left",
+                        index: index !== null ? index : tabsIndex.value,
+                    });
+                    break;
+                case 7:
+                    if (index !== null && tabsIndex.value !== -1 && tabsIndex.value > index) {
+                        router.push(tabsList.value[index].path);
+                    }
+                    store.dispatch("REMOVE_LEFT_RIGHT_TABS", {
+                        type: "right",
+                        index: index !== null ? index : tabsIndex.value,
+                    });
                     break;
             }
         };
@@ -162,13 +267,14 @@ export default defineComponent({
             }
         };
 
+        // 监听路由变化 添加Tabs
         watch(
             () => route.path,
             (newValue: string) => {
                 if (newValue === "/dashboard") return;
                 if (
-                    keepTabsList.value.findIndex((item: Tabs) => item.path === newValue) === -1 &&
-                    tabsList.value.findIndex((item: Tabs) => item.path === newValue) === -1 &&
+                    keepTabsList.value.findIndex((item) => item.path === newValue) === -1 &&
+                    tabsList.value.findIndex((item) => item.path === newValue) === -1 &&
                     route.name &&
                     route.meta.title &&
                     openTabs
@@ -183,6 +289,14 @@ export default defineComponent({
             }
         );
 
+        onMounted(() => {
+            const openLogoValue = location.getItem("global-setting-openTabs");
+            openLogoValue !== null && (openTabs.value = openLogoValue);
+            mitter.$on("changeOpenTabs", (value) => {
+                openTabs.value = value;
+            });
+        });
+
         return {
             keepTabsList,
             tabsList,
@@ -190,23 +304,31 @@ export default defineComponent({
             tabsIndex,
             keepTabsIndex,
             closeTabs,
-            collapse: computed(() => store.getters.collapse),
+            collapse: computed<boolean>(() => store.getters.collapse),
             handleCommand,
             mouseOperate,
             tabsRef,
+            openTabs,
+            tabsBColor: globalColor.tabsBColor,
+            tabsTColor: globalColor.tabsTColor,
+            tabsAColor: globalColor.tabsAColor,
+            tabsATColor: globalColor.tabsATColor,
+            tabsBeforKColor: globalColor.tabsBeforKColor,
+            tabsBeforAColor: globalColor.tabsBeforAColor,
         };
     },
 });
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/variables.scss";
 .tabs {
-    height: 30px;
+    min-height: 30px;
     font-size: 12px;
     border-bottom: 1px solid #d8dce5;
 }
 .tabs-l {
-    width: calc(100% - 105px);
+    flex: 1;
     padding-left: 10px;
     overflow-x: auto;
     user-select: none;
@@ -217,18 +339,22 @@ export default defineComponent({
     }
 }
 .tab-item {
+    font-size: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
     height: 25px;
     border: 1px solid #d8dce5;
-    color: #495060;
-    background: #fff;
+    color: v-bind(tabsTColor);
+    background: v-bind(tabsBColor);
     padding: 0 8px;
     cursor: pointer;
     margin-right: 5px;
     border-radius: 2px;
+    &:hover {
+        @extend .tabs_hover;
+    }
 }
 .tab-text {
     white-space: nowrap;
@@ -253,8 +379,8 @@ export default defineComponent({
         color: #fff;
     }
 }
-.tabs-black-circle::before,
-.tabs-white-circle::before {
+.tabs-keep-circle::before,
+.tabs-active-circle::before {
     content: "";
     display: inline-block;
     width: 8px;
@@ -264,11 +390,11 @@ export default defineComponent({
     margin-right: 5px;
 }
 
-.tabs-black-circle::before {
-    background: #fff;
+.tabs-keep-circle::before {
+    background: v-bind(tabsBeforKColor);
 }
-.tabs-white-circle::before {
-    background: #fff;
+.tabs-active-circle::before {
+    background: v-bind(tabsBeforAColor);
 }
 .tabs-r {
     height: 100%;
@@ -283,7 +409,6 @@ export default defineComponent({
     height: 100%;
     text-align: center;
     line-height: 26px;
-    color: #fff;
     border-radius: 2px;
     font-size: 12px;
     display: flex;
@@ -294,15 +419,16 @@ export default defineComponent({
     margin-left: 5px;
 }
 .tabs_hover {
-    background-color: $main-color !important;
-    color: #fff !important;
+    background-color: v-bind(tabsAColor) !important;
+    color: v-bind(tabsATColor) !important;
 }
 /deep/ {
     .tabs-dropdown {
         height: 24px;
         padding-left: 10px;
         padding-right: 10px;
-        background-color: $main-color !important;
+        background-color: v-bind(tabsAColor) !important;
+        color: v-bind(tabsATColor) !important;
     }
 }
 </style>

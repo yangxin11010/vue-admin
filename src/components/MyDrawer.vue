@@ -1,9 +1,34 @@
 <template>
-    <div class="MyDrawer">
+    <div class="MyDrawer" v-keyboard:s+e+t.press="keyboardEvent">
         <div v-if="modal" class="drawer-back" @click.stop="toggle" :class="{ showBack: open }"></div>
         <div class="drawer-box" :class="drawerBoxclassName" :style="{ width: defaultWidth }">
-            <div v-if="showClose" class="drawer-icon" :class="drawerIconClassName" @click.stop="toggle">
-                <i :class="open ? openIcon : closeIcon"></i>
+            <div v-if="showClose && showDrawerIcon" class="drawer-icon-box" :class="drawerIconClassName">
+                <el-dropdown
+                    class="drawer-icon-dropdown"
+                    trigger="contextmenu"
+                    :placement="`bottom-${direction === 'left' ? 'start' : 'end'}`"
+                    ref="iconDrawerRef"
+                    @command="handleCommand"
+                >
+                    <el-tooltip class="item" effect="dark" placement="left" :disabled="tipDisabled">
+                        <template #content>
+                            <p>支持右键点击：</p>
+                            <p>1、隐藏按钮功能(支持键盘输入set显隐)</p>
+                            <p>2、隐藏Tip提示功能</p>
+                        </template>
+                        <div class="drawer-icon" @click.stop="toggle" @mousedown="mouseClick">
+                            <i :class="open ? openIcon : closeIcon"></i>
+                        </div>
+                    </el-tooltip>
+                    <template #dropdown>
+                        <el-dropdown-menu class="drawer-icon-dropdown-menu">
+                            <el-dropdown-item :command="0">{{ $t("system.hideBtn") }}</el-dropdown-item>
+                            <el-dropdown-item :command="1">
+                                {{ tipDisabled ? $t("system.showTip") : $t("system.hideTip") }}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </div>
             <div class="drawer-box-body">
                 <slot></slot>
@@ -13,7 +38,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType, computed } from "vue";
+import { defineComponent, ref, PropType, computed, onMounted } from "vue";
+import { location } from "@/util/storage";
 
 type Done = () => void;
 type DrawerDirection = "right" | "left";
@@ -60,7 +86,10 @@ export default defineComponent({
         },
     },
     setup(props) {
-        let open = ref(false);
+        const iconDrawerRef = ref(),
+            open = ref(false),
+            tipDisabled = ref(false),
+            showDrawerIcon = ref(true);
 
         const drawerIconClassName = computed(() => {
             if (!props.showClose) return [];
@@ -78,11 +107,11 @@ export default defineComponent({
         const defaultWidth = computed(() => {
             if (typeof props.width === "number") {
                 return props.width + "px";
-            } else if (typeof props.width === "string") {
-                return props.width;
-            } else {
-                return "260px";
             }
+            if (typeof props.width === "string") {
+                return props.width;
+            }
+            return "260px";
         });
 
         const toggle = () => {
@@ -93,15 +122,47 @@ export default defineComponent({
             } else {
                 open.value = !open.value;
             }
+            // 隐藏 dropdown
+            iconDrawerRef.value.visible = false;
         };
 
+        const handleCommand = (e: number) => {
+            if (e === 0) {
+                keyboardEvent();
+                return;
+            }
+            if (e === 1) {
+                tipDisabled.value = !tipDisabled.value;
+                location.setItem("global-setting-tip", tipDisabled.value);
+                return;
+            }
+        };
+
+        const keyboardEvent = () => {
+            showDrawerIcon.value = !showDrawerIcon.value;
+            location.setItem("global-setting-icon", showDrawerIcon.value);
+        };
+
+        onMounted(() => {
+            const tipValue = location.getItem("global-setting-tip"),
+                iconValue = location.getItem("global-setting-icon");
+            tipValue !== null && (tipDisabled.value = tipValue);
+            iconValue !== null && (showDrawerIcon.value = iconValue);
+        });
+
         return {
+            iconDrawerRef,
             open,
             close,
             toggle,
             defaultWidth,
             drawerIconClassName,
             drawerBoxclassName,
+            tipDisabled,
+            showDrawerIcon,
+            handleCommand,
+            ref,
+            keyboardEvent,
         };
     },
 });
@@ -109,13 +170,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .MyDrawer {
-    z-index: 10000;
     position: fixed;
     left: 0;
     top: 0;
+    z-index: 1999;
 }
 .drawer-back {
     background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1999;
     position: fixed;
     left: 0;
     top: 0;
@@ -128,6 +190,7 @@ export default defineComponent({
     height: 100vh;
     background-color: #fff;
     position: fixed;
+    z-index: 2000;
 }
 .drawer-box-right {
     right: 0;
@@ -151,12 +214,17 @@ export default defineComponent({
     transform: translate(100%);
     transition: all 0.25s cubic-bezier(0.7, 0.3, 0.1, 1);
 }
+.drawer-icon-box {
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    top: 45vh;
+    overflow: hidden;
+}
 .drawer-icon {
     width: 48px;
     height: 48px;
     background: #1890ff;
-    position: absolute;
-    top: 45vh;
     text-align: center;
     font-size: 24px;
     cursor: pointer;
@@ -174,6 +242,8 @@ export default defineComponent({
 .drawer-box-body {
     width: 100%;
     height: 100%;
+    position: relative;
+    z-index: 10000;
     overflow-y: scroll;
     &::-webkit-scrollbar {
         width: 6px;
@@ -181,6 +251,11 @@ export default defineComponent({
     &::-webkit-scrollbar-thumb {
         background-color: #9093994d;
         border-radius: 50px;
+    }
+}
+/deep/ {
+    .drawer-icon-dropdown .el-dropdown__popper {
+        top: 500px;
     }
 }
 </style>

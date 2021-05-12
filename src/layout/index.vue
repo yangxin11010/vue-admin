@@ -5,14 +5,14 @@
             <el-main
                 class="main overhide"
                 :style="{
-                    width: `calc(100% - ${collapse ? '64' : '200'}px)`,
+                    width: `calc(100% - ${collapse ? '64' : '250'}px)`,
                 }"
             >
                 <el-header height="60px" class="header">
                     <v-header></v-header>
                 </el-header>
                 <el-container class="container_main" direction="vertical">
-                    <v-tabs v-if="openTabs"></v-tabs>
+                    <v-tabs></v-tabs>
                     <v-main>
                         <my-router-view></my-router-view>
                     </v-main>
@@ -38,8 +38,7 @@ export default defineComponent({
         const store = useStore();
 
         return {
-            collapse: computed(() => store.getters.collapse),
-            openTabs: computed(() => store.getters.openTabs),
+            collapse: computed<boolean>(() => store.getters.collapse),
         };
     },
     components: {

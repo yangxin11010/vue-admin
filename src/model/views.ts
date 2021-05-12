@@ -2,7 +2,7 @@ export interface Tabs {
     name: string;
     title: string;
     path: string;
-    keepAlive: boolean,
+    keepAlive: boolean;
 }
 
 export interface DashboardCard {
@@ -26,5 +26,8 @@ export interface Menu {
     parentMenuId: number | null;
     keepAlive: boolean;
     status: number;
+    sort?: number;
+    alias: string[];
+    realPath: string;
     children: Menu[];
 }

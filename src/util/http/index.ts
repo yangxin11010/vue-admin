@@ -1,20 +1,35 @@
 import http from "./https";
-import { urlPlus } from "@/util/util";
+import { urlPlus } from "@/util";
 import qs from "qs";
 
-export default {
+const request = {
     // get
-    get: (url: string, params: object = {}) => http.get(url, { params }),
+    get: <T>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.get<T>(url, { params: { ...params, showElMsg } });
+    },
     // post
-    post: (url: string, params: object = {}) => http.post(url, params),
+    post: <T>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.post<T>(url, (params = { ...params, showElMsg }));
+    },
     // post 参数拼接
-    postUrl: (url: string, params: object = {}) => http.post(urlPlus(url, params)),
-    // formData
-    postForm: (url: string, params: object = {}) => http.post(url, qs.stringify(params)),
-    // delete
-    delete: (url: string, params: object = {}) => http.delete(url, params),
+    postUrl: <T>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.post<T>(urlPlus(url, params), (params = { showElMsg }));
+    },
     // put
-    put: (url: string, params: object = {}) => http.put(url, params),
+    put: <T>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.put<T>(url, (params = { ...params, showElMsg }));
+    },
     // patch
-    patch: (url: string, params: object = {}) => http.patch(url, params),
+    patch: <T>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.patch<T>(url, (params = { ...params, showElMsg }));
+    },
+    // delete
+    delete: <T>(url: string, params = {}) => {
+        return http.delete<T>(url, (params = { ...params }));
+    },
+    // formData
+    postForm: <T>(url: string, params = {}) => http.post<T>(url, qs.stringify(params)),
 };
+
+
+export default request;

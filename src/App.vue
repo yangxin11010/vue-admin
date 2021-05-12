@@ -7,10 +7,12 @@
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
 export default defineComponent({
-    name: "",
+    name: "App",
     setup() {
         const info = "项目地址：https://gitee.com/yangxin11010/vue-admin";
         const style = "font-size:12px;color: #333;";
+
+        
 
         onMounted(() => {
             console.log("%c%s", style, info);
@@ -22,7 +24,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/assets/css/main.scss";
+@import "@/assets/css/variables.scss";
+@import "@/assets/css/element-global.scss";
+@import "@/assets/css/index.scss";
 @import "@/assets/css/np-icons.scss";
 .app {
     height: 100%;

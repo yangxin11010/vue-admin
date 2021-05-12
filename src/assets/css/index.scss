@@ -23,45 +23,26 @@ body {
 a {
 	text-decoration: none;
 	color: #303133;
+	outline: none;
+}
+
+div {
+	outline: none;
 }
 
 ul {
 	list-style: none;
 }
 
-img {
-	width: 100%;
-	height: 100%;
-}
-
-// 全局 el-table 滚动条样式
-.el-table__body-wrapper {
-	&::-webkit-scrollbar {
-		// 整个滚动条
-		// display: none;
-		width: 6px;
-	}
-	&::-webkit-scrollbar-thumb {
-		// 滚动条上的滚动滑块
-		background-color: #9093994d;
-		border-radius: 50px;
-	}
-}
-
-// 全局 分页样式
-.pagination {
-	display: flex;
-	flex-direction: row-reverse;
-	margin-top: 10px;
-}
-
-// 全局顶部操作样式
-.handle-box {
-	display: flex;
-	& > div {
-		margin-right: 10px;
-		margin-bottom: 10px;
-	}
+[class^="np-icon-"] {
+	font-family: "np-icon" !important;
+	font-style: normal;
+	font-weight: normal;
+	text-transform: none;
+	line-height: 1;
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 .w100p {

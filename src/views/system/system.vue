@@ -1,18 +1,21 @@
 <template>
     <div class="system">
-        <p>system</p>
+        <h1 @click="clickHandle">System</h1>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
-
 export default defineComponent({
     name: "System",
     setup() {
+        const clickHandle = () => {};
+
         onMounted(() => {});
 
-        return {};
+        return {
+            clickHandle,
+        };
     },
 });
 </script>

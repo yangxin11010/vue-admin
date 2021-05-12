@@ -2,7 +2,7 @@
     <div :class="{ fullscreen: fullscreen }" class="tinymce-container" :style="{ width: containerWidth }">
         <textarea :id="tinymceId" class="tinymce-textarea" />
         <div class="editor-custom-btn-container">
-            <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
+            <editor-image :actions="actions" color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
         </div>
     </div>
 </template>
@@ -10,6 +10,7 @@
 <script lang="ts">
 import {
     defineComponent,
+    defineAsyncComponent,
     onMounted,
     onUnmounted,
     reactive,
@@ -20,7 +21,6 @@ import {
     nextTick,
     onActivated,
     onDeactivated,
-    defineAsyncComponent,
 } from "vue";
 import plugins from "./plugins";
 import toolbar from "./toolbar";
@@ -40,19 +40,17 @@ export default defineComponent({
                 return "vue-tinymce-" + +new Date() + ((Math.random() * 1000).toFixed(0) + "");
             },
         },
-        childHasChange: {
-            type: Boolean,
-            default: false,
-        },
         modelValue: {
             type: String,
             default: "",
         },
+        childHasChange: {
+            type: Boolean,
+            default: false,
+        },
         toolbar: {
             type: Array as PropType<string[]>,
-            default: () => {
-                return [];
-            },
+            default: () => [],
         },
         menubar: {
             type: String,
@@ -66,6 +64,11 @@ export default defineComponent({
             type: [Number, String],
             default: "auto",
         },
+        // 图片上传地址
+        actions: {
+            type: String,
+            default: "https://httpbin.org/post",
+        },
     },
     setup(props, ctx) {
         const store = useStore();
@@ -74,7 +77,7 @@ export default defineComponent({
             hasInit: boolean;
             tinymceId: string;
             fullscreen: boolean;
-            languageTypeList: { [keyL: string]: string };
+            languageTypeList: { [key: string]: string };
         }>({
             hasChange: props.childHasChange,
             hasInit: false,
@@ -82,13 +85,13 @@ export default defineComponent({
             fullscreen: false,
             languageTypeList: {
                 en: "en",
-                zh: "zh_CN",
+                "zh-cn": "zh_CN",
                 es: "es_MX",
                 ja: "ja",
             },
         });
 
-        let _window: any = window;
+        let _window = window;
 
         const containerWidth = computed(() => {
             const width = props.width as string;
@@ -241,7 +244,7 @@ export default defineComponent({
         });
 
         onActivated(() => {
-            _window.tinymce && initTinymce();
+            init();
         });
         onDeactivated(() => {
             destroyTinymce();

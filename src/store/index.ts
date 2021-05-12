@@ -2,21 +2,19 @@
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import { InjectionKey } from "vue";
-import { Tabs } from "@/model/views";
+import { Menu, Tabs } from "@/model/views";
 
-export interface KeyValue {
-    key: string;
-    value: any;
-}
+export type LayoutSize = "default" | "medium" | "small" | "mini";
 
 export interface State {
     lang: string;
     isLogin: boolean;
     collapse: boolean;
     token: string | null;
-    openLogo: boolean;
-    openTabs: boolean;
     tabsList: [Tabs[], Tabs[]];
+    permissions: string[];
+    layoutSize: LayoutSize;
+    menuList: Menu[];
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -28,6 +26,7 @@ export function useStore() {
 
 const store = createStore<State>({
     plugins: [
+        // session 存储
         createPersistedState({
             storage: window.sessionStorage,
             reducer(state) {
@@ -37,16 +36,16 @@ const store = createStore<State>({
                     collapse: state.collapse,
                     token: state.token,
                     tabsList: state.tabsList,
+                    permissions: state.permissions,
+                    layoutSize: state.layoutSize,
                 };
             },
         }),
+        // local 存储
         createPersistedState({
             storage: window.localStorage,
-            reducer(state) {
-                return {
-                    openLogo: state.openLogo,
-                    openTabs: state.openTabs,
-                };
+            reducer() {
+                return {};
             },
         }),
     ],
@@ -55,9 +54,10 @@ const store = createStore<State>({
         isLogin: false,
         collapse: true,
         token: null,
-        openLogo: true,
-        openTabs: true,
         tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
+        permissions: ["boss", "admin"],
+        layoutSize: "small",
+        menuList: [],
     },
     getters: {
         lang: (state) => state.lang,
@@ -65,8 +65,9 @@ const store = createStore<State>({
         collapse: (state) => state.collapse,
         token: (state) => state.token,
         tabsList: (state) => state.tabsList,
-        openLogo: (state) => state.openLogo,
-        openTabs: (state) => state.openTabs,
+        permissions: (state) => state.permissions,
+        layoutSize: (state) => state.layoutSize,
+        menuList: (state) => state.menuList,
     },
     mutations: {
         SET_LANG(state, value: string) {
@@ -93,6 +94,11 @@ const store = createStore<State>({
                 state.tabsList[1] = [];
             }
         },
+        REMOVE_LEFT_RIGHT_TABS(state, value: { type: "left" | "right"; index: number }) {
+            const begin = value.type === "left" ? 0 : value.index + 1,
+                end = value.type === "left" ? value.index : state.tabsList[1].length - 1;
+            state.tabsList[1].splice(begin, end);
+        },
         REMOVE_OTHER_TABS(state, value: number) {
             state.tabsList[1] = [state.tabsList[1][value]];
         },
@@ -106,11 +112,14 @@ const store = createStore<State>({
         INIT_TABS(state) {
             state.tabsList = [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []];
         },
-        CHANGE_LOGO(state, value: boolean) {
-            state.openLogo = value;
+        SET_PERMISSIONS(state, value: string[]) {
+            state.permissions = value;
         },
-        CHANGE_Tabs(state, value: boolean) {
-            state.openTabs = value;
+        SET_LAYOUTSIZE(state, value: LayoutSize) {
+            state.layoutSize = value;
+        },
+        SET_MENULIST(state, value: Menu[]) {
+            state.menuList = value;
         },
     },
     actions: {
@@ -132,6 +141,9 @@ const store = createStore<State>({
         REMOVE_TABS({ commit }, value?: number) {
             commit("REMOVE_TABS", value);
         },
+        REMOVE_LEFT_RIGHT_TABS({ commit }, value: { type: "left" | "right"; index: number }) {
+            commit("REMOVE_LEFT_RIGHT_TABS", value);
+        },
         REMOVE_OTHER_TABS({ commit }, value: number) {
             commit("REMOVE_OTHER_TABS", value);
         },
@@ -145,13 +157,17 @@ const store = createStore<State>({
         INIT_TABS({ commit }) {
             commit("INIT_TABS");
         },
-        CHANGE_LOGO({ commit }, value: boolean) {
-            commit("CHANGE_LOGO", value);
+        SET_PERMISSIONS({ commit }, value: string[]) {
+            commit("SET_PERMISSIONS", value);
         },
-        CHANGE_Tabs({ commit }, value: boolean) {
-            commit("CHANGE_Tabs", value);
+        SET_LAYOUTSIZE({ commit }, value: LayoutSize) {
+            commit("SET_LAYOUTSIZE", value);
+        },
+        SET_MENULIST({ commit }, value: Menu[]) {
+            commit("SET_MENULIST", value);
         },
     },
+    modules: {},
 });
 
 export default store;

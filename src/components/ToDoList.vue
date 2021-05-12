@@ -61,7 +61,7 @@
 <script lang="ts">
 import { defineComponent, nextTick, ref, reactive, onMounted } from "vue";
 import { successMessage } from "@/util/message";
-import { ToDoItem } from "@model/views";
+import { ToDoItem } from "@/model/views";
 
 export default defineComponent({
     name: "ToDoList",
@@ -150,5 +150,9 @@ export default defineComponent({
 }
 .svgicon {
     transform: scale(20);
+}
+.checked {
+    color: #999999;
+    text-decoration: line-through;
 }
 </style>
