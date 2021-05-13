@@ -29,7 +29,7 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, ref, watch } from "vue";
 import MenuList from "@/assets/js/menuList";
-import { Menu } from "@/model/views";
+import type { Menu } from "@/model/views";
 import { useStore } from "@/store";
 import router from "@/router";
 import { checkLink } from "@/util/validata";

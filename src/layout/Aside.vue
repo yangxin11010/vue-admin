@@ -1,13 +1,6 @@
 <template>
     <div class="aside">
-        <el-menu v-if="openLogo" class="asideMenu" style="height: 60px;overflow: hidden;" :collapse="collapse" router>
-            <el-menu-item class="logo-title" index="/">
-                <img class="logo" :src="setting.logo" alt="vue-admin" />
-                <template #title>
-                    <span class="title">{{ setting.logoText }}</span>
-                </template>
-            </el-menu-item>
-        </el-menu>
+        <TitleLogo></TitleLogo>
         <el-menu
             class="asideMenu"
             :uniqueOpened="uniqueOpened"
@@ -82,7 +75,7 @@
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
-import { Menu } from "@/model/views";
+import type { Menu } from "@/model/views";
 import MenuList from "@/assets/js/menuList";
 import { globalColor, setting } from "@/config";
 import { checkLink } from "@/util/validata";
@@ -90,6 +83,7 @@ import { openWindow } from "@/util";
 import { location } from "@/util/storage";
 import mitter from "@/plugins/mitt";
 // import { RouteRecordRaw } from "vue-router";
+import TitleLogo from "@/layout/components/TitleLogo.vue";
 
 export default defineComponent({
     setup() {
@@ -198,11 +192,15 @@ export default defineComponent({
             setting,
             asideNextBColor: globalColor.asideNextBColor,
             asideNextAColor: globalColor.asideNextAColor,
+            asideBColor: globalColor.asideBColor,
             checkLink,
             jumpUrl,
             uniqueOpened,
         };
     },
+    components: {
+        TitleLogo
+    }
 });
 </script>
 
@@ -210,29 +208,8 @@ export default defineComponent({
 @import "@/assets/css/variables.scss";
 .aside {
     height: 100%;
-    background-color: $main-color;
+    background-color: v-bind(asideBColor);
     user-select: none;
-    .logo-title {
-        background-color: #2b2f3a !important;
-        height: 60px;
-        line-height: 60px;
-    }
-    .logo {
-        width: 40px;
-        height: 40px;
-        position: relative;
-        left: -6px;
-    }
-    .title {
-        width: 130px;
-        height: 60px;
-        display: inline-block;
-        color: #fff;
-        font-weight: bold;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
     .link {
         width: 100%;
         height: 100%;
@@ -243,7 +220,6 @@ export default defineComponent({
             border: none !important;
             overflow-x: hidden;
             overflow-y: auto;
-            // @include scrollHide;
             scrollbar-width: none; /*Firefox*/
             -ms-overflow-style: none; /*IE10+*/
             &::-webkit-scrollbar {

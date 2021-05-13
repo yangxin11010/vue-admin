@@ -1,5 +1,5 @@
 // vuex.d.ts
-import { ComponentCustomProperties } from "vue";
+import type { ComponentCustomProperties } from "vue";
 import { Store } from "vuex";
 import { LayoutSize } from "@/store"
 

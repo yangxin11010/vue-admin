@@ -108,6 +108,7 @@
                         <el-dropdown-item :command="0">{{ $t("header.personCenter") }}</el-dropdown-item>
                         <el-dropdown-item :command="1">{{ $t("header.dashboard") }}</el-dropdown-item>
                         <el-dropdown-item :command="2">{{ $t("header.projectAddress") }}</el-dropdown-item>
+                        <el-dropdown-item :command="4" divided>Element Plus</el-dropdown-item>
                         <el-dropdown-item :command="3" divided>{{ $t("header.logOut") }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
@@ -176,6 +177,9 @@ export default defineComponent({
                     store.dispatch("LOGIN_OUT");
                     store.dispatch("INIT_TABS");
                     router.push("/login");
+                    break;
+                case 4:
+                    openWindow("https://element-plus.gitee.io/#/zh-CN/component/installation");
                     break;
             }
         };

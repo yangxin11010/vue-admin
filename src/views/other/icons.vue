@@ -7,7 +7,7 @@
                         <el-tooltip
                             class="item"
                             effect="dark"
-                            :content="`<i class=&quot;${item}&quot; />`"
+                            :content="copyType ? item : `<i class=&quot;${item}&quot; />`"
                             :placement="index < ElIcons.length / 2 ? 'bottom' : 'top'"
                         >
                             <div class="icon-item" @click="copy(copyType ? item : `<i class=&quot;${item}&quot; />`)">
@@ -24,7 +24,7 @@
                         <el-tooltip
                             class="item"
                             effect="dark"
-                            :content="`<svg-icon icon-class=&quot;${item}&quot; />`"
+                            :content="copyType ? item : `<svg-icon icon-class=&quot;${item}&quot; />`"
                             :placement="index < SvgIcons.length / 2 ? 'bottom' : 'top'"
                         >
                             <div
@@ -44,7 +44,7 @@
                         <el-tooltip
                             class="item"
                             effect="dark"
-                            :content="`<i class=&quot;${item}&quot; />`"
+                            :content="copyType ? item : `<i class=&quot;${item}&quot; />`"
                             :placement="index < NpIcons.length / 2 ? 'bottom' : 'top'"
                         >
                             <div class="icon-item" @click="copy(copyType ? item : `<i class=&quot;${item}&quot; />`)">

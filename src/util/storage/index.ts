@@ -3,7 +3,7 @@ interface StorageApi {
     setItem: (key: string, value: any) => void;
     removeItem: (key: string) => void;
 }
-type SessionWay = "session" | "location";
+export type SessionWay = "session" | "location";
 
 class StorageProxy implements StorageApi {
     protected storage: StorageApi;

@@ -185,7 +185,7 @@
 import { computed, defineComponent, nextTick, reactive, ref } from "vue";
 import { warningMsgBox } from "@/util/messageBox";
 import { successMessage, warningMessage } from "@/util/message";
-import { Menu } from "@/model/views";
+import type { Menu } from "@/model/views";
 import ElIcons from "@/assets/js/icons/el-icons";
 import NpIcons from "@/assets/js/icons/np-icons";
 import { useStore } from "@/store";

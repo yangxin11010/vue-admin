@@ -1,8 +1,8 @@
 // store.ts
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import { InjectionKey } from "vue";
-import { Menu, Tabs } from "@/model/views";
+import type { InjectionKey } from "vue";
+import type { Menu, Tabs } from "@/model/views";
 
 export type LayoutSize = "default" | "medium" | "small" | "mini";
 

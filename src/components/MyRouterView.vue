@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, computed, onMounted, ref } from "vue";
 import { useStore } from "@/store";
-import { Tabs } from "@/model/views";
+import type { Tabs } from "@/model/views";
 import { location } from "@/util/storage";
 import { setting } from "@/config";
 import mitter from "@/plugins/mitt";
@@ -33,9 +33,8 @@ export default defineComponent({
                     });
                 });
                 return aliveList;
-            } else {
-                return [];
             }
+            return [];
         });
 
         onMounted(() => {

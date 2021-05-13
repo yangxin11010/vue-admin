@@ -140,7 +140,7 @@ import { globalColor } from "@/config";
 import { location } from "@/util/storage";
 import mitter from "@/plugins/mitt";
 import { setting } from "@/config";
-import { Tabs } from "@/model/views";
+import type { Tabs } from "@/model/views";
 
 export default defineComponent({
     setup() {
