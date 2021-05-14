@@ -10,8 +10,8 @@
             <!-- 固定标签 -->
             <template v-for="(item, index) in keepTabsList" :key="item.path">
                 <template v-if="index === 0">
-                    <div class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
-                        <span class="tab-text" :class="{ 'tabs-keep-circle': $route.path === item.path }">
+                    <div class="tab-item" :class="{ tabs_hover: keepTabsIndex === index }" @click="tabsClick(item)">
+                        <span class="tab-text" :class="{ 'tabs-keep-circle': keepTabsIndex === index }">
                             {{ $t(`aside.${item.path}`) }}
                         </span>
                     </div>
@@ -23,20 +23,16 @@
                         @command="handleCommand($event, index)"
                         trigger="contextmenu"
                     >
-                        <div
-                            class="tab-item"
-                            :class="{ tabs_hover: $route.path === item.path }"
-                            @click="tabsClick(item)"
-                        >
-                            <span class="tab-text" :class="{ 'tabs-keep-circle': $route.path === item.path }">
+                        <div class="tab-item" :class="{ tabs_hover: keepTabsIndex === index }" @click="tabsClick(item)">
+                            <span class="tab-text" :class="{ 'tabs-keep-circle': keepTabsIndex === index }">
                                 {{ $t(`aside.${item.path}`) }}
                             </span>
                         </div>
                         <template #dropdown>
                             <el-dropdown-menu>
-                                <el-dropdown-item :command="2" icon="el-icon-remove">{{
-                                    $t("tabs.removeFixed")
-                                }}</el-dropdown-item>
+                                <el-dropdown-item :command="2" icon="el-icon-remove">
+                                    {{ $t("tabs.removeFixed") }}
+                                </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -50,8 +46,8 @@
                     @command="handleCommand($event, index)"
                     trigger="contextmenu"
                 >
-                    <div class="tab-item" :class="{ tabs_hover: $route.path === item.path }" @click="tabsClick(item)">
-                        <span class="tab-text" :class="{ 'tabs-active-circle': $route.path === item.path }">
+                    <div class="tab-item" :class="{ tabs_hover: tabsIndex === index }" @click="tabsClick(item)">
+                        <span class="tab-text" :class="{ 'tabs-active-circle': tabsIndex === index }">
                             {{ $t(`aside.${item.path}`) }}
                         </span>
                         <span class="tab-close" @click.stop="closeTabs(index)"><i class="el-icon-close"></i></span>
@@ -84,6 +80,9 @@
         </div>
         <!-- 标签选项 -->
         <div class="tabs-r disflex align-it-cen">
+            <div class="update-page">
+                <i :class="[tabsRotate, `${rotating ? 'rotating' : ''}`]" @click="refreshPage"></i>
+            </div>
             <el-dropdown class="tabs-dropdown" placement="bottom" size="medium" @command="handleCommand($event, null)">
                 <span class="tabs-dropdown-title">
                     <span>{{ $t("tabs.title") }}</span>
@@ -140,6 +139,7 @@ import { globalColor } from "@/config";
 import { location } from "@/util/storage";
 import mitter from "@/plugins/mitt";
 import { setting } from "@/config";
+import { warningMessage } from "@/util/message"
 import type { Tabs } from "@/model/views";
 
 export default defineComponent({
@@ -148,7 +148,9 @@ export default defineComponent({
             route = useRoute(),
             store = useStore(),
             { t: $t } = useI18n(),
-            tabsRef = ref();
+            tabsRef = ref(),
+            allRoutes = router.getRoutes(),
+            aliasOfParent = ref(""); //路由别名真名的路径
 
         // 保持固定的数组(keepTabsList)   未保持固定的数组(tabsList)
         const keepTabsList = computed<Array<Tabs>>(() => store.getters.tabsList[0]),
@@ -162,11 +164,11 @@ export default defineComponent({
 
         // 未定固tab所在未固定数组的下标
         const tabsIndex = computed<number>(() =>
-            store.getters.tabsList[1].findIndex((item: Tabs) => item.path === route.path)
+            store.getters.tabsList[1].findIndex((item: Tabs) => item.path === (aliasOfParent.value !== "" ? aliasOfParent.value :route.path))
         );
         // 固tab所在固定数组的下标
         const keepTabsIndex = computed<number>(() =>
-            store.getters.tabsList[0].findIndex((item: Tabs) => item.path === route.path)
+            store.getters.tabsList[0].findIndex((item: Tabs) => item.path === (aliasOfParent.value !== "" ? aliasOfParent.value :route.path))
         );
 
         // 下拉操作
@@ -267,10 +269,18 @@ export default defineComponent({
             }
         };
 
+
         // 监听路由变化 添加Tabs
         watch(
             () => route.path,
             (newValue: string) => {
+                aliasOfParent.value = "";
+                const currentRoute = allRoutes.filter(item => item.path === newValue)[0];
+                if(currentRoute.aliasOf !== undefined){
+                    // 路由别名添加tabs
+                    newValue = currentRoute.aliasOf.path
+                    aliasOfParent.value = newValue;
+                }
                 if (newValue === "/dashboard") return;
                 if (
                     keepTabsList.value.findIndex((item) => item.path === newValue) === -1 &&
@@ -289,7 +299,22 @@ export default defineComponent({
             }
         );
 
+        const rotating = ref(false);
+
+        const refreshPage = () => {
+            rotating.value = true;
+            setTimeout(() => {
+                rotating.value = false;
+            }, 800);
+            warningMessage("This is a Demo!")
+        };
+
         onMounted(() => {
+            // 路由别名 选中tabs 
+            const currentRoute = allRoutes.filter(item => item.path === route.path)[0];
+            if(currentRoute.aliasOf !== undefined){
+                aliasOfParent.value = currentRoute.aliasOf.path
+            }
             const openLogoValue = location.getItem("global-setting-openTabs");
             openLogoValue !== null && (openTabs.value = openLogoValue);
             mitter.$on("changeOpenTabs", (value) => {
@@ -309,12 +334,15 @@ export default defineComponent({
             mouseOperate,
             tabsRef,
             openTabs,
+            refreshPage,
+            rotating,
             tabsBColor: globalColor.tabsBColor,
             tabsTColor: globalColor.tabsTColor,
             tabsAColor: globalColor.tabsAColor,
             tabsATColor: globalColor.tabsATColor,
             tabsBeforKColor: globalColor.tabsBeforKColor,
             tabsBeforAColor: globalColor.tabsBeforAColor,
+            tabsRotate: globalColor.tabsRotate,
         };
     },
 });
@@ -323,9 +351,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/assets/css/variables.scss";
 .tabs {
-    min-height: 30px;
+    height: 30px;
+    min-height: 34px;
+    max-height: 34px;
     font-size: 12px;
     border-bottom: 1px solid #d8dce5;
+    user-select: none;
+    -moz-user-select: none;
+    padding-top: 3px;
 }
 .tabs-l {
     flex: 1;
@@ -344,7 +377,7 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
-    height: 25px;
+    height: 26px;
     border: 1px solid #d8dce5;
     color: v-bind(tabsTColor);
     background: v-bind(tabsBColor);
@@ -360,11 +393,11 @@ export default defineComponent({
     white-space: nowrap;
 }
 .tab-close {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     text-align: center;
     border-radius: 50%;
-    margin-left: 2px;
+    margin-left: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -404,11 +437,11 @@ export default defineComponent({
     z-index: 100;
     padding-left: 10px;
     padding-right: 10px;
+    text-align: center;
 }
 .tabs-dropdown-title {
     height: 100%;
-    text-align: center;
-    line-height: 26px;
+    // line-height: 30px;
     border-radius: 2px;
     font-size: 12px;
     display: flex;
@@ -422,9 +455,17 @@ export default defineComponent({
     background-color: v-bind(tabsAColor) !important;
     color: v-bind(tabsATColor) !important;
 }
+.update-page {
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    margin-right: 10px;
+    font-size: 20px;
+}
+
 /deep/ {
     .tabs-dropdown {
-        height: 24px;
+        height: 26px;
         padding-left: 10px;
         padding-right: 10px;
         background-color: v-bind(tabsAColor) !important;

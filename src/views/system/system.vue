@@ -1,6 +1,7 @@
 <template>
     <div class="system">
-        <h1 @click="clickHandle">System</h1>
+        <h1>{{ name }}</h1>
+        <el-button type="primary" @click="clickHandle">click</el-button>
     </div>
 </template>
 

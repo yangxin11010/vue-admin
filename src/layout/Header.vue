@@ -1,7 +1,7 @@
 <template>
     <div class="header disflex ju_bt align-it-cen">
         <div class="header-l disflex align-it-cen">
-            <Collapse></Collapse>
+            <Collapse class="header-color"></Collapse>
             <template v-if="!headerMenu">
                 <Breadcrumb></Breadcrumb>
             </template>
@@ -240,11 +240,12 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     background-color: v-bind(headerBColor);
-    color: v-bind(headerTColor) !important;
     user-select: none;
+    color: rgba(0, 0, 0, 0.65) !important;
     a {
-        color: v-bind(headerTColor) !important;
+        color: rgba(0, 0, 0, 0.65) !important;
     }
+    box-shadow: 0 1px 5px #d6d3d3;
 }
 
 .header-r {
@@ -258,7 +259,7 @@ export default defineComponent({
     align-items: center;
     cursor: pointer;
     &:hover {
-        background-color: v-bind(headerHColor) !important;
+        background-color: rgba(0, 0, 0, 0.025) !important;
     }
 }
 .fullscreen {
@@ -266,10 +267,8 @@ export default defineComponent({
 }
 .layout-size {
     font-size: 22px;
-    color: #fff;
 }
 .lang-icon {
-    color: #fff;
     font-size: 16px;
 }
 .user-header {
@@ -279,7 +278,6 @@ export default defineComponent({
 .user-header i {
     font-size: 13px;
     margin-left: 5px;
-    color: #fff;
     position: relative;
     top: -15px;
 }

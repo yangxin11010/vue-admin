@@ -17,7 +17,7 @@ import directive from "@/directive";
 // 国际化
 import VueI18n from "@/lang";
 
-import MyEl from "@/components/my-el-components";
+import MyEl from "@/components/my-components";
 
 const app = createApp(App);
 

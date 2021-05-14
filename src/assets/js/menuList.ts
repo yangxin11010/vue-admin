@@ -8,7 +8,7 @@ export default [
         keepAlive: true,
         status: 1,
         sort: 1,
-        alias: ["/index", "/dashboard"],
+        alias: ["/index"],
         realPath: "@/views/other/dashboard.vue",
         children: [],
     },

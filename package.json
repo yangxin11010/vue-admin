@@ -14,7 +14,7 @@
 		"clipboard": "^2.0.8",
 		"core-js": "^3.6.5",
 		"echarts": "^5.0.2",
-		"element-plus": "^1.0.2-beta.40",
+		"element-plus": "^1.0.2-beta.44",
 		"es6-promise": "^4.2.8",
 		"file-saver": "^2.0.5",
 		"js-cookie": "^2.2.1",

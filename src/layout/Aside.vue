@@ -1,73 +1,24 @@
 <template>
     <div class="aside">
-        <TitleLogo></TitleLogo>
-        <el-menu
-            class="asideMenu"
-            :uniqueOpened="uniqueOpened"
-            :collapse="collapse"
-            :default-active="defaultActive"
-            :background-color="globalColor.asideBColor"
-            :text-color="globalColor.asideTColor"
-            :active-text-color="globalColor.asideATColor"
-            router
-            :style="{
-                height: `calc(100% - ${openLogo ? 60 : 0}px)`,
-            }"
-        >
-            <template v-for="item in menuList" :key="item.path">
-                <template v-if="item.children.length > 0">
-                    <el-submenu class="submenu" :index="item.path">
-                        <template #title>
-                            <i :class="item.icon"></i>
-                            <span>{{ $t(`aside.${item.path}`) }}</span>
-                        </template>
-                        <template v-for="item2 in item.children" :key="item2.path">
-                            <template v-if="item2.children.length > 0">
-                                <el-submenu class="submenu-next" :index="item.path + item2.path">
-                                    <template #title>
-                                        <!-- <i :class="item2.icon"></i> -->
-                                        <span>{{ $t(`aside.${item.path + item2.path}`) }}</span>
-                                    </template>
-                                    <template
-                                        v-for="item3 in item2.children"
-                                        :key="item.path + item2.path + item3.path"
-                                    >
-                                        <el-menu-item v-if="checkLink(item3.realPath)" @click="jumpUrl(item3.realPath)">
-                                            {{ $t(`aside.${item.path + item2.path + item3.path}`) }}
-                                        </el-menu-item>
-                                        <el-menu-item v-else :index="item.path + item2.path + item3.path">
-                                            {{ $t(`aside.${item.path + item2.path + item3.path}`) }}
-                                        </el-menu-item>
-                                    </template>
-                                </el-submenu>
-                            </template>
-                            <template v-else>
-                                <el-menu-item v-if="checkLink(item2.realPath)" @click="jumpUrl(item2.realPath)">
-                                    {{ $t(`aside.${item.path + item2.path}`) }}
-                                </el-menu-item>
-                                <el-menu-item v-else :index="item.path + item2.path">
-                                    {{ $t(`aside.${item.path + item2.path}`) }}
-                                </el-menu-item>
-                            </template>
-                        </template>
-                    </el-submenu>
-                </template>
-                <template v-else>
-                    <el-menu-item v-if="checkLink(item.realPath)" @click="jumpUrl(item.realPath)">
-                        <i :class="item.icon"></i>
-                        <template #title>
-                            <span>{{ $t(`aside.${item.path}`) }}</span>
-                        </template>
-                    </el-menu-item>
-                    <el-menu-item v-else :index="item.path">
-                        <i :class="item.icon"></i>
-                        <template #title>
-                            <span>{{ $t(`aside.${item.path}`) }}</span>
-                        </template>
-                    </el-menu-item>
-                </template>
-            </template>
-        </el-menu>
+        <title-logo></title-logo>
+        <div :style="{ height: `calc(100% - ${openLogo ? 60 : 0}px)` }">
+            <el-scrollbar>
+                <el-menu
+                    class="asideMenu"
+                    :uniqueOpened="uniqueOpened"
+                    :collapse="collapse"
+                    :default-active="defaultActive"
+                    :background-color="globalColor.asideBColor"
+                    :text-color="globalColor.asideTColor"
+                    :active-text-color="globalColor.asideATColor"
+                    router
+                >
+                    <template v-for="item in menuList" :key="item.path">
+                        <my-el-menu-item :item="item" :path="item.path"></my-el-menu-item>
+                    </template>
+                </el-menu>
+            </el-scrollbar>
+        </div>
     </div>
 </template>
 
@@ -78,12 +29,12 @@ import { useRoute, useRouter } from "vue-router";
 import type { Menu } from "@/model/views";
 import MenuList from "@/assets/js/menuList";
 import { globalColor, setting } from "@/config";
-import { checkLink } from "@/util/validata";
-import { openWindow } from "@/util";
 import { location } from "@/util/storage";
 import mitter from "@/plugins/mitt";
 // import { RouteRecordRaw } from "vue-router";
-import TitleLogo from "@/layout/components/TitleLogo.vue";
+import TitleLogo from "./components/TitleLogo.vue";
+import MyElMenuItem from "./components/MyElMenuItem.vue";
+
 
 export default defineComponent({
     setup() {
@@ -157,9 +108,6 @@ export default defineComponent({
         //     });
         // };
 
-        const jumpUrl = (value: string) => {
-            openWindow(value);
-        };
 
         onMounted(async () => {
             const result = await getMenuList();
@@ -193,13 +141,12 @@ export default defineComponent({
             asideNextBColor: globalColor.asideNextBColor,
             asideNextAColor: globalColor.asideNextAColor,
             asideBColor: globalColor.asideBColor,
-            checkLink,
-            jumpUrl,
             uniqueOpened,
         };
     },
     components: {
-        TitleLogo
+        TitleLogo,
+        MyElMenuItem
     }
 });
 </script>
@@ -216,25 +163,9 @@ export default defineComponent({
     }
     /deep/ {
         .asideMenu {
+            width: 250px;
             // 去掉el-menu 白色右边框
             border: none !important;
-            overflow-x: hidden;
-            overflow-y: auto;
-            scrollbar-width: none; /*Firefox*/
-            -ms-overflow-style: none; /*IE10+*/
-            &::-webkit-scrollbar {
-                // 整个滚动条
-                // display: none;
-                width: 6px;
-            }
-            &::-webkit-scrollbar-thumb {
-                // 滚动条上的滚动滑块
-                background-color: #9093994d;
-                border-radius: 50px;
-            }
-        }
-        .asideMenu {
-            width: 250px;
         }
         .el-menu--collapse {
             width: 64px;

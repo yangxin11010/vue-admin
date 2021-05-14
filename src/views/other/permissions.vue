@@ -19,7 +19,7 @@
         <el-divider content-position="left">演示</el-divider>
         <div class="item" v-permissions="['boss', 'admin']">
             <el-alert type="success" class="alert" :closable="false">
-                <p>Both <el-tag> boss </el-tag> and <el-tag> admin </el-tag> can see this</p>
+                <p>Both <el-tag> boss </el-tag> or <el-tag> admin </el-tag> can see this</p>
             </el-alert>
             <el-tag type="info">v-permissions="['boss','admin']"</el-tag>
         </div>

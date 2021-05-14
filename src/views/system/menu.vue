@@ -217,7 +217,7 @@ export default defineComponent({
         // 一级菜单 列表
         const parentMenuIdOptions = computed(() => {
             let val: Array<Menu> = [];
-            menuList.value.forEach((item: Menu) => {
+            menuList.value.forEach((item) => {
                 val.push(Object.assign(JSON.parse(JSON.stringify(item)), { children: [] }));
             });
             return val;

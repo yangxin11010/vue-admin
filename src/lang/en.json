@@ -121,6 +121,7 @@
     "button": {
         "add": "add",
         "update": "update",
+        "edit": "edit",
         "delete": "delete",
         "reset": "reset",
         "cancel": "cancel",

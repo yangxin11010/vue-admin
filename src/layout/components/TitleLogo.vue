@@ -10,9 +10,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "@/store";
 import { setting } from "@/config";
+import { location } from "@/util/storage";
+import mitter from "@/plugins/mitt";
 export default defineComponent({
     name: "TitleLogo",
     props: {
@@ -28,6 +30,14 @@ export default defineComponent({
     setup() {
         const store = useStore();
         const openLogo = ref(setting.openLogo);
+        onMounted(() => {
+            const openLogoValue = location.getItem("global-setting-openLogo");
+            // 侧边栏Logo
+            openLogoValue !== null && (openLogo.value = openLogoValue);
+            mitter.$on("changeOpenLogo", (value) => {
+                openLogo.value = value;
+            });
+        });
         return {
             collapse: computed<boolean>(() => store.getters.collapse),
             openLogo,

@@ -1,5 +1,5 @@
 <template>
-    <svg-icon ref="svgRef" :icon-class="isFullScreen ? activeIcon : defaultIcon" @click="clickHandle"></svg-icon>
+    <svg-icon :style="{fontSize: size + 'px'}" ref="svgRef" :icon-class="isFullScreen ? activeIcon : defaultIcon" @click="clickHandle"></svg-icon>
 </template>
 
 <script lang="ts">
@@ -12,7 +12,7 @@ export default defineComponent({
     props: {
         size: {
             type: Number,
-            default: 22,
+            default: 20,
         },
         activeIcon: {
             type: String,
@@ -69,5 +69,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style lang="scss" scoped></style>

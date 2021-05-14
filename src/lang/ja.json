@@ -120,7 +120,8 @@
     },
     "button": {
         "add": "新急増",
-        "update": "修 正",
+        "update": "更 新",
+        "edit": "修 正",
         "delete": "削除を",
         "reset": "リセット",
         "cancel": "キャンセル",

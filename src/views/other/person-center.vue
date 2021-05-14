@@ -106,7 +106,7 @@
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" :loading="updateLoading" @click="updatePass">
-                                        {{ $t("button.update") }}
+                                        {{ $t("button.edit") }}
                                     </el-button>
                                     <el-button @click="reset">{{ $t("button.reset") }}</el-button>
                                 </el-form-item>

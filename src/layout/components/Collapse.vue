@@ -42,7 +42,7 @@ export default defineComponent({
     cursor: pointer;
     margin-right: 10px;
     &:hover {
-        background-color: #434a50;
+        background-color: rgba(0, 0, 0, 0.025);
     }
 }
 </style>

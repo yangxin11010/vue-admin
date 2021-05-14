@@ -27,7 +27,7 @@ export default defineComponent({
 .main {
     background-color: #f0f2f5;
     padding: 10px 10px 0 !important;
-    min-height: calc(100% - 30px);
+    min-height: calc(100% - 34px);
     overflow-y: auto;
     overflow-x: hidden;
     @include scrollStyle;

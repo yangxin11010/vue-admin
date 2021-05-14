@@ -28,8 +28,8 @@ const globalColor = {
     /**
      * header
      */
-    headerBColor: "#304156", // 背景色
-    headerTColor: "#FFFFFF", // 文字颜色
+    headerBColor: "#fff", // 背景色
+    headerTColor: "#333", // 文字颜色
     headerHColor: "#263445", // 鼠标移入颜色
     /**
      * aside
@@ -37,8 +37,8 @@ const globalColor = {
     asideBColor: "#304156", // 背景色
     asideTColor: "#BFCBD9", // 文字颜色
     asideATColor: "#1890ff", // 选中文字颜色
-    asideNextBColor: "#1f2f3f", // 选中文字颜色
-    asideNextAColor: "#001528", // 选中文字颜色
+    asideNextBColor: "#1f2f3f", // 下级 选中文字颜色
+    asideNextAColor: "#001528", // 下级 选中文字颜色
     /**
      * tabs
      */
@@ -48,6 +48,7 @@ const globalColor = {
     tabsATColor: "#FFFFFF", // 选中文字颜色
     tabsBeforKColor: "#FFFFFF", // 固定圆圈背景色
     tabsBeforAColor: "#FFFFFF", // 选中圆圈背景色
+    tabsRotate: "el-icon-refresh", // 转圈图标
     /**
      * backtop
      */

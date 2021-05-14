@@ -120,7 +120,8 @@
     },
     "button": {
         "add": "新 增",
-        "update": "修 改",
+        "update": "更 新",
+        "edit": "修 改",
         "delete": "删 除",
         "reset": "重 置",
         "cancel": "取 消",
