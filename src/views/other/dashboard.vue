@@ -161,7 +161,7 @@ export default defineComponent({
         margin-bottom: 5px;
     }
 }
-::v-deep(.bottom-el-card) {
+:deep(.bottom-el-card) {
     font-size: 14px;
     .el-card,
     .el-card__header {

@@ -171,13 +171,13 @@ export default defineComponent({
 .submit {
     width: 100%;
 }
-::v-deep(.el-form-item) {
+:deep(.el-form-item) {
     border: 1px solid hsla(0, 0%, 100%, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
 }
-::v-deep(.el-input) {
+:deep(.el-input) {
     .el-input__inner {
         background-color: rgb(40, 52, 67);
         border: none;

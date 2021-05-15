@@ -293,10 +293,10 @@ export default defineComponent({
     opacity: 0;
     transform: translateX(30px);
 }
-::v-deep(.header-dropdown) {
+:deep(.header-dropdown) {
     height: 100%;
 }
-::v-deep(.el-badge__content) {
+:deep(.el-badge__content) {
     border: none;
 }
 </style>

@@ -254,7 +254,7 @@ export default defineComponent({
     }
 }
 
-::v-deep(.drawer-icon-dropdown .el-dropdown__popper) {
+:deep(.drawer-icon-dropdown .el-dropdown__popper) {
     top: 500px;
 }
 </style>

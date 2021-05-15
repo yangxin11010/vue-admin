@@ -389,7 +389,7 @@ export default defineComponent({
     width: 90px;
 }
 
-::v-deep(.icon-input .el-input-group__prepend) {
+:deep(.icon-input .el-input-group__prepend) {
     background-color: #ffffff !important;
     font-size: 24px;
     padding: 0 10px;

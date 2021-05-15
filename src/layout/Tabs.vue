@@ -462,7 +462,7 @@ export default defineComponent({
     margin-right: 10px;
     font-size: 20px;
 }
-::v-deep(.tabs-dropdown) {
+:deep(.tabs-dropdown) {
     height: 26px;
     padding-left: 10px;
     padding-right: 10px;

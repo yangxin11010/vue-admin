@@ -15,7 +15,7 @@ export default defineComponent({
 .space {
     margin-bottom: 2px !important;
 }
-::v-deep(.el-space__item) {
+:deep(.el-space__item) {
     padding-bottom: 10px !important;
 }
 </style>

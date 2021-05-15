@@ -174,7 +174,7 @@ export default defineComponent({
     transition: width 0.2s;
     overflow: hidden;
     border: none;
-    ::v-deep(.el-input__inner) {
+    :deep(.el-input__inner) {
         border-radius: 0;
         border: 0;
         padding-left: 0;

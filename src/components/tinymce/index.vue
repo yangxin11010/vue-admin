@@ -274,7 +274,7 @@ export default defineComponent({
 }
 
 .tinymce-container {
-    ::v-deep(.mce-fullscreen) {
+    :deep(.mce-fullscreen) {
         .mce-fullscreen {
             z-index: 10000;
         }

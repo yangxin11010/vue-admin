@@ -106,7 +106,7 @@ export default defineComponent({
     font-size: 22px;
 }
 
-::v-deep(.el-table__expanded-cell) {
+:deep(.el-table__expanded-cell) {
     background-color: #f0f2f5;
     &:hover {
         background-color: #f0f2f5 !important;

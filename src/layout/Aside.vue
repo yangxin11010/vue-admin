@@ -161,18 +161,18 @@ export default defineComponent({
         width: 100%;
         height: 100%;
     }
-    ::v-deep(.asideMenu) {
+    :deep(.asideMenu) {
         width: 250px;
         // 去掉el-menu 白色右边框
         border: none !important;
     }
 
-    ::v-deep(.el-menu--collapse) {
+    :deep(.el-menu--collapse) {
         width: 64px;
     }
 
-    ::v-deep(.el-menu--inline .el-menu-item),
-    ::v-deep(.el-menu--inline .el-submenu__title) {
+    :deep(.el-menu--inline .el-menu-item),
+    :deep(.el-menu--inline .el-submenu__title) {
         // 二级菜单 背景色
 
         background-color: v-bind(asideNextBColor) !important;
@@ -182,8 +182,8 @@ export default defineComponent({
         }
     }
 
-    ::v-deep(.el-menu-item [class^="np-icon-"]),
-    ::v-deep(.el-submenu [class^="np-icon-"]) {
+    :deep(.el-menu-item [class^="np-icon-"]),
+    :deep(.el-submenu [class^="np-icon-"]) {
         vertical-align: middle;
         margin-right: 5px;
         width: 24px;
