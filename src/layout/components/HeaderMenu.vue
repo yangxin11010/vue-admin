@@ -4,9 +4,6 @@
         class="headerMenu"
         mode="horizontal"
         @select="handleSelect"
-        background-color="#304156"
-        text-color="#fff"
-        active-text-color="#ffd04b"
     >
         <el-menu-item index="1">处理中心</el-menu-item>
         <el-submenu index="2">

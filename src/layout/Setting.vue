@@ -46,7 +46,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import MyDrawer from "@/components/MyDrawer.vue";
 import { setting } from "@/config";
-import { location } from "@/util/storage";
+import { location, session } from "@/util/storage";
 import mitter from "@/plugins/mitt";
 
 export default defineComponent({
@@ -78,6 +78,7 @@ export default defineComponent({
                 case 3:
                     headerMenu.value = e;
                     eventName = "changeHeaderMenu";
+                    session.setItem("global-setting-headerMenu", e);
                     break;
             }
             eventName && mitter.$emit<boolean>(eventName, e);
@@ -85,16 +86,18 @@ export default defineComponent({
         };
 
         onMounted(() => {
-            const openLogoValue = location.getItem("global-setting-openLogo"),
-                openTabsValue = location.getItem("global-setting-openTabs"),
-                uniqueOpenedValue = location.getItem("global-setting-uniqueOpened");
-
+            const openLogoValue: boolean = location.getItem("global-setting-openLogo"),
+                openTabsValue: boolean = location.getItem("global-setting-openTabs"),
+                uniqueOpenedValue: boolean = location.getItem("global-setting-uniqueOpened"),
+                headerMenuValue: boolean = session.getItem("global-setting-headerMenu");
             // 侧边栏Logo
             openLogoValue !== null && (openLogo.value = openLogoValue);
             // Tabs-View
             openTabsValue !== null && (openTabs.value = openTabsValue);
             // 是否保持一个子菜单的展开
             uniqueOpenedValue !== null && (uniqueOpened.value = uniqueOpenedValue);
+            // header menu
+            headerMenuValue !== null && (headerMenu.value = headerMenuValue);
         });
 
         // my-drawer 关闭前 回调

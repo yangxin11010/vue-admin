@@ -21,7 +21,7 @@
             ></el-option>
         </el-select>
         <div class="search-icon" @click.stop="inputOperate">
-            <i class="el-icon-search" />
+            <i class="np-icon-search" />
         </div>
     </div>
 </template>
@@ -119,7 +119,7 @@ export default defineComponent({
                     } else {
                         router.push(getAllRouterByParentMenuId(parentMenuId, MenuList).join("") + path);
                     }
-                }, 300);
+                }, 200);
             }
         });
 
@@ -165,6 +165,7 @@ export default defineComponent({
     padding: 0 10px;
     display: flex;
     align-items: center;
+    font-weight: bold;
 }
 .search-input {
     width: 0;
@@ -172,5 +173,17 @@ export default defineComponent({
     font-size: 18px;
     transition: width 0.2s;
     overflow: hidden;
+    border: none;
+    /deep/ {
+        .el-input__inner {
+            border-radius: 0;
+            border: 0;
+            padding-left: 0;
+            padding-right: 0;
+            box-shadow: none !important;
+            border-bottom: 1px solid #d9d9d9 !important;
+            vertical-align: middle;
+        }
+    }
 }
 </style>

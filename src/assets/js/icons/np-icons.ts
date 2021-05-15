@@ -12,4 +12,5 @@ export default [
     "np-icon-dangqianlouceng",
     "np-icon-baocun",
     "np-icon-qingli",
+    "np-icon-search",
 ];

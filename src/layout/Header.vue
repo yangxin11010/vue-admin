@@ -132,6 +132,7 @@ import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
 import { successMessage } from "@/util/message";
 import { globalColor } from "@/config";
+import { session } from "@/util/storage";
 
 export default defineComponent({
     setup() {
@@ -202,6 +203,8 @@ export default defineComponent({
             mitter.$on("clearNoReadMessage", () => {
                 messageNum.value = 0;
             });
+            const headerMenuValue: boolean = session.getItem("global-setting-headerMenu");
+            headerMenuValue && (headerMenu.value = headerMenuValue);
             mitter.$on("changeHeaderMenu", (value) => {
                 headerMenu.value = value;
             });

@@ -2,9 +2,13 @@
 
 @font-face {
     font-family: "np-icon"; /* Project id 2481366 */
-    src: url("//at.alicdn.com/t/font_2481366_1re6gsus72y.woff2?t=1620697048131") format("woff2"),
-        url("//at.alicdn.com/t/font_2481366_1re6gsus72y.woff?t=1620697048131") format("woff"),
-        url("//at.alicdn.com/t/font_2481366_1re6gsus72y.ttf?t=1620697048131") format("truetype");
+    src: url("//at.alicdn.com/t/font_2481366_wder2nmgn.woff2?t=1621044559156") format("woff2"),
+        url("//at.alicdn.com/t/font_2481366_wder2nmgn.woff?t=1621044559156") format("woff"),
+        url("//at.alicdn.com/t/font_2481366_wder2nmgn.ttf?t=1621044559156") format("truetype");
+}
+
+.np-icon-search:before {
+    content: "\e893";
 }
 
 .np-icon-dangqian:before {
