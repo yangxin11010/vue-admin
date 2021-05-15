@@ -8,7 +8,7 @@ function resolve(dir) {
 
 module.exports = {
     publicPath: "./",
-    outputDir: "dist",
+    outputDir: "docs",
     assetsDir: "",
     indexPath: "index.html",
     // css: {
