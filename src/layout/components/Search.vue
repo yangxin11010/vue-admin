@@ -174,16 +174,14 @@ export default defineComponent({
     transition: width 0.2s;
     overflow: hidden;
     border: none;
-    /deep/ {
-        .el-input__inner {
-            border-radius: 0;
-            border: 0;
-            padding-left: 0;
-            padding-right: 0;
-            box-shadow: none !important;
-            border-bottom: 1px solid #d9d9d9 !important;
-            vertical-align: middle;
-        }
+    ::v-deep(.el-input__inner) {
+        border-radius: 0;
+        border: 0;
+        padding-left: 0;
+        padding-right: 0;
+        box-shadow: none !important;
+        border-bottom: 1px solid #d9d9d9 !important;
+        vertical-align: middle;
     }
 }
 </style>

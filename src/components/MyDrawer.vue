@@ -253,9 +253,8 @@ export default defineComponent({
         border-radius: 50px;
     }
 }
-/deep/ {
-    .drawer-icon-dropdown .el-dropdown__popper {
-        top: 500px;
-    }
+
+::v-deep(.drawer-icon-dropdown .el-dropdown__popper) {
+    top: 500px;
 }
 </style>

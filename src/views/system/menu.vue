@@ -388,11 +388,10 @@ export default defineComponent({
 .alias-btn {
     width: 90px;
 }
-/deep/ {
-    .icon-input .el-input-group__prepend {
-        background-color: #ffffff !important;
-        font-size: 24px;
-        padding: 0 10px;
-    }
+
+::v-deep(.icon-input .el-input-group__prepend) {
+    background-color: #ffffff !important;
+    font-size: 24px;
+    padding: 0 10px;
 }
 </style>

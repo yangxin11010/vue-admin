@@ -161,15 +161,13 @@ export default defineComponent({
         margin-bottom: 5px;
     }
 }
-/deep/ {
-    .bottom-el-card {
-        font-size: 14px;
-        .el-card,
-        .el-card__header {
-            width: 100%;
-            padding: 0;
-            border: none;
-        }
+::v-deep(.bottom-el-card) {
+    font-size: 14px;
+    .el-card,
+    .el-card__header {
+        width: 100%;
+        padding: 0;
+        border: none;
     }
 }
 </style>

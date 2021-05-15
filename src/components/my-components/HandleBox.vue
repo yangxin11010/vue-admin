@@ -4,12 +4,6 @@
     </el-space>
 </template>
 
-<!-- 
-    继承  el-space 所有属性  
-    新增 
-        @params {Number} bottom  2
--->
-
 <script lang="ts">
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -21,10 +15,8 @@ export default defineComponent({
 .space {
     margin-bottom: 2px !important;
 }
-/deep/ {
-    .el-space__item {
-        padding-bottom: 10px !important;
-    }
+::v-deep(.el-space__item) {
+    padding-bottom: 10px !important;
 }
 </style>
 

@@ -310,7 +310,7 @@ export default defineComponent({
         };
 
         onMounted(() => {
-            // 路由别名 选中tabs 
+            // 路由别名 选中tabs
             const currentRoute = allRoutes.filter(item => item.path === route.path)[0];
             if(currentRoute.aliasOf !== undefined){
                 aliasOfParent.value = currentRoute.aliasOf.path
@@ -462,14 +462,11 @@ export default defineComponent({
     margin-right: 10px;
     font-size: 20px;
 }
-
-/deep/ {
-    .tabs-dropdown {
-        height: 26px;
-        padding-left: 10px;
-        padding-right: 10px;
-        background-color: v-bind(tabsAColor) !important;
-        color: v-bind(tabsATColor) !important;
-    }
+::v-deep(.tabs-dropdown) {
+    height: 26px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: v-bind(tabsAColor) !important;
+    color: v-bind(tabsATColor) !important;
 }
 </style>
