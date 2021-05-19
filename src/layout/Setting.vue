@@ -30,7 +30,7 @@
                 ></el-switch>
             </div>
             <div class="set-item">
-                <div>{{ $t("system.headerMenu") }}</div>
+                <div>{{ $t("system.asideFixed") }}</div>
                 <el-switch
                     :value="asideFixed"
                     active-color="#1890ff"

@@ -17,6 +17,7 @@
         "sidebarLogo": "侧边栏 Logo",
         "tagsView": "开启 Tags-View",
         "asideOpen": "保持一个子菜单的展开",
+        "asideFixed": "固定 Aside",
         "headerMenu": "Header 菜单"
     },
     "personCenter": {

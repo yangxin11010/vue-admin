@@ -17,6 +17,7 @@
         "sidebarLogo": "サイドバー Logo",
         "tagsView": "開く Tags-View",
         "asideOpen": "1つのサブメニューの展開を維持する",
+        "asideFixed": "固定 Aside",
         "headerMenu": "Header メニュー"
     },
     "personCenter": {
