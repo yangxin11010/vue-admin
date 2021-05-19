@@ -2,9 +2,41 @@
 
 @font-face {
     font-family: "np-icon"; /* Project id 2481366 */
-    src: url("//at.alicdn.com/t/font_2481366_wder2nmgn.woff2?t=1621044559156") format("woff2"),
-        url("//at.alicdn.com/t/font_2481366_wder2nmgn.woff?t=1621044559156") format("woff"),
-        url("//at.alicdn.com/t/font_2481366_wder2nmgn.ttf?t=1621044559156") format("truetype");
+    src: url("//at.alicdn.com/t/font_2481366_ihnm3x9cqz.woff2?t=1621389623369") format("woff2"),
+        url("//at.alicdn.com/t/font_2481366_ihnm3x9cqz.woff?t=1621389623369") format("woff"),
+        url("//at.alicdn.com/t/font_2481366_ihnm3x9cqz.ttf?t=1621389623369") format("truetype");
+}
+
+.np-icon-unfold:before {
+    content: "\e62d";
+}
+
+.np-icon-fold:before {
+    content: "\e894";
+}
+
+.np-icon-person-center:before {
+    content: "\e602";
+}
+
+.np-icon-shouye:before {
+    content: "\e603";
+}
+
+.np-icon-tuichudenglu:before {
+    content: "\e70b";
+}
+
+.np-icon-shouye1:before {
+    content: "\e669";
+}
+
+.np-icon-tuichudenglu1:before {
+    content: "\e614";
+}
+
+.np-icon-lianjie:before {
+    content: "\e646";
 }
 
 .np-icon-search:before {

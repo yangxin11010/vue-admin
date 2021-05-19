@@ -31,7 +31,7 @@
                     </el-space>
                 </template>
             </el-table-column>
-            <el-table-column label="菜单项目路径" prop="realPath" align="left" min-width="250"></el-table-column>
+            <el-table-column label="菜单项目路径 / 外链接" prop="realPath" align="left" min-width="250"></el-table-column>
             <el-table-column label="缓存状态" prop="keepAlive" align="center" fixed="right">
                 <template v-slot="{ row }">
                     <el-tag :type="row.keepAlive ? 'success' : 'danger'">

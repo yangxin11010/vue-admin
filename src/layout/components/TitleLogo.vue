@@ -1,5 +1,5 @@
 <template>
-    <el-menu v-if="openLogo" class="logo-box" :collapse="collapse" router>
+    <el-menu v-if="openLogo" class="logo-box" :collapse="fixed ? false : collapse" router :collapse-transition="!fixed">
         <el-menu-item class="logo-title" index="/">
             <img class="logo" :src="logo" :alt="title" />
             <template #title>
@@ -25,6 +25,10 @@ export default defineComponent({
         title: {
             type: String,
             default: setting.logoText,
+        },
+        fixed: {
+            type: Boolean,
+            default: false,
         },
     },
     setup() {

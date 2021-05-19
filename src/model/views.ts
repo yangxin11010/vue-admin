@@ -37,3 +37,4 @@ export interface ProjectPercent {
     num: number;
     status?: "success" | "exception" | "warning";
 }
+

@@ -16,7 +16,7 @@
             <el-option
                 v-for="item in searchResult"
                 :key="item.value"
-                :label="item.title + ' > ' + item.path"
+                :label="mergeParentTitle(item.parentMenuId, item.path)"
                 :value="item.path + ',' + item.realPath + ',' + item.parentMenuId"
             ></el-option>
         </el-select>
@@ -34,11 +34,13 @@ import { useStore } from "@/store";
 import router from "@/router";
 import { checkLink } from "@/util/validata";
 import { openWindow } from "@/util";
+import { useI18n } from "vue-i18n"
 
 export default defineComponent({
     name: "Search",
     setup() {
         const store = useStore(),
+            { t: $t } = useI18n(),
             inputRef = ref(),
             menuList = computed<Array<Menu>>(() => store.getters.menuList),
             showInput = ref(false),
@@ -91,19 +93,44 @@ export default defineComponent({
             }
         };
 
-        // 根据parentMenuId查找全路径
+        // 根据parentMenuId查找 父菜单
         const getAllRouterByParentMenuId = (parentId: number, list: Array<Menu>) => {
-            let parentRouter: string[] = [];
+            let parentRouter:Menu | undefined;
             list.forEach((item) => {
                 if (item.menuId === parentId) {
-                    parentRouter.push(item.path);
+                    parentRouter = item;
                 }
-                parentRouter.length <= 0 &&
-                    item.children.length > 0 &&
-                    parentRouter.concat(getAllRouterByParentMenuId(parentId, item.children));
+                if(!parentRouter && item.children.length > 0){
+                    parentRouter = getAllRouterByParentMenuId(parentId, item.children);
+                }
             });
-            return parentRouter.reverse();
+            return parentRouter;
         };
+
+        const mergeParent = (parentId: number) => {
+            if(!parentId)return []
+            let list: Array<Menu> = [];
+            const parentMenu = getAllRouterByParentMenuId(parentId, MenuList);
+            parentMenu && list.push(parentMenu)
+            if(parentMenu && parentMenu.parentMenuId) {
+                const nextParentMenu = getAllRouterByParentMenuId(parentMenu.parentMenuId, MenuList)
+                nextParentMenu && (list.push(nextParentMenu))
+            }
+            return list.reverse()
+        }
+
+
+        // 合并 父元素菜单
+        const mergeParentTitle = (parentId: number, path: string) => {
+            const list = mergeParent(parentId).map(item => item.path)
+            list.push(path)
+            list.forEach((item, index) => {
+                if(index > 0){
+                    list[index] =  list[index - 1] + item
+                }
+            })
+            return list.map(item => $t('aside.' + item)).join(" > ")
+        }
 
         watch(searchValue, (value) => {
             if (value) {
@@ -117,7 +144,7 @@ export default defineComponent({
                     if (checkLink(realPath)) {
                         openWindow(realPath);
                     } else {
-                        router.push(getAllRouterByParentMenuId(parentMenuId, MenuList).join("") + path);
+                        router.push(mergeParent(parentMenuId).map(item => item.path).join("") + path);
                     }
                 }, 200);
             }
@@ -140,6 +167,7 @@ export default defineComponent({
             remoteMethod,
             loading,
             searchResult,
+            mergeParentTitle
         };
     },
 });

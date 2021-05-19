@@ -1,29 +1,35 @@
 <template>
-    <div class="aside">
-        <title-logo></title-logo>
-        <div :style="{ height: `calc(100% - ${openLogo ? 60 : 0}px)` }">
-            <el-scrollbar>
-                <el-menu
-                    class="asideMenu"
-                    :uniqueOpened="uniqueOpened"
-                    :collapse="collapse"
-                    :default-active="defaultActive"
-                    :background-color="globalColor.asideBColor"
-                    :text-color="globalColor.asideTColor"
-                    :active-text-color="globalColor.asideATColor"
-                    router
-                >
-                    <template v-for="item in menuList" :key="item.path">
-                        <my-el-menu-item :item="item" :path="item.path"></my-el-menu-item>
-                    </template>
-                </el-menu>
-            </el-scrollbar>
+    <div :class="{ 'aside-box': fixed }">
+        <div v-if="fixed" class="aside-bg" :class="{ showBack: !collapse }" @click="changeCollapse"></div>
+        <div class="aside" :class="`${!fixed ? '' : collapse ? 'aside-fixed hideAside' : 'aside-fixed showAside'}`">
+            <title-logo :fixed="fixed"></title-logo>
+            <div :style="{ height: `calc(100% - ${openLogo ? 60 : 0}px)` }">
+                <el-scrollbar>
+                    <el-menu
+                        class="asideMenu"
+                        :mode="fixed ? 'vertical' : mode"
+                        :uniqueOpened="uniqueOpened"
+                        :collapse="fixed ? false : mode === 'horizontal' ? false : collapse"
+                        :default-active="defaultActive"
+                        :background-color="globalColor.asideBColor"
+                        :text-color="globalColor.asideTColor"
+                        :active-text-color="globalColor.asideATColor"
+                        router
+                        @select="changeCollapse"
+                        :collapse-transition="!fixed"
+                    >
+                        <template v-for="item in menuList" :key="item.path">
+                            <my-el-menu-item :item="item" :path="item.path"></my-el-menu-item>
+                        </template>
+                    </el-menu>
+                </el-scrollbar>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from "vue";
+import { defineComponent, computed, ref, onBeforeMount, PropType } from "vue";
 import { useStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
 import type { Menu } from "@/model/views";
@@ -37,10 +43,21 @@ import MyElMenuItem from "./components/MyElMenuItem.vue";
 
 
 export default defineComponent({
-    setup() {
+    props: {
+        fixed: {
+            type: Boolean,
+            default: false
+        },
+        mode: {
+            type: String as PropType<"horizontal" | "vertical">,
+            default: "vertical"
+        }
+    },
+    setup(props) {
         const store = useStore(),
             route = useRoute(),
-            router = useRouter();
+            router = useRouter(),
+            collapse = computed<boolean>(() => store.getters.collapse);
 
         const menuList = ref<Menu[]>([]);
         const openLogo = ref(setting.openLogo),
@@ -51,6 +68,11 @@ export default defineComponent({
                 resolve(MenuList);
             });
         };
+
+        const changeCollapse = () => {
+            props.fixed && store.dispatch("SET_COLLAPSE", !collapse.value);
+        };
+
 
         // const getNameByPath = (value: string) => {
         //     value = value.replace(/\//, "");
@@ -109,7 +131,8 @@ export default defineComponent({
         // };
 
 
-        onMounted(async () => {
+
+        onBeforeMount(async () => {
             const result = await getMenuList();
             // addRoute(formateRouter(result));
             menuList.value = result;
@@ -133,7 +156,7 @@ export default defineComponent({
 
         return {
             menuList,
-            collapse: computed<boolean>(() => store.getters.collapse),
+            collapse,
             defaultActive: computed(() => route.path),
             openLogo,
             globalColor,
@@ -142,6 +165,7 @@ export default defineComponent({
             asideNextAColor: globalColor.asideNextAColor,
             asideBColor: globalColor.asideBColor,
             uniqueOpened,
+            changeCollapse
         };
     },
     components: {
@@ -153,10 +177,42 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/assets/css/variables.scss";
+.aside-box {
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 19998;
+}
+.aside-bg {
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 19997;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+.aside-fixed {
+    position: fixed !important;
+    left: 0;
+}
+.showBack {
+    width: 100vw;
+    height: 100vh;
+}
+.hideAside {
+    transform: translate(-100%);
+    transition: all 0.25s cubic-bezier(0.7, 0.3, 0.1, 1);
+}
+.showAside {
+    transform: translate(0%);
+    transition: all 0.25s cubic-bezier(0.7, 0.3, 0.1, 1);
+}
 .aside {
     height: 100%;
     background-color: v-bind(asideBColor);
     user-select: none;
+    position: relative;
+    z-index: 19998;
     .link {
         width: 100%;
         height: 100%;
@@ -190,5 +246,8 @@ export default defineComponent({
         text-align: center;
         font-size: 16px;
     }
+    // :deep(.horizontal-collapse-transition) {
+    //     transition: 0.15s width ease-in-out, 0.15s padding-left ease-in-out, 0.15s padding-right ease-in-out;
+    // }
 }
 </style>

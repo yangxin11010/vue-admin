@@ -62,11 +62,12 @@ export default defineComponent({
     border-radius: 6px;
     background-color: #fff;
     color: v-bind(iconColor);
-    &:hover {
-        background-color: v-bind(iconColor);
-        color: #fff;
-    }
 }
+.myElCard:hover .card-item-icon-box {
+    background-color: v-bind(iconColor);
+    color: #fff;
+}
+
 .card-item-icon {
     width: 48px;
     height: 48px;

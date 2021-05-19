@@ -32,6 +32,15 @@
             <div class="set-item">
                 <div>{{ $t("system.headerMenu") }}</div>
                 <el-switch
+                    :value="asideFixed"
+                    active-color="#1890ff"
+                    inactive-color="#dcdfe6"
+                    @change="switchChange($event, 4)"
+                ></el-switch>
+            </div>
+            <div class="set-item">
+                <div>{{ $t("system.headerMenu") }}</div>
+                <el-switch
                     :value="headerMenu"
                     active-color="#1890ff"
                     inactive-color="#dcdfe6"
@@ -54,7 +63,8 @@ export default defineComponent({
         const openLogo = ref(setting.openLogo),
             openTabs = ref(setting.openTabs),
             uniqueOpened = ref(true),
-            headerMenu = ref(false);
+            headerMenu = ref(false),
+            asideFixed = ref (false);
 
         const switchChange = (e: boolean, index: number) => {
             let eventName = "",
@@ -80,6 +90,11 @@ export default defineComponent({
                     eventName = "changeHeaderMenu";
                     session.setItem("global-setting-headerMenu", e);
                     break;
+                case 4:
+                    asideFixed.value = e;
+                    eventName = "changeAsideFixed";
+                    locationName = "asideFixed";
+                    break;
             }
             eventName && mitter.$emit<boolean>(eventName, e);
             locationName && location.setItem(`global-setting-${locationName}`, e);
@@ -89,6 +104,7 @@ export default defineComponent({
             const openLogoValue: boolean = location.getItem("global-setting-openLogo"),
                 openTabsValue: boolean = location.getItem("global-setting-openTabs"),
                 uniqueOpenedValue: boolean = location.getItem("global-setting-uniqueOpened"),
+                asideFixedValue: boolean = location.getItem("global-setting-asideFixed"),
                 headerMenuValue: boolean = session.getItem("global-setting-headerMenu");
             // 侧边栏Logo
             openLogoValue !== null && (openLogo.value = openLogoValue);
@@ -96,6 +112,8 @@ export default defineComponent({
             openTabsValue !== null && (openTabs.value = openTabsValue);
             // 是否保持一个子菜单的展开
             uniqueOpenedValue !== null && (uniqueOpened.value = uniqueOpenedValue);
+            // aside 类型
+            asideFixedValue !== null && (asideFixed.value = asideFixedValue);
             // header menu
             headerMenuValue !== null && (headerMenu.value = headerMenuValue);
         });
@@ -112,6 +130,7 @@ export default defineComponent({
             switchChange,
             setting,
             uniqueOpened,
+            asideFixed,
             headerMenu,
         };
     },

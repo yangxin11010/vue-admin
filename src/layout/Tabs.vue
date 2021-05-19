@@ -269,33 +269,37 @@ export default defineComponent({
             }
         };
 
-
-        // 监听路由变化 添加Tabs
-        watch(
-            () => route.path,
-            (newValue: string) => {
-                aliasOfParent.value = "";
-                const currentRoute = allRoutes.filter(item => item.path === newValue)[0];
+        const addTabs = () => {
+            aliasOfParent.value = "";
+                const currentRoute = allRoutes.filter(item => item.path === route.path)[0];
                 if(currentRoute.aliasOf !== undefined){
                     // 路由别名添加tabs
-                    newValue = currentRoute.aliasOf.path
-                    aliasOfParent.value = newValue;
+                    route.path = currentRoute.aliasOf.path
+                    aliasOfParent.value = route.path;
                 }
-                if (newValue === "/dashboard") return;
+                if (route.path === "/dashboard") return;
                 if (
-                    keepTabsList.value.findIndex((item) => item.path === newValue) === -1 &&
-                    tabsList.value.findIndex((item) => item.path === newValue) === -1 &&
+                    keepTabsList.value.findIndex((item) => item.path === route.path) === -1 &&
+                    tabsList.value.findIndex((item) => item.path === route.path) === -1 &&
                     route.name &&
                     route.meta.title &&
-                    openTabs
+                    openTabs.value
                 ) {
                     store.dispatch("ADD_TABS", {
                         name: route.name,
                         title: route.meta.title,
-                        path: newValue,
+                        path: route.path,
                         keepAlive: route.meta.keepAlive,
                     });
                 }
+        }
+
+
+        // 监听路由变化 添加Tabs
+        watch(
+            () => route.path,
+            () => {
+                addTabs()
             }
         );
 
@@ -319,6 +323,11 @@ export default defineComponent({
             openLogoValue !== null && (openTabs.value = openLogoValue);
             mitter.$on("changeOpenTabs", (value) => {
                 openTabs.value = value;
+                if(value) {
+                    addTabs()
+                }else {
+                    handleCommand(4, null)
+                }
             });
         });
 

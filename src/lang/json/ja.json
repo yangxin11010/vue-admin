@@ -54,7 +54,7 @@
         "/dashboard": "トップページ",
         "/icons": "アイコン",
         "/permissions": "権限テストページ",
-        "/clipboard": "clipboard",
+        "/clipboard": "クリップボード",
         "/exportFile": "エクスポート",
         "/link": "外の鎖",
         "/router": "ルーティングネスティング",

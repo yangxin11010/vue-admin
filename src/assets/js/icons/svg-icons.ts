@@ -1,8 +1,6 @@
 export default [
     "404",
     "personcenter",
-    "nav_close",
-    "nav_open",
     "search",
     "yaoshi",
     "fullscreen",

@@ -8,6 +8,8 @@
 import { defineComponent, ref, onMounted, PropType, watch, onUnmounted, onActivated } from "vue";
 import * as Echarts from "echarts";
 import { useStore } from "@/store";
+import { location } from "@/util/storage";
+import mitter from "@/plugins/mitt";
 
 export default defineComponent({
     name: "Echars",
@@ -21,7 +23,8 @@ export default defineComponent({
         },
     },
     setup(props) {
-        const store = useStore();
+        const store = useStore(),
+            asideFixed = ref(false);
 
         let echartsRef = ref();
 
@@ -40,6 +43,7 @@ export default defineComponent({
         watch(
             () => store.getters.collapse,
             () => {
+                if (asideFixed.value) return;
                 setTimeout(() => {
                     refresh();
                 }, 400);
@@ -64,6 +68,13 @@ export default defineComponent({
             echarts = Echarts.init(echartsRef.value);
             echarts.setOption(props.options);
             window.addEventListener("resize", resize);
+            const asideFixedValue = location.getItem("global-setting-asideFixed");
+
+            // aside 类型
+            asideFixedValue !== null && (asideFixed.value = asideFixedValue);
+            mitter.$on("changeAsideFixed", (value) => {
+                asideFixed.value = value;
+            });
         });
 
         onUnmounted(() => {

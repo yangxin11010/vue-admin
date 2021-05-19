@@ -1,6 +1,6 @@
 <template>
     <div class="collapse" @click="click" :style="{ 'font-size': size + 'px' }">
-        <svg-icon :iconClass="collapse ? 'nav_open' : 'nav_close'"></svg-icon>
+        <i :class="collapse ? 'np-icon-unfold' : 'np-icon-fold'"></i>
     </div>
 </template>
 

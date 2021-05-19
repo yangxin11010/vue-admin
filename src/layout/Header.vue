@@ -7,6 +7,7 @@
             </template>
             <template v-else>
                 <HeaderMenu style="margin-left: -10px;"></HeaderMenu>
+                <!-- <Aside mode="horizontal"></Aside> -->
             </template>
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
@@ -105,11 +106,19 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item :command="0">{{ $t("header.personCenter") }}</el-dropdown-item>
-                        <el-dropdown-item :command="1">{{ $t("header.dashboard") }}</el-dropdown-item>
-                        <el-dropdown-item :command="2">{{ $t("header.projectAddress") }}</el-dropdown-item>
-                        <el-dropdown-item :command="4" divided>Element Plus</el-dropdown-item>
-                        <el-dropdown-item :command="3" divided>{{ $t("header.logOut") }}</el-dropdown-item>
+                        <el-dropdown-item :command="0" icon="el-icon-user">
+                            {{ $t("header.personCenter") }}
+                        </el-dropdown-item>
+                        <el-dropdown-item :command="1" icon="np-icon-shouye1">
+                            {{ $t("header.dashboard") }}
+                        </el-dropdown-item>
+                        <el-dropdown-item :command="2" icon="np-icon-lianjie">
+                            {{ $t("header.projectAddress") }}
+                        </el-dropdown-item>
+                        <el-dropdown-item :command="4" icon="el-icon-eleme" divided>Element Plus</el-dropdown-item>
+                        <el-dropdown-item :command="3" icon="np-icon-tuichudenglu1" divided>
+                            {{ $t("header.logOut") }}
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -123,6 +132,7 @@ import Collapse from "./components/Collapse.vue";
 import Screenfull from "./components/Screenfull.vue";
 import Breadcrumb from "./components/Breadcrumb.vue";
 import HeaderMenu from "./components/HeaderMenu.vue";
+// import Aside from "./Aside.vue";
 import Search from "./components/Search.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
@@ -233,6 +243,7 @@ export default defineComponent({
         Breadcrumb,
         Search,
         HeaderMenu,
+        // Aside
     },
 });
 </script>

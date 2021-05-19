@@ -1,6 +1,4 @@
-export interface QueryGoods {
-    page?: number;
-    size?: number;
+export interface QueryGoods extends Paging {
     typeOneId?: number;
     typeTwoId?: number;
 }
