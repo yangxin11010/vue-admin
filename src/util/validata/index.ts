@@ -15,3 +15,4 @@ export const checkEmail = (val: string) => emailReg.test(val);
 // 判断是否是对象
 export const isObject = (value: any) => Object.prototype.toString.call(value) === "[object Object]";
 export const isString = (value: any) => Object.prototype.toString.call(value) === "[object String]";
+const isNumber = (value: any) => Object.prototype.toString.call(value) === "[object Number]";

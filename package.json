@@ -10,6 +10,7 @@
 		"dev": "vue-cli-service serve"
 	},
 	"dependencies": {
+		"@amap/amap-jsapi-loader": "^1.0.1",
 		"axios": "^0.21.1",
 		"clipboard": "^2.0.8",
 		"core-js": "^3.6.5",

@@ -34,7 +34,10 @@
         },
         "editPwdInfo": {
             "oldPwd": "古い暗号",
-            "newPwd": "新しい暗号"
+            "newPwd": "新しい暗号",
+            "less6Error": "パスワードは6桁以下にしてはいけない!",
+            "requireError": "パスワードを空にしてはいけません!",
+            "differentError": "2回入力したパスワードが一致しない!"
         }
     },
     "sex": {

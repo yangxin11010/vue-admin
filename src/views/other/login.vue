@@ -53,6 +53,10 @@ import { useRouter, useRoute } from "vue-router";
 import { successMessage } from "@/util/message";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
+import { getLocation } from "@/util/location";
+import { getBrowserInfo } from "@/util";
+import $api from "@/api";
+import moment from "moment";
 
 export default defineComponent({
     name: "Login",
@@ -101,6 +105,37 @@ export default defineComponent({
             ],
         };
 
+        const reportLoginInfo = async () => {
+            const {
+                position: { lat, lng },
+            } = await getLocation();
+            const { data } = await $api.help.request({
+                url: "https://restapi.amap.com/v3/geocode/regeo",
+                params: {
+                    key: process.env.VUE_APP_GKEY,
+                    location: lng + "," + lat,
+                },
+            });
+            const {
+                regeocode: {
+                    addressComponent: { country, province, city, district },
+                    formatted_address,
+                },
+            } = data;
+            $api.report.addLoginInfo({
+                browser: getBrowserInfo().browser,
+                system: getBrowserInfo().system,
+                time: moment().format("YYYY-MM-DD HH:mm:ss"),
+                country,
+                province,
+                city,
+                area: district,
+                address: formatted_address,
+                lat,
+                lng,
+            });
+        };
+
         // 登录
         const submit = () => {
             loginFormRef.value.validate((valid: boolean) => {
@@ -113,6 +148,8 @@ export default defineComponent({
                         await store.dispatch("SET_COLLAPSE", false);
                         // 移除tabs
                         await store.dispatch("INIT_TABS");
+
+                        reportLoginInfo();
                         successMessage($t("login.success"));
                         setTimeout(() => {
                             router.replace(path ? path : "/dashboard");

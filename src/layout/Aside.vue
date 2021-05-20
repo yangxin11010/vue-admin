@@ -31,7 +31,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, onBeforeMount, PropType } from "vue";
 import { useStore } from "@/store";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import type { Menu } from "@/model/views";
 import MenuList from "@/assets/js/menuList";
 import { globalColor, setting } from "@/config";
@@ -56,7 +56,7 @@ export default defineComponent({
     setup(props) {
         const store = useStore(),
             route = useRoute(),
-            router = useRouter(),
+            // router = useRouter(),
             collapse = computed<boolean>(() => store.getters.collapse);
 
         const menuList = ref<Menu[]>([]);
@@ -137,7 +137,7 @@ export default defineComponent({
             // addRoute(formateRouter(result));
             menuList.value = result;
             store.dispatch("SET_MENULIST", menuList.value);
-            console.log(router.getRoutes());
+            // console.log(router.getRoutes());
 
             const openLogoValue = location.getItem("global-setting-openLogo"),
                 uniqueOpenedValue = location.getItem("global-setting-uniqueOpened");

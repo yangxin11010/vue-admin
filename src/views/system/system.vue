@@ -9,9 +9,9 @@ import { defineComponent, onMounted } from "vue";
 export default defineComponent({
     name: "System",
     setup() {
-        const clickHandle = () => {};
-
         onMounted(() => {});
+
+        const clickHandle = () => {};
 
         return {
             clickHandle,

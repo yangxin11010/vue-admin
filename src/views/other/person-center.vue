@@ -27,25 +27,7 @@
             </el-col>
             <el-col :span="18">
                 <el-card shadow="hover">
-                    <el-tabs>
-                        <el-tab-pane :label="$t('personCenter.loginRecord')">
-                            <el-timeline>
-                                <el-timeline-item
-                                    v-for="(item, index) in loginTime"
-                                    :key="index"
-                                    :timestamp="item.time"
-                                    placement="top"
-                                >
-                                    <el-card shadow="hover">
-                                        <div class="time-line">
-                                            <div>IP：{{ item.ip }}</div>
-                                            <div>browser：{{ item.browser }}</div>
-                                            <div>system：{{ item.system }}</div>
-                                        </div>
-                                    </el-card>
-                                </el-timeline-item>
-                            </el-timeline>
-                        </el-tab-pane>
+                    <el-tabs :before-leave="tabsBeforeLeave">
                         <el-tab-pane :label="$t('personCenter.account')">
                             <el-form label-width="100px">
                                 <el-form-item label="Name：">
@@ -79,6 +61,58 @@
                                     <el-button type="primary">{{ $t("button.save") }}</el-button>
                                 </el-form-item>
                             </el-form>
+                        </el-tab-pane>
+                        <el-tab-pane :label="$t('personCenter.loginRecord')">
+                            <el-timeline v-loading="timeLoading">
+                                <el-timeline-item
+                                    v-for="(item, index) in loginTime"
+                                    :key="index"
+                                    :timestamp="item.time"
+                                    placement="top"
+                                >
+                                    <el-card shadow="hover">
+                                        <div class="time-line">
+                                            <table>
+                                                <tr>
+                                                    <td align="right">browser：</td>
+                                                    <td>{{ item.browser }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right">system：</td>
+                                                    <td>{{ item.system }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right">location：</td>
+                                                    <td>
+                                                        <el-tooltip
+                                                            effect="dark"
+                                                            :content="item.address"
+                                                            placement="right"
+                                                        >
+                                                            <span>
+                                                                <span class="location">{{ item.country }}</span>
+                                                                <span class="location">{{ item.province }}</span>
+                                                                <span class="location">{{ item.city }}</span>
+                                                                <span class="location">{{ item.area }}</span>
+                                                            </span>
+                                                        </el-tooltip>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </el-card>
+                                </el-timeline-item>
+                            </el-timeline>
+                            <el-pagination
+                                v-show="!timeLoading"
+                                @current-change="loginPageChange"
+                                background
+                                v-model:current-page="loginData.page"
+                                :page-size="10"
+                                layout="total, prev, pager, next, jumper"
+                                :total="loginData.total"
+                            >
+                            </el-pagination>
                         </el-tab-pane>
                         <el-tab-pane :label="$t('personCenter.editPwd')">
                             <el-form :model="passWord" ref="passFormRef" :rules="rules" label-width="150px">
@@ -123,38 +157,14 @@
 import { defineComponent, reactive, ref, toRefs } from "vue";
 import { successMessage } from "@/util/message";
 import { useI18n } from "vue-i18n";
+import $api from "@/api"
+import type { LoginInfoList } from "@model/api"
+
 
 export default defineComponent({
     name: "PsersonCenter",
     setup() {
         const { t: $t } = useI18n();
-
-        const loginTime = ref([
-            {
-                ip: "183.195.52.197,106.13.130.94",
-                browser: "Chrome 85",
-                system: "Windows 10",
-                time: "2020-09-05 00:44:06",
-            },
-            {
-                ip: "183.195.52.197,106.13.130.94",
-                browser: "Chrome 85",
-                system: "Windows 10",
-                time: "2020-09-05 00:44:06",
-            },
-            {
-                ip: "183.195.52.197,106.13.130.94",
-                browser: "Chrome 85",
-                system: "Windows 10",
-                time: "2020-09-05 00:44:06",
-            },
-            {
-                ip: "183.195.52.197,106.13.130.94",
-                browser: "Chrome 85",
-                system: "Windows 10",
-                time: "2020-09-05 00:44:06",
-            },
-        ]);
 
         let states = reactive({
             name: "Super Admin",
@@ -213,6 +223,8 @@ export default defineComponent({
                 },
             ],
         });
+
+        // 修改密码
         const updatePass = () => {
             passFormRef.value.validate((valid: boolean) => {
                 if (valid) {
@@ -230,9 +242,43 @@ export default defineComponent({
         const reset = () => {
             passFormRef.value.resetFields();
         };
+
+        // tabs 切换
+        const tabsBeforeLeave = (activeName: string) => {
+            if(activeName === "1" && loginTime.value.length <= 0){
+                getLoginIngo()
+            }
+        };
+
+        // 登录信息
+        const timeLoading = ref(true);
+        const loginTime = ref<Array<LoginInfoList>>([]);
+        const loginData = reactive({
+            page: 1,
+            total: 0,
+        })
+        const loginPageChange = (e: number) => {
+            loginData.page = e;
+            getLoginIngo()
+        };
+
+        const getLoginIngo = async () => {
+            timeLoading.value = true;
+            const { data } =  await $api.report.queryLoginInfo({
+                page: loginData.page,
+            });
+            loginData.total = data.pageCount
+            loginTime.value = data.list
+            timeLoading.value = false;
+        }
+
         return {
             loginTime,
+            timeLoading,
+            tabsBeforeLeave,
+            loginPageChange,
             ...toRefs(states),
+            loginData,
             passWord,
             passFormRef,
             reset,
@@ -261,6 +307,12 @@ export default defineComponent({
 .about-item {
     font-size: 14px;
     padding: 15px 0;
+}
+.time-line > p {
+    margin-bottom: 3px;
+}
+.location {
+    margin-right: 3px;
 }
 .about-item-top {
     display: flex;
