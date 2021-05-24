@@ -1,7 +1,8 @@
-import { ref, Ref, onBeforeMount, watch } from "vue";
+import { ref, Ref, onBeforeMount, watch, onUnmounted, onActivated, onDeactivated } from "vue";
 import { location, session } from "@/util/storage";
 import mitter from "@/plugins/mitt";
 import { isObject } from "@/util/validata";
+import { useRoute } from "vue-router";
 
 export interface UseLocationOptions<T> {
     name: string;
@@ -53,4 +54,30 @@ export function useLocation<T = any>(options: UseLocationOptions<T>): Ref<T> {
     return refValue;
 }
 
+/**
+ * this function will exec when you click tabs refresh button
+ * @param value
+ */
+export function usePageUpdate(value: () => void) {
+    const route = useRoute();
 
+    function watchUpdate() {
+        mitter.$on("update-page", value);
+    }
+    onActivated(() => {
+        if (route.meta.keepAlive) {
+            watchUpdate();
+        }
+    });
+    onDeactivated(() => {
+        mitter.$off("update-page", value);
+    });
+    onBeforeMount(() => {
+        if (!route.meta.keepAlive) {
+            watchUpdate();
+        }
+    });
+    onUnmounted(() => {
+        mitter.$off("update-page", value);
+    });
+}

@@ -179,7 +179,7 @@ export default defineComponent({
             successMessage("Switch Size Success");
             store.dispatch("SET_LAYOUTSIZE", e);
             window.location.reload();
-            // 3.0 replace 失效
+            // 页面被keepAlive 缓存下来 无法更新页面 需要强制刷新页面
             // router.replace({
             //     path: "/redirect" + route.fullPath,
             // });

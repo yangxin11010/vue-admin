@@ -63,7 +63,12 @@
                             </el-form>
                         </el-tab-pane>
                         <el-tab-pane :label="$t('personCenter.loginRecord')">
-                            <el-timeline v-loading="timeLoading">
+                            <el-empty
+                                v-if="loginTime.length <= 0"
+                                v-loading="timeLoading"
+                                description="暂无记录"
+                            ></el-empty>
+                            <el-timeline v-else>
                                 <el-timeline-item
                                     v-for="(item, index) in loginTime"
                                     :key="index"
@@ -104,7 +109,6 @@
                                 </el-timeline-item>
                             </el-timeline>
                             <el-pagination
-                                v-show="!timeLoading"
                                 @current-change="loginPageChange"
                                 background
                                 v-model:current-page="loginData.page"
@@ -178,7 +182,7 @@ export default defineComponent({
             newPass: "",
         });
 
-        let updateLoading = ref(false);
+        const updateLoading = ref(true);
 
         const passFormRef = ref();
         const rules = reactive({

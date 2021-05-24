@@ -13,17 +13,15 @@ export default {
          * @return {Function}
          */
         app.directive("debounce", (el, binding) => {
-            let timer: any;
-            el.addEventListener("click", () => {
-                console.log(binding);
-                if (timer) clearTimeout(timer);
-                timer = setTimeout(
-                    () => {
-                        binding.value();
-                    },
-                    binding.arg ? Number(binding.arg) : 0
-                );
-            });
+            let timer: any = null;
+            return function() {
+                if (timer !== null) {
+                    clearTimeout(timer);
+                }
+                el.addEventListener("click", () => {
+                    timer = setTimeout(binding.value, binding.arg ? Number(binding.arg) : 0);
+                });
+            }();
         });
 
         /**

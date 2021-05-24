@@ -34,6 +34,9 @@
 import { defineComponent, defineAsyncComponent, reactive, onMounted, ref } from "vue";
 import type { DashboardCard } from "@/model/views";
 import type { ProjectPercent } from "@model/views";
+import { usePageUpdate } from "@/hooks";
+import { successMessage } from "@/util/message";
+
 export default defineComponent({
     name: "Dashboard",
     setup() {
@@ -118,6 +121,10 @@ export default defineComponent({
             { title: "Scss", num: 3.7 },
             { title: "ESLint", num: 100, status: "success" },
         ])
+
+        usePageUpdate(() => {
+            successMessage("Update Page Success!")
+        })
 
         onMounted(() => {
             console.log(process.env);

@@ -137,9 +137,9 @@ import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
 import { globalColor } from "@/config";
 import { setting } from "@/config";
-import { warningMessage } from "@/util/message"
 import type { Tabs } from "@/model/views";
 import { useLocation } from "@/hooks";
+import mitter from "@/plugins/mitt";
 
 export default defineComponent({
     setup() {
@@ -185,11 +185,15 @@ export default defineComponent({
                 case 3:
                     if (keepTabsIndex.value !== -1 || tabsIndex.value === -1) {
                         // 固定
-                        store.dispatch("REMOVE_TABS");
+                        if(index === null){
+                            store.dispatch("REMOVE_TABS");
+                            return;
+                        }
+                        store.dispatch("REMOVE_OTHER_TABS", index !== null ? index : tabsIndex.value);
                     } else {
                         // 活跃
                         index !== null && router.push(tabsList.value[index].path);
-                        store.dispatch("REMOVE_OTHER_TABS", index ? index : tabsIndex.value);
+                        store.dispatch("REMOVE_OTHER_TABS", index !== null ? index : tabsIndex.value);
                     }
                     break;
                 case 4:
@@ -275,45 +279,45 @@ export default defineComponent({
             isWatch: true
         });
 
-        watch(() => openTabs, (newVal) => {
-            if(newVal.value) {
-                addTabs()
+        watch(() => openTabs.value, (newVal) => {
+            if(newVal) {
+                addTabs(route.path)
             }else {
-                handleCommand(4, null)
+                handleCommand(3, null)
             }
         })
 
-        const addTabs = () => {
+        const addTabs = (newValue: string) => {
             aliasOfParent.value = "";
-                const currentRoute = allRoutes.filter(item => item.path === route.path)[0];
-                if(currentRoute.aliasOf !== undefined){
-                    // 路由别名添加tabs
-                    route.path = currentRoute.aliasOf.path
-                    aliasOfParent.value = route.path;
-                }
-                if (route.path === "/dashboard") return;
-                if (
-                    keepTabsList.value.findIndex((item) => item.path === route.path) === -1 &&
-                    tabsList.value.findIndex((item) => item.path === route.path) === -1 &&
-                    route.name &&
-                    route.meta.title &&
-                    openTabs.value
-                ) {
-                    store.dispatch("ADD_TABS", {
-                        name: route.name,
-                        title: route.meta.title,
-                        path: route.path,
-                        keepAlive: route.meta.keepAlive,
-                    });
-                }
+            const currentRoute = allRoutes.filter(item => item.path === newValue)[0];
+            if(currentRoute && currentRoute.aliasOf !== undefined){
+                // 路由别名添加tabs
+                newValue = currentRoute.aliasOf.path
+                aliasOfParent.value = newValue;
+            }
+            if (newValue === "/dashboard") return;
+            if (
+                keepTabsList.value.findIndex((item) => item.path === newValue) === -1 &&
+                tabsList.value.findIndex((item) => item.path === newValue) === -1 &&
+                route.name &&
+                route.meta.title &&
+                openTabs.value
+            ) {
+                store.dispatch("ADD_TABS", {
+                    name: route.name,
+                    title: route.meta.title,
+                    path: newValue,
+                    keepAlive: route.meta.keepAlive,
+                });
+            }
         }
 
 
         // 监听路由变化 添加Tabs
         watch(
             () => route.path,
-            () => {
-                addTabs()
+            (newValue: string) => {
+                addTabs(newValue)
             }
         );
 
@@ -324,7 +328,11 @@ export default defineComponent({
             setTimeout(() => {
                 rotating.value = false;
             }, 800);
-            warningMessage("This is a Demo!")
+            mitter.$emit("update-page")
+            // 页面 keepalive 时 router.replace 无法刷新页面(会被keepalive缓存下来)  使用 src/hooks/  usePageUpdate 方法
+            // router.replace({
+            //     path: "/redirect" + route.fullPath
+            // })
         };
 
 
