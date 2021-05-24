@@ -20,7 +20,6 @@ body {
 		sans-serif;
 }
 
-
 a {
 	text-decoration: none;
 	color: #303133;
@@ -44,6 +43,11 @@ ul {
 	display: inline-block;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+#nprogress {
+	position: relative;
+	z-index: 20000 !important;
 }
 
 .w100p {

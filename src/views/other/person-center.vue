@@ -184,8 +184,13 @@ export default defineComponent({
         const rules = reactive({
             oldPass: [
                 {
-                    required: true,
-                    message: $t("personCenter.editPwdInfo.requireError"),
+                    validator: (rule: any, value: string, callback: any) => {
+                        if (value) {
+                            callback();
+                        } else {
+                            callback(new Error($t("personCenter.editPwdInfo.requireError")));
+                        }
+                    },
                     trigger: "change",
                 },
                 {
@@ -204,8 +209,13 @@ export default defineComponent({
             ],
             newPass: [
                 {
-                    required: true,
-                    message: $t("personCenter.editPwdInfo.requireError"),
+                    validator: (rule: any, value: string, callback: any) => {
+                        if (value) {
+                            callback();
+                        } else {
+                            callback(new Error($t("personCenter.editPwdInfo.requireError")));
+                        }
+                    },
                     trigger: "change",
                 },
                 {
@@ -231,7 +241,7 @@ export default defineComponent({
                     updateLoading.value = true;
                     setTimeout(() => {
                         successMessage("Update Successfully");
-                        passFormRef.value.resetFields();
+                        reset()
                         updateLoading.value = false;
                     }, 1000);
                 } else {
@@ -239,6 +249,7 @@ export default defineComponent({
                 }
             });
         };
+        // 重置
         const reset = () => {
             passFormRef.value.resetFields();
         };

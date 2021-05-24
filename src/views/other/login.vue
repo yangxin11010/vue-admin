@@ -64,7 +64,7 @@ export default defineComponent({
         const router = useRouter(),
             route = useRoute(),
             store = useStore(),
-            { t: $t } = useI18n();
+            { t: $t, locale } = useI18n();
 
         const loginFormRef = ref(),
             lang = computed<string>(() => store.getters.lang),
@@ -72,8 +72,9 @@ export default defineComponent({
 
         const changeLang = async (e: string) => {
             await store.dispatch("SET_LANG", e);
-            window.location.reload();
-            // locale.value = e;
+            // window.location.reload();
+            locale.value = e;
+            loginFormRef.value.resetFields();
         };
 
         // 表单数据
@@ -82,24 +83,39 @@ export default defineComponent({
             password: "123456",
         });
 
-        // 校验规则
+        // 校验规则  --> 国际化时 用message $t失效
         const rules: object = {
             username: [
                 {
-                    required: true,
-                    message: $t("login.unameReq"),
+                    validator: (rule: any, value: string, callback: any) => {
+                        if (value) {
+                            callback();
+                        } else {
+                            callback(new Error($t("login.unameReq")));
+                        }
+                    },
                     trigger: "blur",
                 },
             ],
             password: [
                 {
-                    required: true,
-                    message: $t("login.pwdReq"),
+                    validator: (rule: any, value: string, callback: any) => {
+                        if (value) {
+                            callback();
+                        } else {
+                            callback(new Error($t("login.pwdReq")));
+                        }
+                    },
                     trigger: "blur",
                 },
                 {
-                    min: 6,
-                    message: $t("login.pwdError"),
+                    validator: (rule: any, value: string, callback: any) => {
+                        if (value.length >= 6) {
+                            callback();
+                        } else {
+                            callback(new Error($t("login.pwdError")));
+                        }
+                    },
                     trigger: "blur",
                 },
             ],

@@ -3,7 +3,7 @@
         <el-menu-item :index="checkLink(item.realPath) ? '' : path" @click="jumpUrl(item.realPath)">
             <i v-if="item.icon" :class="item.icon"></i>
             <template #title>
-                <span>{{ $t(`aside.${path}`) }}</span>
+                <span>{{ path ? $t(`aside.${path}`) : "" }}</span>
             </template>
         </el-menu-item>
     </template>
@@ -11,7 +11,7 @@
         <el-submenu :index="path">
             <template #title>
                 <i v-if="item.icon" :class="item.icon"></i>
-                <span>{{ $t(`aside.${path}`) }}</span>
+                <span>{{ path ? $t(`aside.${path}`) : "" }}</span>
             </template>
             <template v-for="item2 in item.children" :key="path + item2.path">
                 <my-el-menu-item :item="item2" :path="path + item2.path"></my-el-menu-item>

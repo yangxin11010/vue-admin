@@ -1,5 +1,12 @@
 <template>
-    <el-menu v-if="openLogo" class="logo-box" :collapse="fixed ? false : collapse" router :collapse-transition="!fixed">
+    <el-menu
+        v-if="openLogo"
+        class="logo-box"
+        :collapse="modeState ? false : fixed ? false : collapse"
+        router
+        :background-color="backGColor"
+        :collapse-transition="!fixed"
+    >
         <el-menu-item class="logo-title" index="/">
             <img class="logo" :src="logo" :alt="title" />
             <template #title>
@@ -10,14 +17,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from "vue";
+import { defineComponent, computed, PropType } from "vue";
 import { useStore } from "@/store";
 import { setting } from "@/config";
-import { location } from "@/util/storage";
-import mitter from "@/plugins/mitt";
+import { useLocation } from "@/hooks";
+import { globalColor } from "@/config";
 export default defineComponent({
     name: "TitleLogo",
     props: {
+        mode: {
+            type: String as PropType<"horizontal" | "vertical">,
+            default: "vertical",
+        },
         logo: {
             type: String,
             default: setting.logo,
@@ -31,21 +42,30 @@ export default defineComponent({
             default: false,
         },
     },
-    setup() {
+    setup(props) {
         const store = useStore();
-        const openLogo = ref(setting.openLogo);
-        onMounted(() => {
-            const openLogoValue = location.getItem("global-setting-openLogo");
-            // 侧边栏Logo
-            openLogoValue !== null && (openLogo.value = openLogoValue);
-            mitter.$on("changeOpenLogo", (value) => {
-                openLogo.value = value;
+        const openLogo = useLocation({
+                name: "global-setting-openLogo",
+                value: setting.openLogo,
+                isWatch: true,
+            }),
+            navType = useLocation({
+                name: "global-setting-navType",
+                value: "side",
+                isWatch: true,
             });
+
+        const backGColor = computed(() => {
+            return ["top"].includes(navType.value) ? globalColor.asideBColor : "#2b2f3a";
         });
+
         return {
             collapse: computed<boolean>(() => store.getters.collapse),
+            modeState: computed(() => props.mode === "horizontal"),
             openLogo,
             setting,
+            navType,
+            backGColor,
         };
     },
 });
@@ -59,7 +79,6 @@ export default defineComponent({
     overflow: hidden;
 }
 .logo-title {
-    background-color: #2b2f3a !important;
     height: 60px;
     line-height: 60px;
 }

@@ -136,11 +136,10 @@ import ElMessageBox from "@/util/messageBox";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
 import { globalColor } from "@/config";
-import { location } from "@/util/storage";
-import mitter from "@/plugins/mitt";
 import { setting } from "@/config";
 import { warningMessage } from "@/util/message"
 import type { Tabs } from "@/model/views";
+import { useLocation } from "@/hooks";
 
 export default defineComponent({
     setup() {
@@ -154,8 +153,8 @@ export default defineComponent({
 
         // 保持固定的数组(keepTabsList)   未保持固定的数组(tabsList)
         const keepTabsList = computed<Array<Tabs>>(() => store.getters.tabsList[0]),
-            tabsList = computed<Array<Tabs>>(() => store.getters.tabsList[1]),
-            openTabs = ref(setting.openTabs);
+            tabsList = computed<Array<Tabs>>(() => store.getters.tabsList[1]);
+
 
         // 点击跳转
         const tabsClick = (item: Tabs) => {
@@ -269,6 +268,21 @@ export default defineComponent({
             }
         };
 
+        // 是否显示tabs
+        const openTabs = useLocation({
+            name: "global-setting-openTabs",
+            value: setting.openTabs,
+            isWatch: true
+        });
+
+        watch(() => openTabs, (newVal) => {
+            if(newVal.value) {
+                addTabs()
+            }else {
+                handleCommand(4, null)
+            }
+        })
+
         const addTabs = () => {
             aliasOfParent.value = "";
                 const currentRoute = allRoutes.filter(item => item.path === route.path)[0];
@@ -303,8 +317,8 @@ export default defineComponent({
             }
         );
 
+        // 页面刷新
         const rotating = ref(false);
-
         const refreshPage = () => {
             rotating.value = true;
             setTimeout(() => {
@@ -313,22 +327,13 @@ export default defineComponent({
             warningMessage("This is a Demo!")
         };
 
+
         onMounted(() => {
             // 路由别名 选中tabs
             const currentRoute = allRoutes.filter(item => item.path === route.path)[0];
             if(currentRoute.aliasOf !== undefined){
                 aliasOfParent.value = currentRoute.aliasOf.path
             }
-            const openLogoValue = location.getItem("global-setting-openTabs");
-            openLogoValue !== null && (openTabs.value = openLogoValue);
-            mitter.$on("changeOpenTabs", (value) => {
-                openTabs.value = value;
-                if(value) {
-                    addTabs()
-                }else {
-                    handleCommand(4, null)
-                }
-            });
         });
 
         return {

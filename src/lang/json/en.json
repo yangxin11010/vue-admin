@@ -11,6 +11,7 @@
     },
     "system": {
         "title": "System Layout Settings",
+        "navMode": "Navigation Mode",
         "hideBtn": "Hide Button",
         "showTip": "Show Tip",
         "hideTip": "Hide Tip",

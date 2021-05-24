@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <el-container class="container">
-            <v-aside :fixed="asideFixed"></v-aside>
+            <v-aside v-if="['side'].includes(navType)" :fixed="asideFixed"></v-aside>
             <!-- <el-main
                 class="main overhide"
                 :style="{
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onBeforeMount } from "vue";
+import { defineComponent, computed } from "vue";
 import Header from "./Header.vue";
 import Aside from "./Aside.vue";
 import Tabs from "./Tabs.vue";
@@ -33,27 +33,26 @@ import Main from "./Main.vue";
 import Setting from "./Setting.vue";
 import { useStore } from "@/store";
 import MyRouterView from "@/components/MyRouterView.vue";
-import { location } from "@/util/storage";
-import mitter from "@/plugins/mitt";
+import { useLocation } from "@/hooks";
 
 export default defineComponent({
     setup() {
         const store = useStore(),
-            asideFixed = ref(false);
-
-        onBeforeMount(() => {
-            const asideFixedValue = location.getItem("global-setting-asideFixed");
-
-            // aside 类型
-            asideFixedValue !== null && (asideFixed.value = asideFixedValue);
-            mitter.$on("changeAsideFixed", (value) => {
-                asideFixed.value = value;
+            asideFixed = useLocation({
+                name: "global-setting-asideFixed",
+                value: false,
+                isWatch: true,
+            }),
+            navType = useLocation({
+                name: "global-setting-navType",
+                value: "side",
+                isWatch: true,
             });
-        });
 
         return {
             asideFixed,
             collapse: computed<boolean>(() => store.getters.collapse),
+            navType,
         };
     },
     components: {

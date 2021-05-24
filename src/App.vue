@@ -1,11 +1,11 @@
 <template>
     <div class="app">
-        <router-view></router-view>
+        <router-view />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, getCurrentInstance } from "vue";
 export default defineComponent({
     name: "App",
     setup() {
@@ -13,6 +13,7 @@ export default defineComponent({
         const style = "font-size: 12px;color: #333;";
 
         onMounted(() => {
+            console.log(getCurrentInstance());
             console.log("%c%s", style, info);
         });
 

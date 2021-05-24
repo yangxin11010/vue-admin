@@ -173,11 +173,11 @@ export default defineComponent({
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 19999;
+    z-index: 1999;
 }
 .drawer-back {
     background-color: rgba(0, 0, 0, 0.2);
-    z-index: 19999;
+    z-index: 1999;
     position: fixed;
     left: 0;
     top: 0;
@@ -190,7 +190,7 @@ export default defineComponent({
     height: 100vh;
     background-color: #fff;
     position: fixed;
-    z-index: 20000;
+    z-index: 2000;
 }
 .drawer-box-right {
     right: 0;
@@ -243,7 +243,6 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
-    z-index: 10000;
     overflow-y: scroll;
     &::-webkit-scrollbar {
         width: 6px;

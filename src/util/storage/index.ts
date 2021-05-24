@@ -17,7 +17,7 @@ class StorageProxy implements StorageApi {
     }
 
     public setItem(key: string, value: any) {
-        this.storage.setItem(key, value);
+        this.storage.setItem(key, JSON.stringify(value));
     }
 
     public removeItem(key: string) {

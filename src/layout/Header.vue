@@ -1,18 +1,22 @@
 <template>
     <div class="header disflex ju_bt align-it-cen">
         <div class="header-l disflex align-it-cen">
-            <Collapse class="header-color"></Collapse>
-            <template v-if="!headerMenu">
-                <Breadcrumb></Breadcrumb>
+            <template v-if="navType === 'side'">
+                <Collapse class="header-color"></Collapse>
+                <template v-if="!headerMenu">
+                    <Breadcrumb></Breadcrumb>
+                </template>
+                <template v-else>
+                    <HeaderMenu style="margin-left: -10px;"></HeaderMenu>
+                </template>
             </template>
             <template v-else>
-                <HeaderMenu style="margin-left: -10px;"></HeaderMenu>
-                <!-- <Aside mode="horizontal"></Aside> -->
+                <Aside mode="horizontal"></Aside>
             </template>
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
             <!-- 搜索 -->
-            <div class="" style="padding: 0;">
+            <div v-if="['side'].includes(navType)" class="" style="padding: 0;">
                 <Search></Search>
             </div>
             <!-- 消息 -->
@@ -115,7 +119,10 @@
                         <el-dropdown-item :command="2" icon="np-icon-lianjie">
                             {{ $t("header.projectAddress") }}
                         </el-dropdown-item>
-                        <el-dropdown-item :command="4" icon="el-icon-eleme" divided>Element Plus</el-dropdown-item>
+                        <el-dropdown-item :command="4" icon="np-icon-Vue" divided>Vue 3.0</el-dropdown-item>
+                        <el-dropdown-item :command="5" icon="np-icon-typescript">TypeScript</el-dropdown-item>
+                        <el-dropdown-item :command="6" icon="el-icon-eleme">Element Plus</el-dropdown-item>
+                        <el-dropdown-item :command="7" icon="np-icon-scss">Scss</el-dropdown-item>
                         <el-dropdown-item :command="3" icon="np-icon-tuichudenglu1" divided>
                             {{ $t("header.logOut") }}
                         </el-dropdown-item>
@@ -132,7 +139,7 @@ import Collapse from "./components/Collapse.vue";
 import Screenfull from "./components/Screenfull.vue";
 import Breadcrumb from "./components/Breadcrumb.vue";
 import HeaderMenu from "./components/HeaderMenu.vue";
-// import Aside from "./Aside.vue";
+import Aside from "./Aside.vue";
 import Search from "./components/Search.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "@/store";
@@ -142,7 +149,7 @@ import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
 import { successMessage } from "@/util/message";
 import { globalColor } from "@/config";
-import { session } from "@/util/storage";
+import { useLocation } from "@/hooks";
 
 export default defineComponent({
     setup() {
@@ -155,7 +162,17 @@ export default defineComponent({
 
         const langIndex = computed<string>(() => store.getters.lang),
             layoutSize = computed<string>(() => store.getters.layoutSize),
-            headerMenu = ref(false);
+            headerMenu = useLocation({
+                name: "global-setting-headerMenu",
+                value: false,
+                isWatch: true,
+                storage: "session",
+            }),
+            navType = useLocation({
+                name: "global-setting-navType",
+                value: "side",
+                isWatch: true,
+            });
 
         const changeLayoutSize = (e: string) => {
             app.appContext.config.globalProperties.$ELEMENT.size = e;
@@ -190,7 +207,16 @@ export default defineComponent({
                     router.push("/login");
                     break;
                 case 4:
+                    openWindow("https://www.vue3js.cn/docs/zh/");
+                    break;
+                case 5:
+                    openWindow("https://www.tslang.cn/");
+                    break;
+                case 6:
                     openWindow("https://element-plus.gitee.io/#/zh-CN/component/installation");
+                    break;
+                case 7:
+                    openWindow("https://www.sass.hk/");
                     break;
             }
         };
@@ -207,16 +233,19 @@ export default defineComponent({
             isScreenfull.value = e.screenfull;
         };
 
+        const headerBColor = computed(() => {
+            return ["top"].includes(navType.value) ? globalColor.asideBColor : globalColor.headerBColor;
+        });
+
+        const headerComColor = computed(() => {
+            return ["top"].includes(navType.value) ? "#fff" : "rgba(0, 0, 0, 0.65)";
+        });
+
         onMounted(() => {
             getData();
             // 监听 消息中心 清除未读消息
             mitter.$on("clearNoReadMessage", () => {
                 messageNum.value = 0;
-            });
-            const headerMenuValue: boolean = session.getItem("global-setting-headerMenu");
-            headerMenuValue && (headerMenu.value = headerMenuValue);
-            mitter.$on("changeHeaderMenu", (value) => {
-                headerMenu.value = value;
             });
         });
 
@@ -232,7 +261,9 @@ export default defineComponent({
             layoutSize,
             changeLayoutSize,
             headerMenu,
-            headerBColor: globalColor.headerBColor,
+            navType,
+            headerBColor,
+            headerComColor,
             headerTColor: globalColor.headerTColor,
             headerHColor: globalColor.headerHColor,
         };
@@ -243,7 +274,7 @@ export default defineComponent({
         Breadcrumb,
         Search,
         HeaderMenu,
-        // Aside
+        Aside,
     },
 });
 </script>
@@ -255,9 +286,10 @@ export default defineComponent({
     height: 100%;
     background-color: v-bind(headerBColor);
     user-select: none;
-    color: rgba(0, 0, 0, 0.65) !important;
-    a {
-        color: rgba(0, 0, 0, 0.65) !important;
+    color: v-bind(headerComColor) !important;
+    a,
+    span {
+        color: v-bind(headerComColor) !important;
     }
     box-shadow: 0 1px 5px #d6d3d3;
 }
@@ -278,12 +310,15 @@ export default defineComponent({
 }
 .fullscreen {
     font-size: 22px;
+    color: v-bind(headerComColor) !important;
 }
 .layout-size {
     font-size: 22px;
+    color: v-bind(headerComColor) !important;
 }
 .lang-icon {
     font-size: 16px;
+    color: v-bind(headerComColor) !important;
 }
 .user-header {
     width: 100%;
@@ -294,6 +329,7 @@ export default defineComponent({
     margin-left: 5px;
     position: relative;
     top: -15px;
+    color: v-bind(headerComColor) !important;
 }
 .breadcrumbList-enter-active,
 .breadcrumbList-leave-active {

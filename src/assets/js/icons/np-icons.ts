@@ -21,4 +21,7 @@ export default [
     "np-icon-tuichudenglu1",
     "np-icon-fold",
     "np-icon-unfold",
+    "np-icon-Vue",
+    "np-icon-scss",
+    "np-icon-typescript",
 ];

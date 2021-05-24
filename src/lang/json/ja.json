@@ -11,6 +11,7 @@
     },
     "system": {
         "title": "システムレイアウト設定",
+        "navMode": "航法モード",
         "hideBtn": "隠しボタン",
         "showTip": "ヒントを表示する",
         "hideTip": "ヒントを隠す",

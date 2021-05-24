@@ -2,6 +2,17 @@
     <my-drawer v-if="setting.showSetting" :before-close="beforeClose">
         <div class="setting">
             <p class="title">{{ $t("system.title") }}</p>
+            <div class="set-mode">
+                <p class="set-mode-title">{{ $t("system.navMode") }}</p>
+                <div class="set-mode-box">
+                    <div class="set-mode-box-item set-mode-place set-mode-side" @click="changeNavTpe('side')">
+                        <i v-if="navType === 'side'" class="set-mode-check el-icon-check"></i>
+                    </div>
+                    <div class="set-mode-box-item set-mode-place set-mode-top" @click="changeNavTpe('top')">
+                        <i v-if="navType === 'top'" class="set-mode-check el-icon-check"></i>
+                    </div>
+                </div>
+            </div>
             <div class="set-item">
                 <div>{{ $t("system.sidebarLogo") }}</div>
                 <el-switch
@@ -35,6 +46,7 @@
                     :value="asideFixed"
                     active-color="#1890ff"
                     inactive-color="#dcdfe6"
+                    :disabled="['top'].includes(navType)"
                     @change="switchChange($event, 4)"
                 ></el-switch>
             </div>
@@ -44,6 +56,7 @@
                     :value="headerMenu"
                     active-color="#1890ff"
                     inactive-color="#dcdfe6"
+                    :disabled="['top'].includes(navType)"
                     @change="switchChange($event, 3)"
                 ></el-switch>
             </div>
@@ -52,71 +65,62 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent } from "vue";
 import MyDrawer from "@/components/MyDrawer.vue";
 import { setting } from "@/config";
-import { location, session } from "@/util/storage";
-import mitter from "@/plugins/mitt";
+import { useLocation } from "@/hooks";
 
 export default defineComponent({
     setup() {
-        const openLogo = ref(setting.openLogo),
-            openTabs = ref(setting.openTabs),
-            uniqueOpened = ref(true),
-            headerMenu = ref(false),
-            asideFixed = ref (false);
+        const openLogo = useLocation({
+                name: "global-setting-openLogo",
+                value: setting.openLogo,
+            }),
+            openTabs = useLocation({
+                name: "global-setting-openTabs",
+                value: setting.openTabs,
+            }),
+            uniqueOpened = useLocation({
+                name: "global-setting-uniqueOpened",
+                value: true,
+            }),
+            headerMenu = useLocation({
+                name: "global-setting-headerMenu",
+                value: false,
+                storage: "session",
+            }),
+            asideFixed = useLocation({
+                name: "global-setting-asideFixed",
+                value: false,
+            }),
+            navType = useLocation({
+                name: "global-setting-navType",
+                value: "side",
+            });
 
         const switchChange = (e: boolean, index: number) => {
-            let eventName = "",
-                locationName = "";
             switch (index) {
                 case 0:
                     openLogo.value = e;
-                    eventName = "changeOpenLogo";
-                    locationName = "openLogo";
                     break;
                 case 1:
                     openTabs.value = e;
-                    eventName = "changeOpenTabs";
-                    locationName = "openTabs";
                     break;
                 case 2:
                     uniqueOpened.value = e;
-                    eventName = "changeUniqueOpened";
-                    locationName = "uniqueOpened";
                     break;
                 case 3:
                     headerMenu.value = e;
-                    eventName = "changeHeaderMenu";
-                    session.setItem("global-setting-headerMenu", e);
                     break;
                 case 4:
                     asideFixed.value = e;
-                    eventName = "changeAsideFixed";
-                    locationName = "asideFixed";
                     break;
             }
-            eventName && mitter.$emit<boolean>(eventName, e);
-            locationName && location.setItem(`global-setting-${locationName}`, e);
         };
 
-        onMounted(() => {
-            const openLogoValue: boolean = location.getItem("global-setting-openLogo"),
-                openTabsValue: boolean = location.getItem("global-setting-openTabs"),
-                uniqueOpenedValue: boolean = location.getItem("global-setting-uniqueOpened"),
-                asideFixedValue: boolean = location.getItem("global-setting-asideFixed"),
-                headerMenuValue: boolean = session.getItem("global-setting-headerMenu");
-            // 侧边栏Logo
-            openLogoValue !== null && (openLogo.value = openLogoValue);
-            // Tabs-View
-            openTabsValue !== null && (openTabs.value = openTabsValue);
-            // 是否保持一个子菜单的展开
-            uniqueOpenedValue !== null && (uniqueOpened.value = uniqueOpenedValue);
-            // aside 类型
-            asideFixedValue !== null && (asideFixed.value = asideFixedValue);
-            // header menu
-            headerMenuValue !== null && (headerMenu.value = headerMenuValue);
-        });
+        const changeNavTpe = (type: string) => {
+            navType.value = type;
+        };
 
         // my-drawer 关闭前 回调
         const beforeClose = (done: () => void) => {
@@ -132,6 +136,8 @@ export default defineComponent({
             uniqueOpened,
             asideFixed,
             headerMenu,
+            navType,
+            changeNavTpe,
         };
     },
     components: {
@@ -148,6 +154,63 @@ export default defineComponent({
 .title {
     font-weight: bold;
     margin-bottom: 20px;
+}
+.set-mode {
+    margin-bottom: 20px;
+}
+.set-mode-box {
+    display: flex;
+    margin-top: 10px;
+}
+.set-mode-box-item {
+    width: 50px;
+    height: 45px;
+    background-color: #f0f2f5;
+    margin-right: 20px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2.5px 0 rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    position: relative;
+}
+.set-mode-place::before {
+    content: "";
+    display: block;
+    width: 13px;
+    height: 100%;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background: #304156;
+    position: relative;
+}
+.set-mode-place::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background: #fff;
+    position: absolute;
+    top: 0;
+}
+.set-mode-side::before {
+    z-index: 20;
+}
+.set-mode-side::after {
+    z-index: 10;
+}
+.set-mode-top::before {
+    background: #f0f2f5;
+}
+.set-mode-top::after {
+    background: #304156;
+}
+.set-mode-check {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    font-size: 18px;
+    color: #1890ff;
 }
 .set-item {
     margin-bottom: 20px;

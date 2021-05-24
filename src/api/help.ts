@@ -4,5 +4,6 @@ import type { Request } from "@model/api"
 
 export default {
     getLocation: (params: AxiosRequestConfig) => request.request(params),
-    request: (params: Request) => request.post("/http", params),
+    // 第三方接口
+    request: (params: Request) => request.post("/capi/http", params),
 };
