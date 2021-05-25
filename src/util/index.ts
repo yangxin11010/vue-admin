@@ -5,6 +5,7 @@
  * @returns {string}
  */
 export const urlPlus = (url: string, params: CustomData) => {
+    
     Object.keys(params).forEach((item: string, index: number) => {
         url += `${index === 0 ? "?" : "&"}${item}=${params[item]}`;
     });

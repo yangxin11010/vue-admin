@@ -19,7 +19,8 @@
         "tagsView": "Open Tags-View",
         "asideOpen": "Keep a submenu open",
         "asideFixed": "Keep Aside",
-        "headerMenu": "Header menu"
+        "headerMenu": "Header menu",
+        "direction": "System Layout Direction"
     },
     "personCenter": {
         "cardTitle": "About Me",

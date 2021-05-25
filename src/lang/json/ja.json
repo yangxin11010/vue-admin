@@ -19,7 +19,8 @@
         "tagsView": "開く Tags-View",
         "asideOpen": "1つのサブメニューの展開を維持する",
         "asideFixed": "固定 Aside",
-        "headerMenu": "Header メニュー"
+        "headerMenu": "Header メニュー",
+        "direction": "システム配置位置"
     },
     "personCenter": {
         "cardTitle": "私について",

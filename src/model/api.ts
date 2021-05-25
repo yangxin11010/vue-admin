@@ -48,3 +48,5 @@ export interface Request {
     params?: object;
     method?: "GET" | "POST" | "PUT" | "DELETE";
 }
+
+declare let key: any;

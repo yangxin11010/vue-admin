@@ -35,7 +35,7 @@ export default [
         status: 1,
         sort: 3,
         alias: [],
-        realPath: "@/views/other/permissions.vue",
+        realPath: "@/views/other/permissions-page.vue",
         children: [],
     },
     {

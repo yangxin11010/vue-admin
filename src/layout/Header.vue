@@ -123,7 +123,7 @@
                         <el-dropdown-item :command="5" icon="np-icon-typescript">TypeScript</el-dropdown-item>
                         <el-dropdown-item :command="6" icon="el-icon-eleme">Element Plus</el-dropdown-item>
                         <el-dropdown-item :command="7" icon="np-icon-scss">Scss</el-dropdown-item>
-                        <el-dropdown-item :command="3" icon="np-icon-tuichudenglu1" divided>
+                        <el-dropdown-item :command="3" icon="np-icon-tuichudenglu" divided>
                             {{ $t("header.logOut") }}
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -241,6 +241,10 @@ export default defineComponent({
             return ["top"].includes(navType.value) ? "#fff" : "rgba(0, 0, 0, 0.65)";
         });
 
+        const headerItemHover = computed(() => {
+            return ["top"].includes(navType.value) ? globalColor.headerHColor : "rgba(0, 0, 0, 0.025)";
+        });
+
         onMounted(() => {
             getData();
             // 监听 消息中心 清除未读消息
@@ -264,6 +268,7 @@ export default defineComponent({
             navType,
             headerBColor,
             headerComColor,
+            headerItemHover,
             headerTColor: globalColor.headerTColor,
             headerHColor: globalColor.headerHColor,
         };
@@ -305,7 +310,7 @@ export default defineComponent({
     align-items: center;
     cursor: pointer;
     &:hover {
-        background-color: rgba(0, 0, 0, 0.025) !important;
+        background-color: v-bind(headerItemHover) !important;
     }
 }
 .fullscreen {

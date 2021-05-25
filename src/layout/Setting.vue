@@ -1,5 +1,5 @@
 <template>
-    <my-drawer v-if="setting.showSetting" :before-close="beforeClose">
+    <my-drawer v-if="setting.showSetting" :direction="direction" :before-close="beforeClose">
         <div class="setting">
             <p class="title">{{ $t("system.title") }}</p>
             <div class="set-mode">
@@ -14,12 +14,20 @@
                 </div>
             </div>
             <div class="set-item">
+                <div>{{ $t("system.direction") }}</div>
+                <el-select v-model="direction" style="width: 80px;" size="mini">
+                    <el-option label="left" value="left"></el-option>
+                    <el-option label="right" value="right"></el-option>
+                </el-select>
+            </div>
+            <div class="set-item">
                 <div>{{ $t("system.sidebarLogo") }}</div>
                 <el-switch
                     :value="openLogo"
                     active-color="#1890ff"
                     inactive-color="#dcdfe6"
                     @change="switchChange($event, 0)"
+                    :disabled="['top'].includes(navType)"
                 ></el-switch>
             </div>
             <div class="set-item">
@@ -38,6 +46,7 @@
                     active-color="#1890ff"
                     inactive-color="#dcdfe6"
                     @change="switchChange($event, 2)"
+                    :disabled="['top'].includes(navType)"
                 ></el-switch>
             </div>
             <div class="set-item">
@@ -65,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import MyDrawer from "@/components/MyDrawer.vue";
 import { setting } from "@/config";
 import { useLocation } from "@/hooks";
@@ -96,7 +105,8 @@ export default defineComponent({
             navType = useLocation({
                 name: "global-setting-navType",
                 value: "side",
-            });
+            }),
+            direction = ref("right");
 
         const switchChange = (e: boolean, index: number) => {
             switch (index) {
@@ -119,6 +129,9 @@ export default defineComponent({
         };
 
         const changeNavTpe = (type: string) => {
+            if (type === "top") {
+                openLogo.value = true;
+            }
             navType.value = type;
         };
 
@@ -138,6 +151,7 @@ export default defineComponent({
             headerMenu,
             navType,
             changeNavTpe,
+            direction,
         };
     },
     components: {
@@ -216,6 +230,7 @@ export default defineComponent({
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: rgba(0, 0, 0, 0.65);
 }
 </style>

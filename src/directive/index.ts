@@ -112,7 +112,7 @@ export default {
          *      @params: 键盘事件的code(支持组合按键 以+号分割)值
          *      @ event:  事件
          *          .press 将组合按键改为连续按键
-         * v-keyboard:text="value"  text必传 value 为键盘事件参数
+         * v-keyboard:text="value"  text必传   value为键盘事件参数
          */
         app.directive("keyboard", {
             mounted: (el, binding) => {

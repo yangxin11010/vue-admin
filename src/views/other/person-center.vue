@@ -182,7 +182,7 @@ export default defineComponent({
             newPass: "",
         });
 
-        const updateLoading = ref(true);
+        const updateLoading = ref(false);
 
         const passFormRef = ref();
         const rules = reactive({

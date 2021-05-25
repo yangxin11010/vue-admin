@@ -10,7 +10,7 @@ const nprogress = {
 };
 
 /**
- * 全局设置
+ * 全局设置3
  */
 const setting = {
     title: "vue", //title
@@ -57,7 +57,7 @@ const globalColor = {
 };
 
 /**
- * 控制 main 是否显示白底(全路径)
+ * 控制 main 不显示白底(全路径)
  */
 const mainStyleList = ["/dashboard", "/personCenter", "/setting/system"];
 

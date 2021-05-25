@@ -24,7 +24,7 @@ const messages = {
     [jaElLocale.name]: {
         el: enElLocale.el,
         ...jaLocale,
-    },
+    }
 };
 
 const i18n = createI18n({

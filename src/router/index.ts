@@ -176,14 +176,14 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: "permissions",
-                name: "Permissions",
+                name: "PermissionsPage",
                 alias: [],
                 meta: {
                     requiresAuth: true,
                     title: "权限测试页",
                     keepAlive: true,
                 },
-                component: () => import("@/views/other/permissions.vue"),
+                component: () => import("@/views/other/permissions-page.vue"),
             },
             {
                 path: "clipboard",

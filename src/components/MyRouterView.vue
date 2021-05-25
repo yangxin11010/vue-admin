@@ -9,41 +9,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted, ref } from "vue";
+import { defineComponent, computed } from "vue";
 import { useStore } from "@/store";
 import type { Tabs } from "@/model/views";
-import { location } from "@/util/storage";
-import { setting } from "@/config";
-import mitter from "@/plugins/mitt";
 
 export default defineComponent({
     name: "MyRouterView",
     setup() {
         const store = useStore();
-        const openTabs = ref(setting.openTabs);
 
         const keepAliveList = computed(() => {
-            if (openTabs.value) {
-                let aliveList: string[] = [];
-                store.getters.tabsList.forEach((item: Tabs[]) => {
-                    item.forEach((item2: Tabs) => {
-                        if (item2.keepAlive) {
-                            aliveList.push(item2.name);
-                        }
-                    });
+            let aliveList: string[] = [];
+            store.getters.tabsList.forEach((item: Tabs[]) => {
+                item.forEach((item2) => {
+                    if (item2.keepAlive) {
+                        aliveList.push(item2.name);
+                    }
                 });
-                return aliveList;
-            }
-            return [];
+            });
+            return aliveList;
         });
 
-        onMounted(() => {
-            const openLogoValue = location.getItem("global-setting-openTabs");
-            openLogoValue !== null && (openTabs.value = openLogoValue);
-            mitter.$on("changeOpenTabs", (value) => {
-                openTabs.value = value;
-            });
-        });
 
         return {
             keepAliveList,

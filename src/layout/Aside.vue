@@ -125,30 +125,27 @@ export default defineComponent({
         // };
 
         // const formateRouter = (list: Menu[]): RouteRecordRaw[] => {
-        //     if (list.length > 0) {
-        //         let routerList: RouteRecordRaw[] = [];
-        //         list.forEach((item) => {
-        //             const router: RouteRecordRaw = {
-        //                 path: item.path,
-        //                 name: getNameByPath(item.path),
-        //                 alias: item.alias,
-        //                 meta: {
-        //                     requiresAuth: false,
-        //                     title: item.title,
-        //                     keepAlive: item.keepAlive,
-        //                 },
-        //                 // component: () => import(item.realPath),
-        //                 component: () => import(item.realPath),
-        //                 children: formateRouter(item.children),
-        //             };
-        //             // console.log(import(item.realPath));
-        //             routerList.push(router);
-        //         });
-        //         const path = "views/other/login.vue";
-        //         console.log((resolve: any) => require([`@/${path}`], resolve));
-        //         return routerList;
-        //     }
-        //     return [];
+        //     let routerList: RouteRecordRaw[] = [];
+        //     list.forEach((item) => {
+        //         const router: RouteRecordRaw = {
+        //             path: item.path,
+        //             name: getNameByPath(item.path),
+        //             alias: item.alias,
+        //             meta: {
+        //                 requiresAuth: false,
+        //                 title: item.title,
+        //                 keepAlive: item.keepAlive,
+        //             },
+        //             // component: () => import(item.realPath),
+        //             component: () => import(item.realPath),
+        //             children: formateRouter(item.children),
+        //         };
+        //         // console.log(import(item.realPath));
+        //         routerList.push(router);
+        //     });
+        //     const path = "views/other/login.vue";
+        //     console.log((resolve: any) => require([`@/${path}`], resolve));
+        //     return routerList;
         // };
 
         // const addRoute = (list: RouteRecordRaw[]) => {
