@@ -45,6 +45,11 @@ ul {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+#nprogress {
+	position: relative;
+	z-index: 20000 !important;
+}
+
 .w100p {
 	width: 100%;
 }

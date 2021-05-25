@@ -144,7 +144,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: "dashboard",
                 name: "Dashboard",
-                alias: ["/index", "/dashboard"],
+                alias: ["/index"],
                 meta: {
                     requiresAuth: true,
                     title: "首页",
@@ -166,7 +166,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: "icons",
                 name: "IconsPage",
-                alias: [],
+                alias: ["/svg"],
                 meta: {
                     requiresAuth: true,
                     title: "图标",
@@ -176,14 +176,14 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: "permissions",
-                name: "Permissions",
+                name: "PermissionsPage",
                 alias: [],
                 meta: {
                     requiresAuth: true,
                     title: "权限测试页",
                     keepAlive: true,
                 },
-                component: () => import("@/views/other/permissions.vue"),
+                component: () => import("@/views/other/permissions-page.vue"),
             },
             {
                 path: "clipboard",
@@ -204,7 +204,7 @@ const routes: Array<RouteRecordRaw> = [
                     title: "导出 File",
                     keepAlive: true,
                 },
-                alias: [],
+                alias: ["/export", "/excel", "/zip"],
                 component: () => import("@/views/other/export-file.vue"),
             },
             {
@@ -223,12 +223,14 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/setting",
         name: "Setting",
-        component: () => import("@/layout/index.vue"),
         meta: {
             requiresAuth: true,
             title: "设置",
             keepAlive: true,
         },
+        alias: ["/set"],
+        redirect: "/setting/system",
+        component: () => import("@/layout/index.vue"),
         children: [
             {
                 path: "system",
@@ -268,12 +270,14 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/components",
         name: "Components",
-        component: () => import("@/layout/index.vue"),
         meta: {
             requiresAuth: true,
             title: "组件",
             keepAlive: true,
         },
+        alias: [],
+        redirect: "/components/tinymce",
+        component: () => import("@/layout/index.vue"),
         children: [
             {
                 path: "tinymce",
@@ -313,12 +317,14 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/error",
         name: "Error",
-        component: () => import("@/layout/index.vue"),
         meta: {
             requiresAuth: true,
             title: "错误页面",
             keepAlive: true,
         },
+        alias: ["/wrong"],
+        redirect: "/error/notFound",
+        component: () => import("@/layout/index.vue"),
         children: [
             {
                 path: "notFound",
@@ -328,7 +334,7 @@ const routes: Array<RouteRecordRaw> = [
                     title: "404",
                     keepAlive: true,
                 },
-                alias: [],
+                alias: ["/404"],
                 component: () => import("@/views/error/404.vue"),
             },
             {
@@ -339,7 +345,7 @@ const routes: Array<RouteRecordRaw> = [
                     title: "401",
                     keepAlive: true,
                 },
-                alias: [],
+                alias: ["/401"],
                 component: () => import("@/views/error/401.vue"),
             },
         ],

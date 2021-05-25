@@ -105,12 +105,11 @@ export default defineComponent({
     color: red;
     font-size: 22px;
 }
-/deep/ {
-    .el-table__expanded-cell {
-        background-color: #f0f2f5;
-        &:hover {
-            background-color: #f0f2f5 !important;
-        }
+
+:deep(.el-table__expanded-cell) {
+    background-color: #f0f2f5;
+    &:hover {
+        background-color: #f0f2f5 !important;
     }
 }
 </style>

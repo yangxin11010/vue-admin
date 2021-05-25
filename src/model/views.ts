@@ -31,3 +31,10 @@ export interface Menu {
     realPath: string;
     children: Menu[];
 }
+
+export interface ProjectPercent {
+    title: string;
+    num: number;
+    status?: "success" | "exception" | "warning";
+}
+

@@ -81,7 +81,7 @@ import { defineComponent, nextTick, onMounted, reactive, ref } from "vue";
 import { warningMsgBox } from "@/util/messageBox";
 import { successMessage } from "@/util/message";
 import MenuList from "@/assets/js/menuList";
-import { Menu } from "@/model/views";
+import type { Menu } from "@/model/views";
 import { checkEmail } from "@/util/validata";
 
 interface Admin {

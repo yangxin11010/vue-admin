@@ -53,6 +53,10 @@ import { useRouter, useRoute } from "vue-router";
 import { successMessage } from "@/util/message";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
+import { getLocation } from "@/util/location";
+import { getBrowserInfo } from "@/util";
+import $api from "@/api";
+import moment from "moment";
 
 export default defineComponent({
     name: "Login",
@@ -60,7 +64,7 @@ export default defineComponent({
         const router = useRouter(),
             route = useRoute(),
             store = useStore(),
-            { t: $t } = useI18n();
+            { t: $t, locale } = useI18n();
 
         const loginFormRef = ref(),
             lang = computed<string>(() => store.getters.lang),
@@ -68,8 +72,9 @@ export default defineComponent({
 
         const changeLang = async (e: string) => {
             await store.dispatch("SET_LANG", e);
-            window.location.reload();
-            // locale.value = e;
+            // window.location.reload();
+            locale.value = e;
+            loginFormRef.value.resetFields();
         };
 
         // 表单数据
@@ -78,27 +83,73 @@ export default defineComponent({
             password: "123456",
         });
 
-        // 校验规则
+        // 校验规则  --> 国际化时 用message $t失效
         const rules: object = {
             username: [
                 {
-                    required: true,
-                    message: $t("login.unameReq"),
+                    validator: (rule: any, value: string, callback: any) => {
+                        if (value) {
+                            callback();
+                        } else {
+                            callback(new Error($t("login.unameReq")));
+                        }
+                    },
                     trigger: "blur",
                 },
             ],
             password: [
                 {
-                    required: true,
-                    message: $t("login.pwdReq"),
+                    validator: (rule: any, value: string, callback: any) => {
+                        if (value) {
+                            callback();
+                        } else {
+                            callback(new Error($t("login.pwdReq")));
+                        }
+                    },
                     trigger: "blur",
                 },
                 {
-                    min: 6,
-                    message: $t("login.pwdError"),
+                    validator: (rule: any, value: string, callback: any) => {
+                        if (value.length >= 6) {
+                            callback();
+                        } else {
+                            callback(new Error($t("login.pwdError")));
+                        }
+                    },
                     trigger: "blur",
                 },
             ],
+        };
+
+        const reportLoginInfo = async () => {
+            const {
+                position: { lat, lng },
+            } = await getLocation();
+            const { data } = await $api.help.request({
+                url: "https://restapi.amap.com/v3/geocode/regeo",
+                params: {
+                    key: process.env.VUE_APP_GKEY,
+                    location: lng + "," + lat,
+                },
+            });
+            const {
+                regeocode: {
+                    addressComponent: { country, province, city, district },
+                    formatted_address,
+                },
+            } = data;
+            $api.report.addLoginInfo({
+                browser: getBrowserInfo().browser,
+                system: getBrowserInfo().system,
+                time: moment().format("YYYY-MM-DD HH:mm:ss"),
+                country,
+                province,
+                city,
+                area: district,
+                address: formatted_address,
+                lat,
+                lng,
+            });
         };
 
         // 登录
@@ -113,6 +164,8 @@ export default defineComponent({
                         await store.dispatch("SET_COLLAPSE", false);
                         // 移除tabs
                         await store.dispatch("INIT_TABS");
+
+                        reportLoginInfo();
                         successMessage($t("login.success"));
                         setTimeout(() => {
                             router.replace(path ? path : "/dashboard");
@@ -171,24 +224,22 @@ export default defineComponent({
 .submit {
     width: 100%;
 }
-/deep/ {
-    .el-form-item {
-        border: 1px solid hsla(0, 0%, 100%, 0.1);
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        color: #454545;
+:deep(.el-form-item) {
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: #454545;
+}
+:deep(.el-input) {
+    .el-input__inner {
+        background-color: rgb(40, 52, 67);
+        border: none;
+        color: #ffffff;
     }
-    .el-input {
-        .el-input__inner {
-            background-color: rgb(40, 52, 67);
-            border: none;
-            color: #ffffff;
-        }
-        i {
-            font-size: 18px !important;
-            position: relative;
-            top: 2px;
-        }
+    i {
+        font-size: 18px !important;
+        position: relative;
+        top: 2px;
     }
 }
 </style>

@@ -3,27 +3,7 @@
         <el-row :gutter="30" style="margin-bottom: 0;">
             <template v-for="(item, index) in cardList" :key="index">
                 <el-col :span="6" :xs="12">
-                    <el-card shadow="hover" class="el-card-item">
-                        <div
-                            class="card-item disflex ju_bt curpot"
-                            @mouseenter="mouseoperate(item, index, 0)"
-                            @mouseleave="mouseoperate(item, index, 1)"
-                        >
-                            <div
-                                class="card-item-icon-box"
-                                :style="{
-                                    color: index === mouseEnterStyle.index ? '#fff' : item.iconColor,
-                                    background: index === mouseEnterStyle.index ? mouseEnterStyle.color : '#fff',
-                                }"
-                            >
-                                <svg-icon class="card-item-icon" :icon-class="item.icon"></svg-icon>
-                            </div>
-                            <div class="card-item-body">
-                                <span>{{ item.title }}</span>
-                                <span>{{ item.num }}</span>
-                            </div>
-                        </div>
-                    </el-card>
+                    <card class="el-card-item" shadow="hover" v-bind="item"></card>
                 </el-col>
             </template>
         </el-row>
@@ -40,26 +20,7 @@
                             src="https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png"
                         />
                     </template>
-                    <div class="bottom-el-card-item">
-                        <p>Vue</p>
-                        <el-progress :percentage="52.6"></el-progress>
-                    </div>
-                    <div class="bottom-el-card-item">
-                        <p>TypeScript</p>
-                        <el-progress :percentage="42.1"></el-progress>
-                    </div>
-                    <div class="bottom-el-card-item">
-                        <p>JavaScript</p>
-                        <el-progress :percentage="1.3"></el-progress>
-                    </div>
-                    <div class="bottom-el-card-item">
-                        <p>Scss</p>
-                        <el-progress :percentage="3.7"></el-progress>
-                    </div>
-                    <div class="bottom-el-card-item">
-                        <p>ESLint</p>
-                        <el-progress :percentage="100" status="success"></el-progress>
-                    </div>
+                    <project-percent :data="projectPercentList"></project-percent>
                 </el-card>
             </el-col>
             <el-col :span="18" :xs="14" :sm="14" :md="18">
@@ -70,9 +31,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
-import { DashboardCard } from "@/model/views";
-// import {} from "@/assets/css/variables.scss";
+import { defineComponent, defineAsyncComponent, reactive, onMounted, ref } from "vue";
+import type { DashboardCard } from "@/model/views";
+import type { ProjectPercent } from "@model/views";
+import { usePageUpdate } from "@/hooks";
+import { successMessage } from "@/util/message";
+
 export default defineComponent({
     name: "Dashboard",
     setup() {
@@ -82,21 +46,6 @@ export default defineComponent({
             { icon: "money", iconColor: "#f4516c", title: "Purchases", num: "9,280" },
             { icon: "shopcar", iconColor: "#34bfa3", title: "Shoppings", num: "13,600" },
         ];
-
-        // 鼠标移入的样式
-        let mouseEnterStyle = reactive({
-            color: "",
-            index: -1,
-        });
-        const mouseoperate = (item: DashboardCard, index: number, type: number) => {
-            if (type === 1) {
-                mouseEnterStyle.color = "";
-                mouseEnterStyle.index = -1;
-                return;
-            }
-            mouseEnterStyle.color = item.iconColor;
-            mouseEnterStyle.index = index;
-        };
 
         const options = reactive({
             title: { text: "未来一周气温变化", subtext: "纯属虚构" },
@@ -165,24 +114,33 @@ export default defineComponent({
             ],
         });
 
+        const projectPercentList = ref<Array<ProjectPercent>>([
+            { title: "Vue", num: 52.6 },
+            { title: "TypeScript", num: 42.1 },
+            { title: "JavaScript", num: 1.3 },
+            { title: "Scss", num: 3.7 },
+            { title: "ESLint", num: 100, status: "success" },
+        ])
+
+        usePageUpdate(() => {
+            successMessage("Update Page Success!")
+        })
+
         onMounted(() => {
             console.log(process.env);
         });
-        const scroll = (e: any) => {
-            console.log(e);
-        };
 
         return {
+            projectPercentList,
             cardList,
-            mouseoperate,
-            mouseEnterStyle,
             options,
-            scroll,
         };
     },
     components: {
         Echars: defineAsyncComponent(() => import("@/components/Echarts.vue")),
         ToDoList: defineAsyncComponent(() => import("@/components/ToDoList.vue")),
+        ProjectPercent: defineAsyncComponent(() => import("@/components/ProjectPercent.vue")),
+        Card: defineAsyncComponent(() => import("@/components/Card.vue")),
     },
 });
 </script>
@@ -198,43 +156,6 @@ export default defineComponent({
     height: 108px;
     margin-bottom: 20px;
 }
-.card-item {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-}
-
-.card-item-icon-box {
-    width: 80px;
-    height: 80px;
-    margin: 14px;
-    transition: all 0.38s ease-out;
-    border-radius: 6px;
-}
-.card-item-icon {
-    width: 48px;
-    height: 48px;
-    margin: 16px;
-}
-.card-item-body {
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding-right: 20px;
-    & > span {
-        &:nth-child(1) {
-            line-height: 18px;
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: rgba(0, 0, 0, 0.45);
-        }
-        &:nth-child(2) {
-            font-size: 20px;
-            color: #666;
-        }
-    }
-}
 .echars {
     width: 100%;
     height: 366px;
@@ -247,25 +168,13 @@ export default defineComponent({
         margin-bottom: 5px;
     }
 }
-/deep/ {
-    .el-card-item {
-        height: 108px;
-        .el-card,
-        .el-card__body {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            border: none;
-        }
-    }
-    .bottom-el-card {
-        font-size: 14px;
-        .el-card,
-        .el-card__header {
-            width: 100%;
-            padding: 0;
-            border: none;
-        }
+:deep(.bottom-el-card) {
+    font-size: 14px;
+    .el-card,
+    .el-card__header {
+        width: 100%;
+        padding: 0;
+        border: none;
     }
 }
 </style>

@@ -14,7 +14,7 @@
                     v-clipboard:error="copyError"
                     icon="np-icon-fuzhi"
                 >
-                     &nbsp;copy
+                    &nbsp;copy
                 </el-button>
             </el-tab-pane>
         </el-tabs>
@@ -44,6 +44,7 @@ export default defineComponent({
         const copyError = (e: any) => {
             console.error(e);
         };
+
         return {
             text,
             copyInput,

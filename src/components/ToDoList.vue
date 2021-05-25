@@ -8,7 +8,7 @@
                 </el-button>
             </div>
         </template>
-        <el-table height="326" :data="toDoList" v-loading="loading" :show-header="false" empty-text="No Things">
+        <el-table height="368" :data="toDoList" v-loading="loading" :show-header="false" empty-text="No Things">
             <el-table-column width="35">
                 <template v-slot="{ row }">
                     <el-checkbox v-model="row.isFinish"></el-checkbox>
@@ -61,7 +61,7 @@
 <script lang="ts">
 import { defineComponent, nextTick, ref, reactive, onMounted } from "vue";
 import { successMessage } from "@/util/message";
-import { ToDoItem } from "@/model/views";
+import type { ToDoItem } from "@/model/views";
 
 export default defineComponent({
     name: "ToDoList",

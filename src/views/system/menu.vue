@@ -31,7 +31,7 @@
                     </el-space>
                 </template>
             </el-table-column>
-            <el-table-column label="菜单项目路径" prop="realPath" align="left" min-width="250"></el-table-column>
+            <el-table-column label="菜单项目路径 / 外链接" prop="realPath" align="left" min-width="250"></el-table-column>
             <el-table-column label="缓存状态" prop="keepAlive" align="center" fixed="right">
                 <template v-slot="{ row }">
                     <el-tag :type="row.keepAlive ? 'success' : 'danger'">
@@ -185,7 +185,7 @@
 import { computed, defineComponent, nextTick, reactive, ref } from "vue";
 import { warningMsgBox } from "@/util/messageBox";
 import { successMessage, warningMessage } from "@/util/message";
-import { Menu } from "@/model/views";
+import type { Menu } from "@/model/views";
 import ElIcons from "@/assets/js/icons/el-icons";
 import NpIcons from "@/assets/js/icons/np-icons";
 import { useStore } from "@/store";
@@ -217,7 +217,7 @@ export default defineComponent({
         // 一级菜单 列表
         const parentMenuIdOptions = computed(() => {
             let val: Array<Menu> = [];
-            menuList.value.forEach((item: Menu) => {
+            menuList.value.forEach((item) => {
                 val.push(Object.assign(JSON.parse(JSON.stringify(item)), { children: [] }));
             });
             return val;
@@ -388,11 +388,10 @@ export default defineComponent({
 .alias-btn {
     width: 90px;
 }
-/deep/ {
-    .icon-input .el-input-group__prepend {
-        background-color: #ffffff !important;
-        font-size: 24px;
-        padding: 0 10px;
-    }
+
+:deep(.icon-input .el-input-group__prepend) {
+    background-color: #ffffff !important;
+    font-size: 24px;
+    padding: 0 10px;
 }
 </style>

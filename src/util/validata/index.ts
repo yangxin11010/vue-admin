@@ -12,6 +12,30 @@ export const checkIdCard = (val: string) => idCardReg.test(val);
 export const checkLink = (val: string) => linkReg.test(val);
 export const checkEmail = (val: string) => emailReg.test(val);
 
-// 判断是否是对象
+/**
+ * isObject
+ * @param value
+ * @returns
+ */
 export const isObject = (value: any) => Object.prototype.toString.call(value) === "[object Object]";
+
+/**
+ * isString
+ * @param value
+ * @returns
+ */
 export const isString = (value: any) => Object.prototype.toString.call(value) === "[object String]";
+
+/**
+ * isNumber
+ * @param value
+ * @returns
+ */
+export const isNumber = (value: any) => Object.prototype.toString.call(value) === "[object Number]";
+
+/**
+ * isArray
+ * @param value
+ * @returns
+ */
+export const isArray = (value: any) => Object.prototype.toString.call(value) === "[object Array]";

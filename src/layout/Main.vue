@@ -1,6 +1,6 @@
 <template>
     <div class="main main-scroll-box">
-        <div :class="{ 'main-box': !mainStyleList.includes($route.path) }">
+        <div :class="{ 'main-box': !formatMainStyleList.includes($route.path) }">
             <slot></slot>
         </div>
         <el-backtop class="backtop" target=".main-scroll-box"></el-backtop>
@@ -8,13 +8,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import { mainStyleList, globalColor } from "@/config";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     setup() {
+        const router = useRouter();
+
+        const formatMainStyleList = computed(() => {
+            // 获取路由列表
+            const allRouters = router.getRoutes();
+            // 获取 样式列表 里的路由 name
+            const routeList = allRouters.filter((item) => mainStyleList.includes(item.path)).map((item) => item.name);
+            // 通过 name 获取 样式列表里 的 path 和 别名 path
+            const newMainStyleList = allRouters
+                .filter((item) => routeList.includes(item.name))
+                .map((item) => item.path);
+            return newMainStyleList;
+        });
+
         return {
-            mainStyleList,
+            formatMainStyleList,
             backTopBColor: globalColor.backTopBColor,
             backTopTColor: globalColor.backTopTColor,
         };
@@ -27,7 +42,7 @@ export default defineComponent({
 .main {
     background-color: #f0f2f5;
     padding: 10px 10px 0 !important;
-    min-height: calc(100% - 30px);
+    min-height: calc(100% - 34px);
     overflow-y: auto;
     overflow-x: hidden;
     @include scrollStyle;

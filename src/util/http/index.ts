@@ -1,35 +1,93 @@
+import { AxiosRequestConfig } from "axios";
 import http from "./https";
 import { urlPlus } from "@/util";
 import qs from "qs";
 
 const request = {
-    // get
-    get: <T>(url: string, params = {}, showElMsg: boolean = true) => {
-        return http.get<T>(url, { params: { ...params, showElMsg } });
+    /**
+     * request
+     * @param params
+     * @param showElMsg
+     * @returns Promise
+     */
+    request: <T = any>(params: AxiosRequestConfig, showElMsg: boolean = true) => {
+        const getParams = params.params;
+        params.params = {
+            ...getParams,
+            showElMsg,
+        };
+        return http.request<T>(params);
     },
-    // post
-    post: <T>(url: string, params = {}, showElMsg: boolean = true) => {
-        return http.post<T>(url, (params = { ...params, showElMsg }));
+    /**
+     * get 请求
+     * @param url
+     * @param params
+     * @param showElMsg
+     * @returns Promise
+     */
+    get: <T = any>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.get<T>(urlPlus(url, { showElMsg }), { params });
     },
-    // post 参数拼接
-    postUrl: <T>(url: string, params = {}, showElMsg: boolean = true) => {
-        return http.post<T>(urlPlus(url, params), (params = { showElMsg }));
+    /**
+     * post 请求
+     * @param url
+     * @param params
+     * @param showElMsg
+     * @returns Promise
+     */
+    post: <T = any>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.post<T>(urlPlus(url, { showElMsg }), params);
     },
-    // put
-    put: <T>(url: string, params = {}, showElMsg: boolean = true) => {
-        return http.put<T>(url, (params = { ...params, showElMsg }));
+    /**
+     * post 请求 参数拼接在 url 后面
+     * @param url
+     * @param params
+     * @param showElMsg
+     * @returns Promise
+     */
+    postUrl: <T = any>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.post<T>(urlPlus(url, { ...params, showElMsg }), params);
     },
-    // patch
-    patch: <T>(url: string, params = {}, showElMsg: boolean = true) => {
-        return http.patch<T>(url, (params = { ...params, showElMsg }));
+    /**
+     * post 请求formData
+     * @param url
+     * @param params
+     * @param showElMsg
+     * @returns
+     */
+    postForm: <T = any>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.post<T>(urlPlus(url, { showElMsg }), qs.stringify(params));
     },
-    // delete
-    delete: <T>(url: string, params = {}) => {
-        return http.delete<T>(url, (params = { ...params }));
+    /**
+     * put 请求
+     * @param url
+     * @param params
+     * @param showElMsg
+     * @returns
+     */
+    put: <T = any>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.put<T>(urlPlus(url, { showElMsg }), params);
     },
-    // formData
-    postForm: <T>(url: string, params = {}) => http.post<T>(url, qs.stringify(params)),
+    /**
+     * patch 请求
+     * @param url
+     * @param params
+     * @param showElMsg
+     * @returns
+     */
+    patch: <T = any>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.patch<T>(urlPlus(url, { showElMsg }), params);
+    },
+    /**
+     * delete 请求
+     * @param url
+     * @param params
+     * @param showElMsg
+     * @returns
+     */
+    delete: <T = any>(url: string, params = {}, showElMsg: boolean = true) => {
+        return http.delete<T>(urlPlus(url, { showElMsg }), params);
+    },
 };
-
 
 export default request;

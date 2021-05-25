@@ -2,9 +2,57 @@
 
 @font-face {
     font-family: "np-icon"; /* Project id 2481366 */
-    src: url("//at.alicdn.com/t/font_2481366_1re6gsus72y.woff2?t=1620697048131") format("woff2"),
-        url("//at.alicdn.com/t/font_2481366_1re6gsus72y.woff?t=1620697048131") format("woff"),
-        url("//at.alicdn.com/t/font_2481366_1re6gsus72y.ttf?t=1620697048131") format("truetype");
+    src: url("//at.alicdn.com/t/font_2481366_z6rkkr4fdkl.woff2?t=1621741598578") format("woff2"),
+        url("//at.alicdn.com/t/font_2481366_z6rkkr4fdkl.woff?t=1621741598578") format("woff"),
+        url("//at.alicdn.com/t/font_2481366_z6rkkr4fdkl.ttf?t=1621741598578") format("truetype");
+}
+
+.np-icon-Vue:before {
+    content: "\e799";
+}
+
+.np-icon-scss:before {
+    content: "\e657";
+}
+
+.np-icon-typescript:before {
+    content: "\e6a3";
+}
+
+.np-icon-unfold:before {
+    content: "\e62d";
+}
+
+.np-icon-fold:before {
+    content: "\e894";
+}
+
+.np-icon-person-center:before {
+    content: "\e602";
+}
+
+.np-icon-shouye:before {
+    content: "\e603";
+}
+
+.np-icon-tuichudenglu:before {
+    content: "\e70b";
+}
+
+.np-icon-shouye1:before {
+    content: "\e669";
+}
+
+.np-icon-tuichudenglu1:before {
+    content: "\e614";
+}
+
+.np-icon-lianjie:before {
+    content: "\e646";
+}
+
+.np-icon-search:before {
+    content: "\e893";
 }
 
 .np-icon-dangqian:before {

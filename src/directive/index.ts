@@ -13,17 +13,15 @@ export default {
          * @return {Function}
          */
         app.directive("debounce", (el, binding) => {
-            let timer: any;
-            el.addEventListener("click", () => {
-                console.log(binding);
-                if (timer) clearTimeout(timer);
-                timer = setTimeout(
-                    () => {
-                        binding.value();
-                    },
-                    binding.arg ? Number(binding.arg) : 0
-                );
-            });
+            let timer: any = null;
+            return function() {
+                if (timer !== null) {
+                    clearTimeout(timer);
+                }
+                el.addEventListener("click", () => {
+                    timer = setTimeout(binding.value, binding.arg ? Number(binding.arg) : 0);
+                });
+            }();
         });
 
         /**
@@ -114,7 +112,7 @@ export default {
          *      @params: 键盘事件的code(支持组合按键 以+号分割)值
          *      @ event:  事件
          *          .press 将组合按键改为连续按键
-         * v-keyboard:text="value"  text必传 value 为键盘事件参数
+         * v-keyboard:text="value"  text必传   value为键盘事件参数
          */
         app.directive("keyboard", {
             mounted: (el, binding) => {

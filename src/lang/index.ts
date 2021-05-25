@@ -2,9 +2,9 @@
 import { createI18n } from "vue-i18n";
 import Store from "@/store";
 // my
-import zhLocale from "./zh.json";
-import enLocale from "./en.json";
-import jaLocale from "./ja.json";
+import zhLocale from "./json/zh.json";
+import enLocale from "./json/en.json";
+import jaLocale from "./json/ja.json";
 // element-ui
 import zhElLocale from "element-plus/lib/locale/lang/zh-cn";
 import enElLocale from "element-plus/lib/locale/lang/en";
@@ -24,7 +24,7 @@ const messages = {
     [jaElLocale.name]: {
         el: enElLocale.el,
         ...jaLocale,
-    },
+    }
 };
 
 const i18n = createI18n({

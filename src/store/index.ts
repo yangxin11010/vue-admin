@@ -1,8 +1,10 @@
 // store.ts
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import { InjectionKey } from "vue";
-import { Menu, Tabs } from "@/model/views";
+import type { InjectionKey } from "vue";
+import type { Menu, Tabs } from "@/model/views";
+// import setting from "./module/setting"
+
 
 export type LayoutSize = "default" | "medium" | "small" | "mini";
 
@@ -24,6 +26,30 @@ export function useStore() {
     return baseUseStore(key);
 }
 
+/**
+ * useGetter
+ * @param value 
+ * @returns 
+ */
+export function useGetter(key?: string){
+    return key ? useStore().getters[key] : useStore().getters
+}
+/**
+ * useMutations
+ * @param value 
+ * @returns function
+ */
+export function useMutations(key: string, value?: any){
+    return value ? useStore().commit(key, value) : useStore().dispatch(key)
+}
+/**
+ * useAactions
+ * @param value 
+ * @returns function
+ */
+export function useAactions(key: string, value?: any){
+    return value ? useStore().dispatch(key, value) : useStore().dispatch(key)
+}
 const store = createStore<State>({
     plugins: [
         // session 存储
@@ -167,7 +193,8 @@ const store = createStore<State>({
             commit("SET_MENULIST", value);
         },
     },
-    modules: {},
+    modules: {
+    },
 });
 
 export default store;

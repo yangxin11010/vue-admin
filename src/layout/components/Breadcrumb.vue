@@ -14,7 +14,9 @@
         </el-breadcrumb-item>
         <transition-group appear name="breadcrumbList">
             <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.path">
-                <span class="breadcrumb">{{ $t(`aside.${item.path}`) }}</span>
+                <span class="breadcrumb" :class="[`${$route.path === item.path ? 'chose' : ''}`]">
+                    {{ $t(`aside.${item.path}`) }}
+                </span>
             </el-breadcrumb-item>
         </transition-group>
     </el-breadcrumb>
@@ -29,13 +31,18 @@ export default defineComponent({
     props: {},
     setup() {
         const route = useRoute();
-        let breadcrumbList = ref<RouteLocationMatched[]>([]);
+        const breadcrumbList = ref<RouteLocationMatched[]>([]);
 
         const setBreadcrumb = () => {
             breadcrumbList.value = [];
-            if (route.path === "/dashboard") return;
-            route.matched.forEach((item) => {
-                item.meta.title && breadcrumbList.value.push(item);
+            const lastRoute = route.matched[route.matched.length - 1];
+            if (route.path === "/dashboard" || (lastRoute.aliasOf && lastRoute.aliasOf.path === "/dashboard")) return;
+            route.matched.forEach((item, index) => {
+                let value = item;
+                if (index === route.matched.length - 1 && lastRoute.aliasOf) {
+                    value = lastRoute.aliasOf;
+                }
+                item.meta.title && breadcrumbList.value.push(value);
             });
         };
 
@@ -59,7 +66,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .breadcrumb {
-    color: #fff;
+    color: rgba(0, 0, 0, 0.45);
 }
 .hoverClass:hover {
     color: #1890ff;
@@ -75,5 +82,8 @@ export default defineComponent({
 }
 .breadcrumbList-leave-active {
     position: absolute;
+}
+.chose {
+    color: rgba(0, 0, 0, 0.65);
 }
 </style>

@@ -1,7 +1,7 @@
 // vuex.d.ts
-import { ComponentCustomProperties } from "vue";
-import { Store } from "vuex";
-import { LayoutSize } from "@/store"
+import type { ComponentCustomProperties } from "vue";
+import type { Store } from "vuex";
+import type { LayoutSize } from "@/store"
 
 
 declare module "@vue/runtime-core" {

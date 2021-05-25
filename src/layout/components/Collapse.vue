@@ -1,6 +1,6 @@
 <template>
     <div class="collapse" @click="click" :style="{ 'font-size': size + 'px' }">
-        <svg-icon :iconClass="collapse ? 'nav_open' : 'nav_close'"></svg-icon>
+        <i :class="collapse ? 'np-icon-unfold' : 'np-icon-fold'"></i>
     </div>
 </template>
 
@@ -42,7 +42,7 @@ export default defineComponent({
     cursor: pointer;
     margin-right: 10px;
     &:hover {
-        background-color: #434a50;
+        background-color: rgba(0, 0, 0, 0.025);
     }
 }
 </style>

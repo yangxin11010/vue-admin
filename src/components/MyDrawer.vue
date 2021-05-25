@@ -139,6 +139,7 @@ export default defineComponent({
         };
 
         const keyboardEvent = () => {
+            if (!props.showClose) return;
             showDrawerIcon.value = !showDrawerIcon.value;
             location.setItem("global-setting-icon", showDrawerIcon.value);
         };
@@ -173,11 +174,10 @@ export default defineComponent({
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 1999;
+    z-index: 2000;
 }
 .drawer-back {
     background-color: rgba(0, 0, 0, 0.2);
-    z-index: 1999;
     position: fixed;
     left: 0;
     top: 0;
@@ -190,7 +190,6 @@ export default defineComponent({
     height: 100vh;
     background-color: #fff;
     position: fixed;
-    z-index: 2000;
 }
 .drawer-box-right {
     right: 0;
@@ -243,7 +242,6 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
-    z-index: 10000;
     overflow-y: scroll;
     &::-webkit-scrollbar {
         width: 6px;
@@ -253,9 +251,8 @@ export default defineComponent({
         border-radius: 50px;
     }
 }
-/deep/ {
-    .drawer-icon-dropdown .el-dropdown__popper {
-        top: 500px;
-    }
+
+:deep(.drawer-icon-dropdown .el-dropdown__popper) {
+    top: 500px;
 }
 </style>

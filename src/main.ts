@@ -10,14 +10,14 @@ import Router from "@/router";
 //	Store
 import Store, { key } from "@/store";
 //	SVG
-import Svg from "@/icons";
+import SvgIcons from "@/icons";
 // directive
 import directive from "@/directive";
 
 // 国际化
 import VueI18n from "@/lang";
 
-import MyEl from "@/components/my-el-components";
+import MyEl from "@/components/my-components";
 
 const app = createApp(App);
 
@@ -27,7 +27,7 @@ app.use(Router)
         size: Store.getters.layoutSize,
         i18n: VueI18n.global.t,
     })
-    .use(Svg)
+    .use(SvgIcons)
     .use(directive)
     .use(VueI18n)
     .use(MyEl);

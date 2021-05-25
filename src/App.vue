@@ -1,20 +1,19 @@
 <template>
     <div class="app">
-        <router-view></router-view>
+        <router-view />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, getCurrentInstance } from "vue";
 export default defineComponent({
     name: "App",
     setup() {
         const info = "项目地址：https://gitee.com/yangxin11010/vue-admin";
-        const style = "font-size:12px;color: #333;";
-
-        
+        const style = "font-size: 12px;color: #333;";
 
         onMounted(() => {
+            console.log(getCurrentInstance());
             console.log("%c%s", style, info);
         });
 
@@ -24,9 +23,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/assets/css/variables.scss";
-@import "@/assets/css/element-global.scss";
 @import "@/assets/css/index.scss";
+@import "@/assets/css/variables.scss";
+@import "@/assets/css/animation.scss";
+@import "@/assets/css/element-global.scss";
 @import "@/assets/css/np-icons.scss";
 .app {
     height: 100%;

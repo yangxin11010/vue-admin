@@ -1,0 +1,135 @@
+{
+    "login": {
+        "title": "Login",
+        "username": "username",
+        "password": "password",
+        "button": "login",
+        "success": "Login Success！",
+        "unameReq": "Please enter your account number",
+        "pwdReq": "Please enter your password",
+        "pwdError": "Please enter a password of at least 6"
+    },
+    "system": {
+        "title": "System Layout Settings",
+        "navMode": "Navigation Mode",
+        "hideBtn": "Hide Button",
+        "showTip": "Show Tip",
+        "hideTip": "Hide Tip",
+        "sidebarLogo": "Sidebar Logo",
+        "tagsView": "Open Tags-View",
+        "asideOpen": "Keep a submenu open",
+        "asideFixed": "Keep Aside",
+        "headerMenu": "Header menu",
+        "direction": "System Layout Direction"
+    },
+    "personCenter": {
+        "cardTitle": "About Me",
+        "description": "Description",
+        "loginRecord": "Login Record",
+        "account": "Account",
+        "editPwd": "Edit Password",
+        "accountInfo": {
+            "name": "Name",
+            "sex": "Sex",
+            "email": "Email",
+            "introduction": "Introduction"
+        },
+        "editPwdInfo": {
+            "oldPwd": "Old Password",
+            "newPwd": "New Password",
+            "less6Error": "The password must be no less than 6 characters!",
+            "requireError": "The Password cannot be empty!",
+            "differentError": "Inconsistent passwords entered twice!"
+        }
+    },
+    "sex": {
+        "male": "Male",
+        "female": "Female"
+    },
+    "message": {
+        "have": "{value} messages",
+        "no": "message"
+    },
+    "fullscreen": {
+        "full": "Fullscreen",
+        "exit": "Exit fullscreen"
+    },
+    "aside": {
+        "/personCenter": "Person Center",
+        "/message": "Message Center",
+        "/dashboard": "Dashboard",
+        "/icons": "Icons",
+        "/permissions": "Permissions Test",
+        "/clipboard": "Clipboard",
+        "/exportFile": "Export File",
+        "/link": "Link",
+        "/router": "Nested Rrouting",
+        "/router/router1": "Menu1",
+        "/router/router2": "Menu2",
+        "/router/router1/router11": "Menu1-1",
+        "/router/router1/router12": "Menu2-2",
+        "/router/router1/router13": "Menu3-3",
+        "/components": "Components",
+        "/components/tinymce": "Tinymce",
+        "/components/jsoneditor": "JSON Editor",
+        "/components/charts": "Echarts",
+        "/error": "Error Page",
+        "/error/notFound": "404",
+        "/error/notPermission": "401",
+        "/setting": "Setting",
+        "/setting/system": "System Setting",
+        "/setting/menu": "Menu Management",
+        "/setting/user": "User Management"
+    },
+    "breadcrumb": "Dashboard",
+    "header": {
+        "personCenter": "Pserson Center",
+        "dashboard": "Dashboard",
+        "projectAddress": "Project Address",
+        "logOut": "Login Out"
+    },
+    "tabs": {
+        "title": "Label Options",
+        "closeNow": "Close This",
+        "keepFixed": "Keep Fixed",
+        "removeFixed": "Remove Fixed",
+        "closeLeft": "Close Left",
+        "closeRight": "Close Right",
+        "closeOther": "Close Other",
+        "closeAll": "Close All",
+        "clear": "Clear",
+        "clearTitle": "Message",
+        "clearMsg": "This will clear all tabs. Do you want to continue?",
+        "clearConfirm": "confirm",
+        "clearCancel": "cancel"
+    },
+    "tinymce": {
+        "upimg": {
+            "t-title": "upload",
+            "clickUpload": "Click Upload",
+            "cancel": "Cancel",
+            "upload": "Confirm",
+            "errMsg": "Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!"
+        }
+    },
+    "export": {
+        "excel-btn": "Exoprt Excel",
+        "zip-btn": "Exoprt Zip",
+        "input-plc": "filename"
+    },
+    "error": {
+        "backHome": "Back to home",
+        "backLast": "Back last page"
+    },
+    "button": {
+        "add": "add",
+        "update": "update",
+        "edit": "edit",
+        "delete": "delete",
+        "reset": "reset",
+        "cancel": "cancel",
+        "confirm": "confirm",
+        "operate": "operate",
+        "save": "save"
+    }
+}

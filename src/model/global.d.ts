@@ -26,3 +26,8 @@ declare interface CustomData {
 //     [key: string]: any;
 // }
 declare interface Window extends CustomData {}
+
+declare interface Paging {
+    page?: number;
+    size?: number;
+}

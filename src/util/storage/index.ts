@@ -3,7 +3,7 @@ interface StorageApi {
     setItem: (key: string, value: any) => void;
     removeItem: (key: string) => void;
 }
-type SessionWay = "session" | "location";
+export type SessionWay = "session" | "location";
 
 class StorageProxy implements StorageApi {
     protected storage: StorageApi;
@@ -17,7 +17,7 @@ class StorageProxy implements StorageApi {
     }
 
     public setItem(key: string, value: any) {
-        this.storage.setItem(key, value);
+        this.storage.setItem(key, JSON.stringify(value));
     }
 
     public removeItem(key: string) {
@@ -36,9 +36,7 @@ export const location = new StorageProxy(localStorage);
  * { key, value, way = "session" }: StorageOptions
  */
 export const setStorage = (key: string, value: any, way: SessionWay = "session") => {
-    if (!key || !value) {
-        window[way].setItem(key, value);
-    }
+    if (key && value) window[way].setItem(key, JSON.stringify(value));
 };
 
 /**
@@ -48,9 +46,8 @@ export const setStorage = (key: string, value: any, way: SessionWay = "session")
  * @returns {Any}
  */
 export const getStorage = (key: string, way: SessionWay = "session") => {
-    if (key) {
-        return JSON.parse(window[way].getItem(key));
-    }
+    if (key) return JSON.parse(window[way].getItem(key));
+    return null;
 };
 
 /**
@@ -59,7 +56,5 @@ export const getStorage = (key: string, way: SessionWay = "session") => {
  * @param {String} way  "session" | "location"
  */
 export const removeStorage = (key: string, way: SessionWay = "session") => {
-    if (!key) {
-        window[way].removeItem(key);
-    }
+    if (key) window[way].removeItem(key);
 };
