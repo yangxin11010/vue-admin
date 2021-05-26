@@ -16,7 +16,7 @@ export default defineComponent({
     },
     setup(props) {
         const store = useStore(),
-            isShow = computed(() => {
+            isShow = computed<boolean>(() => {
                 if (props.value.length <= 0) return true;
                 return store.getters.permissions.some((item: string) => {
                     return props.value.includes(item);

@@ -329,7 +329,7 @@ export default defineComponent({
                 rotating.value = false;
             }, 800);
             mitter.$emit("update-page")
-            // 页面 keepalive 时 router.replace 无法刷新页面(会被keepalive缓存下来)  使用 src/hooks/  usePageUpdate 方法
+            // 页面 keepalive 时 router.replace 无法刷新页面(会被keepAlive缓存下来)  使用 src/hooks/  usePageUpdate 方法
             // router.replace({
             //     path: "/redirect" + route.fullPath
             // })

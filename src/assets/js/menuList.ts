@@ -115,7 +115,7 @@ export default [
                         children: [],
                     },
                     {
-                        menuId: 711,
+                        menuId: 712,
                         title: "菜单1-2",
                         path: "/router12",
                         icon: "",
@@ -128,7 +128,7 @@ export default [
                         children: [],
                     },
                     {
-                        menuId: 711,
+                        menuId: 713,
                         title: "菜单1-3",
                         path: "/router13",
                         icon: "",
@@ -137,7 +137,7 @@ export default [
                         status: 1,
                         sort: 3,
                         alias: [],
-                        realPath: "@/views/error/404.vue",
+                        realPath: "https://gitee.com/yangxin11010/vue-admin",
                         children: [],
                     },
                 ],

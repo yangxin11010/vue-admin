@@ -165,13 +165,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.my-el-table {
-    .pagination {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 10px;
-    }
+.my-el-table .pagination {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
 }
 </style>

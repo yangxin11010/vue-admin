@@ -5,15 +5,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, getCurrentInstance } from "vue";
+import { defineComponent, onMounted, getCurrentInstance, ComponentInternalInstance } from "vue";
 export default defineComponent({
     name: "App",
     setup() {
         const info = "项目地址：https://gitee.com/yangxin11010/vue-admin";
         const style = "font-size: 12px;color: #333;";
 
+        const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+
         onMounted(() => {
-            console.log(getCurrentInstance());
+            console.log(proxy);
             console.log("%c%s", style, info);
         });
 

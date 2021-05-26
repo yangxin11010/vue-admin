@@ -18,9 +18,6 @@ export default defineComponent({
             type: Object as PropType<Echarts.EChartsCoreOption>,
             required: true,
         },
-        echartsEvent: {
-            type: String,
-        },
     },
     setup(props) {
         const store = useStore(),

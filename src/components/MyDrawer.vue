@@ -104,6 +104,7 @@ export default defineComponent({
             ];
         });
 
+        // 默认宽度
         const defaultWidth = computed(() => {
             if (typeof props.width === "number") {
                 return props.width + "px";
@@ -114,6 +115,7 @@ export default defineComponent({
             return "260px";
         });
 
+        // 显隐
         const toggle = () => {
             if (open.value && props.beforeClose) {
                 props.beforeClose(() => {
@@ -138,6 +140,7 @@ export default defineComponent({
             }
         };
 
+        // 键盘事件
         const keyboardEvent = () => {
             if (!props.showClose) return;
             showDrawerIcon.value = !showDrawerIcon.value;

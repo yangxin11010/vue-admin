@@ -1,23 +1,23 @@
+import type { Menu } from "@/model/views";
 /**
  * url参数拼接
  * @param {String} url
  * @param {Object} params  "session" | "location"
  * @returns {string}
  */
-export const urlPlus = (url: string, params: CustomData) => {
-    
+export function urlPlus(url: string, params: CustomData) {
     Object.keys(params).forEach((item: string, index: number) => {
         url += `${index === 0 ? "?" : "&"}${item}=${params[item]}`;
     });
     return url;
-};
+}
 
 /**
  * 获取 url 参数
  * @param url
  * @returns
  */
-export const getUrlParams = (url = "") => {
+export function getUrlParams(url = "") {
     if (!url) url = window.location.href;
     const paramsStr = url.split("?").length > 1 ? url.split("?")[1] : "",
         params: any = {};
@@ -28,19 +28,19 @@ export const getUrlParams = (url = "") => {
         });
     }
     return params;
-};
+}
 
 /**
  * 打开新窗口/链接
  * @param {Object}
  */
-export const openWindow = (url: string, flag = true) => {
+export function openWindow (url: string, flag = true) {
     if (flag) {
         window.open(url);
     } else {
         window.location.href = url;
     }
-};
+}
 
 /**
  * 设置 dom style
@@ -48,18 +48,18 @@ export const openWindow = (url: string, flag = true) => {
  * @param {Object} params
  */
 
-export const setDomStyles = (el: any, params: CustomData) => {
+export function setDomStyles(el: any, params: CustomData) {
     const vm: HTMLElement = document.querySelector(el);
     Object.keys(params).forEach((item: any) => {
         vm.style[item] = params[item];
     });
-};
+}
 
 /**
  * 获取系统/浏览器名称
  * @returns
  */
-export const getBrowserInfo = () => {
+export function getBrowserInfo() {
     const os = navigator.platform;
     const userAgent = navigator.userAgent;
     const info: { system: string; browser: string } = {
@@ -113,4 +113,31 @@ export const getBrowserInfo = () => {
         info.browser = "unknown";
     }
     return info;
-};
+}
+
+// 根据id查找菜单
+export function getParentMenuId(id: number, list: Menu[]): Menu | null {
+    let menu: Menu | null = null;
+    list.forEach((item) => {
+        if (item.menuId === id) menu = item;
+        if(!menu) {
+            const newValue = getParentMenuId(id, item.children);
+            newValue !== null && (menu = newValue)
+        }
+    });
+    return menu
+}
+
+// 查找上级所有菜单
+export function getParentMenuList(id: number, list: Menu[]) {
+    let pathList: Array<Menu> = [];
+    const menu = getParentMenuId(id, list);
+    if(menu) {
+        pathList.unshift(menu)
+        if(menu.parentMenuId) {
+            const parentList = getParentMenuList(menu.parentMenuId, list);
+            pathList = pathList.concat(parentList.reverse())
+        }
+    }
+    return pathList.reverse();
+}

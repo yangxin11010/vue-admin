@@ -12,7 +12,7 @@ cd vue-admin
 
 npm install
 or
-yarn / yarn add
+yarn
 ```
 
 ### run
@@ -38,7 +38,3 @@ npm run build
 ### 预览地址
 
 https://yangxin11010.github.io/vue-admin/
-
-or
-
-https://static-de071b44-6978-4b56-97d6-db04ca1752e3.bspapp.com/

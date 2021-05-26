@@ -5,7 +5,7 @@ import AMapLoader from "@amap/amap-jsapi-loader";
  * @param type
  * @returns Promise
  */
-export const getLocation = (type: "location" | "place" = "location") => {
+export function getLocation(type: "location" | "place" = "location") {
     return new Promise<any>((resolve, reject) => {
         AMapLoader.load({
             key: process.env.VUE_APP_GKEY as string, // 申请好的Web端开发者Key，首次调用 load 时必填
@@ -43,4 +43,4 @@ export const getLocation = (type: "location" | "place" = "location") => {
                 reject(e);
             });
     });
-};
+}

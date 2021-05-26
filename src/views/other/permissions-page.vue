@@ -16,7 +16,7 @@
                 </template>
             </el-button-group>
         </div>
-        <el-divider content-position="left">组件权限</el-divider>
+        <el-divider content-position="left">组件用法</el-divider>
         <Permissions :value="['boss', 'admin']">
             <div class="item">
                 <el-alert type="success" class="alert" :closable="false">
@@ -49,7 +49,7 @@
                 <el-tag type="info">{{ `<Permissions :value="['user']"> ... </Permissions>` }}</el-tag>
             </div>
         </Permissions>
-        <el-divider content-position="left">指令权限 请刷新页面查看</el-divider>
+        <el-divider content-position="left">指令用法 请刷新页面查看</el-divider>
         <el-button type="primary" @click="refersh">刷新</el-button>
         <div class="item" v-permissions="['boss', 'admin']">
             <el-alert type="success" class="alert" :closable="false">
