@@ -192,9 +192,9 @@ export default defineComponent({
             openLogo,
             globalColor,
             setting,
-            asideNextBColor: globalColor.asideNextBColor,
-            asideNextAColor: globalColor.asideNextAColor,
-            asideBColor: globalColor.asideBColor,
+            asideNextBColor: ref(globalColor.asideNextBColor),
+            asideNextAColor: ref(globalColor.asideNextAColor),
+            asideBColor: ref(globalColor.asideBColor),
             uniqueOpened,
             changeCollapse
         };

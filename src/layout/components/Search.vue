@@ -31,7 +31,7 @@ import { computed, defineComponent, nextTick, ref, watch } from "vue";
 import MenuList from "@/assets/js/menuList";
 import type { Menu } from "@/model/views";
 import { useStore } from "@/store";
-import router from "@/router";
+import { useRouter } from "vue-router";
 import { checkLink } from "@/util/validata";
 import { openWindow } from "@/util";
 import { useI18n } from "vue-i18n"
@@ -41,6 +41,7 @@ export default defineComponent({
     name: "Search",
     setup() {
         const store = useStore(),
+            router = useRouter(),
             { t: $t } = useI18n(),
             inputRef = ref(),
             menuList = computed<Array<Menu>>(() => store.getters.menuList),

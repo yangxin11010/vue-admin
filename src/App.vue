@@ -12,10 +12,10 @@ export default defineComponent({
         const info = "项目地址：https://gitee.com/yangxin11010/vue-admin";
         const style = "font-size: 12px;color: #333;";
 
-        const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+        const app = getCurrentInstance() as ComponentInternalInstance;
 
         onMounted(() => {
-            console.log(proxy);
+            console.log(app);
             console.log("%c%s", style, info);
         });
 
