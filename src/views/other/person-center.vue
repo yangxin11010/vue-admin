@@ -68,7 +68,7 @@
                                 v-loading="timeLoading"
                                 description="暂无记录"
                             ></el-empty>
-                            <el-timeline v-else>
+                            <el-timeline v-loading="timeLoading" v-else>
                                 <el-timeline-item
                                     v-for="(item, index) in loginTime"
                                     :key="index"

@@ -279,7 +279,7 @@ export default defineComponent({
             isWatch: true
         });
 
-        watch(() => openTabs.value, (newVal) => {
+        watch(openTabs, (newVal) => {
             if(newVal) {
                 addTabs(route.path)
             }else {

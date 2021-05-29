@@ -20,10 +20,10 @@ export function useLocation<T = any>(options: UseLocationOptions<T>): Ref<T> {
     const refValue = ref<T>(options.value) as Ref<T>;
 
     watch(
-        () => refValue.value,
+        refValue,
         (value) => {
             if (!options.isWatch) {
-                mitter.$emit<boolean>(options.name, value as any);
+                mitter.$emit<T>(options.name, value);
                 if (options.storage && options.storage === "session") {
                     session.setItem(options.name, value);
                 } else {
@@ -46,7 +46,6 @@ export function useLocation<T = any>(options: UseLocationOptions<T>): Ref<T> {
         }
         locationValue !== null && (refValue.value = locationValue);
         options.isWatch &&
-            options.isWatch === true &&
             mitter.$on(options.name, (value) => {
                 refValue.value = value;
             });

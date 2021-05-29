@@ -20,8 +20,8 @@ import VueI18n from "@/lang";
 
 import MyEl from "@/components/my-components";
 
+import MyStore from "@/plugins/global";
 // import { components, plugins } from "@/util/element-plus";
-
 const app = createApp(App);
 
 app.use(Router)
@@ -33,6 +33,7 @@ app.use(Router)
     .use(SvgIcons)
     .use(directive)
     .use(VueI18n)
+    .use(MyStore)
     .use(MyEl);
 
 // components.forEach((component) => {
