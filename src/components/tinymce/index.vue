@@ -11,7 +11,7 @@
 import {
     defineComponent,
     defineAsyncComponent,
-    onMounted,
+    onBeforeMount,
     onUnmounted,
     reactive,
     toRefs,
@@ -239,7 +239,7 @@ export default defineComponent({
             });
         };
 
-        onMounted(() => {
+        onBeforeMount(() => {
             init();
         });
 

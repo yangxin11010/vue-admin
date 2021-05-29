@@ -279,7 +279,7 @@ export default defineComponent({
             isWatch: true
         });
 
-        watch(() => openTabs.value, (newVal) => {
+        watch(openTabs, (newVal) => {
             if(newVal) {
                 addTabs(route.path)
             }else {
@@ -329,7 +329,7 @@ export default defineComponent({
                 rotating.value = false;
             }, 800);
             mitter.$emit("update-page")
-            // 页面 keepalive 时 router.replace 无法刷新页面(会被keepalive缓存下来)  使用 src/hooks/  usePageUpdate 方法
+            // 页面 keepalive 时 router.replace 无法刷新页面(会被keepAlive缓存下来)  使用 src/hooks/  usePageUpdate 方法
             // router.replace({
             //     path: "/redirect" + route.fullPath
             // })
@@ -358,13 +358,13 @@ export default defineComponent({
             openTabs,
             refreshPage,
             rotating,
-            tabsBColor: globalColor.tabsBColor,
-            tabsTColor: globalColor.tabsTColor,
-            tabsAColor: globalColor.tabsAColor,
-            tabsATColor: globalColor.tabsATColor,
-            tabsBeforKColor: globalColor.tabsBeforKColor,
-            tabsBeforAColor: globalColor.tabsBeforAColor,
-            tabsRotate: globalColor.tabsRotate,
+            tabsBColor: ref(globalColor.tabsBColor),
+            tabsTColor: ref(globalColor.tabsTColor),
+            tabsAColor: ref(globalColor.tabsAColor),
+            tabsATColor: ref(globalColor.tabsATColor),
+            tabsBeforKColor: ref(globalColor.tabsBeforKColor),
+            tabsBeforAColor: ref(globalColor.tabsBeforAColor),
+            tabsRotate: ref(globalColor.tabsRotate),
         };
     },
 });

@@ -54,6 +54,7 @@ export default defineComponent({
                     ctx.emit("screenfull", { screenfull: isFullScreen.value });
                 });
             if (props.parent) {
+                // 将 点击事件 移动至 当前组件的父元素
                 svgRef.value.$el.parentNode.onclick = () => {
                     fullScreen();
                 };

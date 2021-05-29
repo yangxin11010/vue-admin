@@ -8,23 +8,6 @@ import { App } from "vue";
 export default {
     install: (app: App) => {
         /**
-         * 防抖
-         * @param {number} arg  0
-         * @return {Function}
-         */
-        app.directive("debounce", (el, binding) => {
-            let timer: any = null;
-            return function() {
-                if (timer !== null) {
-                    clearTimeout(timer);
-                }
-                el.addEventListener("click", () => {
-                    timer = setTimeout(binding.value, binding.arg ? Number(binding.arg) : 0);
-                });
-            }();
-        });
-
-        /**
          * 滚动条监听
          * @param {string} arg  "bottom" | ""
          * @return {Function}

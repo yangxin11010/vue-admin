@@ -18,7 +18,7 @@
                     </el-dropdown>
                 </div>
             </div>
-            <el-form-item prop="username">
+            <el-form-item prop="username1">
                 <el-input
                     class="input"
                     v-model="formData.username"
@@ -74,7 +74,6 @@ export default defineComponent({
             await store.dispatch("SET_LANG", e);
             // window.location.reload();
             locale.value = e;
-            loginFormRef.value.resetFields();
         };
 
         // 表单数据

@@ -2,7 +2,7 @@
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import type { InjectionKey } from "vue";
-import type { Menu, Tabs } from "@/model/views";
+import type { Menu, Tabs } from "@model/views";
 // import setting from "./module/setting"
 
 
@@ -31,7 +31,7 @@ export function useStore() {
  * @param value 
  * @returns 
  */
-export function useGetter(key?: string){
+export function useGetter(key?: string): keyof State | State{
     return key ? useStore().getters[key] : useStore().getters
 }
 /**
@@ -51,6 +51,7 @@ export function useAactions(key: string, value?: any){
     return value ? useStore().dispatch(key, value) : useStore().dispatch(key)
 }
 const store = createStore<State>({
+    strict: true,
     plugins: [
         // session 存储
         createPersistedState({

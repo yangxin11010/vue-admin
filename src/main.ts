@@ -1,10 +1,11 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import ElementPlus from "element-plus";
+
 // ele 主题
 // import 'element-plus/lib/theme-chalk/index.css';
 // ele 自定义主题
-import "@/assets/css/element-variables.scss";
+import "@/util/element-plus/element-variables.scss";
 //	Router
 import Router from "@/router";
 //	Store
@@ -19,17 +20,28 @@ import VueI18n from "@/lang";
 
 import MyEl from "@/components/my-components";
 
+import MyStore from "@/plugins/global";
+// import { components, plugins } from "@/util/element-plus";
 const app = createApp(App);
 
 app.use(Router)
-    .use(Store, key)
     .use(ElementPlus, {
         size: Store.getters.layoutSize,
         i18n: VueI18n.global.t,
     })
+    .use(Store, key)
     .use(SvgIcons)
     .use(directive)
     .use(VueI18n)
+    .use(MyStore)
     .use(MyEl);
+
+// components.forEach((component) => {
+//     app.component(component.name, component);
+// });
+
+// plugins.forEach((plugin) => {
+//     app.use(plugin);
+// });
 
 app.mount("#app");

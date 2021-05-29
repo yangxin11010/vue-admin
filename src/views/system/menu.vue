@@ -31,7 +31,12 @@
                     </el-space>
                 </template>
             </el-table-column>
-            <el-table-column label="菜单项目路径 / 外链接" prop="realPath" align="left" min-width="250"></el-table-column>
+            <el-table-column
+                label="菜单项目路径 / 外链接"
+                prop="realPath"
+                align="left"
+                min-width="250"
+            ></el-table-column>
             <el-table-column label="缓存状态" prop="keepAlive" align="center" fixed="right">
                 <template v-slot="{ row }">
                     <el-tag :type="row.keepAlive ? 'success' : 'danger'">
@@ -66,11 +71,12 @@
         <el-dialog :title="`${isAddMenu ? '添加' : '修改'}菜单`" v-model="dialogVisible" width="40%">
             <el-form :model="menuForm" ref="menuFormRef" label-width="80px">
                 <el-form-item label="上级菜单" prop="parentMenuId">
-                    <el-select v-model="menuForm.parentMenuId" clearable>
-                        <template v-for="item in parentMenuIdOptions" :key="item.title">
-                            <el-option :label="item.path" :value="item.menuId"></el-option>
-                        </template>
-                    </el-select>
+                    <el-cascader
+                        v-model="menuForm.parentMenuId"
+                        :options="parentMenuIdOptions"
+                        :props="{ checkStrictly: true, label: 'title', value: 'menuId', emitPath: false }"
+                        clearable
+                    ></el-cascader>
                 </el-form-item>
                 <el-form-item
                     prop="title"
@@ -188,6 +194,7 @@ import { successMessage, warningMessage } from "@/util/message";
 import type { Menu } from "@/model/views";
 import ElIcons from "@/assets/js/icons/el-icons";
 import NpIcons from "@/assets/js/icons/np-icons";
+import { getParentMenuList } from "@/util";
 import { useStore } from "@/store";
 
 export default defineComponent({
@@ -214,35 +221,29 @@ export default defineComponent({
             children: [],
         });
 
+        const removeChildren = (list: any[]) => {
+            list.forEach(item => {
+                if(item.children.length <= 0) {
+                    delete item.children
+                }else {
+                    removeChildren(item.children)
+                }
+            })
+            return list
+        };
+
         // 一级菜单 列表
         const parentMenuIdOptions = computed(() => {
-            let val: Array<Menu> = [];
-            menuList.value.forEach((item) => {
-                val.push(Object.assign(JSON.parse(JSON.stringify(item)), { children: [] }));
-            });
-            return val;
+            return removeChildren(JSON.parse(JSON.stringify(menuList.value)));
         });
-
-        const getMenuPathById = (id: number, list: Menu[]) => {
-            let val: string | null = null;
-            list.forEach((item) => {
-                if (item.menuId === id) {
-                    val = item.path;
-                } else {
-                    const nextVal = getMenuPathById(id, item.children);
-                    nextVal && (val = nextVal);
-                }
-            });
-            return val;
-        };
 
         // 上级菜单
         const parentMenuPath = computed(() => {
             return (menuId: number | null) => {
                 if (menuId || menuId !== null) {
-                    return getMenuPathById(menuId, menuList.value);
+                    return getParentMenuList(menuId, menuList.value).map(item => item.path).join("");
                 }
-                return menuId;
+                return "";
             };
         });
 

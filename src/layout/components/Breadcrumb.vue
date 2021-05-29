@@ -47,7 +47,7 @@ export default defineComponent({
         };
 
         watch(
-            () => route.meta.title,
+            () => route.path,
             () => {
                 setBreadcrumb();
             }

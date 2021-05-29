@@ -269,8 +269,8 @@ export default defineComponent({
             headerBColor,
             headerComColor,
             headerItemHover,
-            headerTColor: globalColor.headerTColor,
-            headerHColor: globalColor.headerHColor,
+            headerTColor: ref(globalColor.headerTColor),
+            headerHColor: ref(globalColor.headerHColor),
         };
     },
     components: {

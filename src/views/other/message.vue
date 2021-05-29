@@ -1,6 +1,6 @@
 <template>
-    <div class="message" v-loading="loading">
-        <el-table :data="tableData" size="medium">
+    <div class="message">
+        <el-table v-loading="loading" :data="tableData" size="medium">
             <el-table-column type="expand">
                 <template v-slot="{ row }">
                     <el-card shadow="hover">

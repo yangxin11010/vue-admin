@@ -31,15 +31,17 @@ import { computed, defineComponent, nextTick, ref, watch } from "vue";
 import MenuList from "@/assets/js/menuList";
 import type { Menu } from "@/model/views";
 import { useStore } from "@/store";
-import router from "@/router";
+import { useRouter } from "vue-router";
 import { checkLink } from "@/util/validata";
 import { openWindow } from "@/util";
 import { useI18n } from "vue-i18n"
+import { getParentMenuList } from "@/util";
 
 export default defineComponent({
     name: "Search",
     setup() {
         const store = useStore(),
+            router = useRouter(),
             { t: $t } = useI18n(),
             inputRef = ref(),
             menuList = computed<Array<Menu>>(() => store.getters.menuList),
@@ -93,36 +95,9 @@ export default defineComponent({
             }
         };
 
-        // 根据parentMenuId查找 父菜单
-        const getAllRouterByParentMenuId = (parentId: number, list: Array<Menu>) => {
-            let parentRouter:Menu | undefined;
-            list.forEach((item) => {
-                if (item.menuId === parentId) {
-                    parentRouter = item;
-                }
-                if(!parentRouter && item.children.length > 0){
-                    parentRouter = getAllRouterByParentMenuId(parentId, item.children);
-                }
-            });
-            return parentRouter;
-        };
-
-        const mergeParent = (parentId: number) => {
-            if(!parentId)return []
-            let list: Array<Menu> = [];
-            const parentMenu = getAllRouterByParentMenuId(parentId, MenuList);
-            parentMenu && list.push(parentMenu)
-            if(parentMenu && parentMenu.parentMenuId) {
-                const nextParentMenu = getAllRouterByParentMenuId(parentMenu.parentMenuId, MenuList)
-                nextParentMenu && (list.push(nextParentMenu))
-            }
-            return list.reverse()
-        }
-
-
         // 合并 父元素菜单
         const mergeParentTitle = (parentId: number, path: string) => {
-            const list = mergeParent(parentId).map(item => item.path)
+            const list = getParentMenuList(parentId, MenuList).map(item => item.path)
             list.push(path)
             list.forEach((item, index) => {
                 if(index > 0){
@@ -144,7 +119,7 @@ export default defineComponent({
                     if (checkLink(realPath)) {
                         openWindow(realPath);
                     } else {
-                        router.push(mergeParent(parentMenuId).map(item => item.path).join("") + path);
+                        router.push(getParentMenuList(parentMenuId, MenuList).map(item => item.path).join("") + path);
                     }
                 }, 200);
             }
