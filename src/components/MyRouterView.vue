@@ -20,7 +20,7 @@ export default defineComponent({
 
         const keepAliveList = computed(() => {
             let aliveList: string[] = [];
-            store.getters.tabsList.forEach((item: Tabs[]) => {
+            store.getters["tabs/tabsList"].forEach((item: Tabs[]) => {
                 item.forEach((item2) => {
                     if (item2.keepAlive) {
                         aliveList.push(item2.name);

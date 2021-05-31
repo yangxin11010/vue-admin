@@ -51,7 +51,7 @@ export default defineComponent({
 
         return {
             asideFixed,
-            collapse: computed<boolean>(() => store.getters.collapse),
+            collapse: computed<boolean>(() => store.getters["setting/collapse"]),
             navType,
         };
     },

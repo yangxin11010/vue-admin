@@ -38,7 +38,7 @@ export default defineComponent({
         };
 
         watch(
-            () => store.getters.collapse,
+            () => store.getters["setting/collapse"],
             () => {
                 if (asideFixed.value) return;
                 setTimeout(() => {

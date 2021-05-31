@@ -44,7 +44,7 @@ export default defineComponent({
             router = useRouter(),
             { t: $t } = useI18n(),
             inputRef = ref(),
-            menuList = computed<Array<Menu>>(() => store.getters.menuList),
+            menuList = computed<Array<Menu>>(() => store.getters["user/menuList"]),
             showInput = ref(false),
             loading = ref(false),
             searchValue = ref(""),

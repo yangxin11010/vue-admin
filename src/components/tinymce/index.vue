@@ -103,7 +103,7 @@ export default defineComponent({
         });
 
         watch(
-            () => store.getters.lang,
+            () => store.getters["setting/lang"],
             () => {
                 destroyTinymce();
                 init();
@@ -166,7 +166,7 @@ export default defineComponent({
         const initTinymce = () => {
             _window.tinymce.init({
                 selector: `#${state.tinymceId}`,
-                language: state.languageTypeList[store.getters.lang],
+                language: state.languageTypeList[store.getters["setting/lang"]],
                 height: props.height,
                 body_class: "panel-body ",
                 object_resizing: false,
@@ -220,7 +220,7 @@ export default defineComponent({
                 // },
                 // images_upload_handler(blobInfo, success, failure, progress) {
                 //   progress(0);
-                //   const token = _this.$store.getters.token;
+                //   const token = _this.$store.getters["user/token"];
                 //   getToken(token).then(response => {
                 //     const url = response.data.qiniu_url;
                 //     const formData = new FormData();

@@ -1,37 +1,66 @@
 <template>
     <div class="system">
-        <p>{{ age }}</p>
         <el-button type="primary" @click="clickHandle">click</el-button>
-        <el-input v-model="input" style="width: 300px;"></el-input>
+        <p>{{ $store.getters["setting/name"] }}</p>
+        <p>{{ age }}</p>
+        <p>{{ page }}</p>
+        <Promise ref="promiseRef" :promise="loginIngo">
+            <Then v-slot="{ result }">
+                <p>code: {{ result.code }}</p>
+                <data-list :value="result.data.list" v-slot="{ data }">
+                    <p v-for="(item, index) in data" :key="index">{{ item.title }}</p>
+                </data-list>
+            </Then>
+            <Catch v-slot="{ error }">
+                {{ error }}
+            </Catch>
+        </Promise>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import { usePageUpdate } from "@/hooks";
-import { useGlobal } from "@/hooks/vue-global-store";
+import { useGlobal } from "@/plugins/vue-global-store";
+import $api from "@/api";
+import { useStore } from "@/store";
 
 export default defineComponent({
     name: "System",
     setup() {
         onMounted(() => {});
-        const input = ref("");
-        const store = useGlobal();
-
-        watch(input, (value) => {
-            console.log(value);
-        });
+        const page = ref(1),
+            promiseRef = ref(),
+            store = useStore();
+        const mystore = useGlobal();
 
         usePageUpdate(() => {});
 
         const clickHandle = () => {
-            store.commit("SET_AGE", Math.floor(Math.random() * 10));
+            // mystore.commit("SET_AGE", Math.floor(Math.random() * 10));
+            store.dispatch("setting/SET_NAME", "李四");
+            // page.value++;
+            // promiseRef.value.axios();
+        };
+
+        const loginIngo = () => {
+            return $api.goods.queryGoods({
+                page: page.value,
+                size: 10,
+            });
+        };
+
+        const log = (e: any) => {
+            console.log(e);
         };
 
         return {
-            input,
             clickHandle,
-            age: computed(() => store.state.age),
+            age: computed(() => mystore.state.age),
+            loginIngo,
+            log,
+            page,
+            promiseRef,
         };
     },
 });

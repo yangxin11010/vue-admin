@@ -160,8 +160,8 @@ export default defineComponent({
 
         const { locale } = useI18n();
 
-        const langIndex = computed<string>(() => store.getters.lang),
-            layoutSize = computed<string>(() => store.getters.layoutSize),
+        const langIndex = computed<string>(() => store.getters["setting/lang"]),
+            layoutSize = computed<string>(() => store.getters["setting/layoutSize"]),
             headerMenu = useLocation({
                 name: "global-setting-headerMenu",
                 value: false,
@@ -177,7 +177,7 @@ export default defineComponent({
         const changeLayoutSize = (e: string) => {
             app.appContext.config.globalProperties.$ELEMENT.size = e;
             successMessage("Switch Size Success");
-            store.dispatch("SET_LAYOUTSIZE", e);
+            store.dispatch("setting/SET_LAYOUTSIZE", e);
             window.location.reload();
             // 页面被keepAlive 缓存下来 无法更新页面 需要强制刷新页面
             // router.replace({
@@ -187,7 +187,7 @@ export default defineComponent({
 
         const changeLang = (e: string) => {
             locale.value = e;
-            store.dispatch("SET_LANG", e);
+            store.dispatch("setting/SET_LANG", e);
         };
 
         const handleCommand = (e: number) => {
@@ -202,8 +202,8 @@ export default defineComponent({
                     openWindow("https://gitee.com/yangxin11010/vue-admin");
                     break;
                 case 3:
-                    store.dispatch("LOGIN_OUT");
-                    store.dispatch("INIT_TABS");
+                    store.dispatch("user/LOGIN_OUT");
+                    store.dispatch("tabs/INIT_TABS");
                     router.push("/login");
                     break;
                 case 4:

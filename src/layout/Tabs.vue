@@ -152,8 +152,8 @@ export default defineComponent({
             aliasOfParent = ref(""); //路由别名真名的路径
 
         // 保持固定的数组(keepTabsList)   未保持固定的数组(tabsList)
-        const keepTabsList = computed<Array<Tabs>>(() => store.getters.tabsList[0]),
-            tabsList = computed<Array<Tabs>>(() => store.getters.tabsList[1]);
+        const keepTabsList = computed<Array<Tabs>>(() => store.getters["tabs/tabsList"][0]),
+            tabsList = computed<Array<Tabs>>(() => store.getters["tabs/tabsList"][1]);
 
 
         // 点击跳转
@@ -163,11 +163,11 @@ export default defineComponent({
 
         // 未定固tab所在未固定数组的下标
         const tabsIndex = computed<number>(() =>
-            store.getters.tabsList[1].findIndex((item: Tabs) => item.path === (aliasOfParent.value !== "" ? aliasOfParent.value :route.path))
+            store.getters["tabs/tabsList"][1].findIndex((item: Tabs) => item.path === (aliasOfParent.value !== "" ? aliasOfParent.value :route.path))
         );
         // 固tab所在固定数组的下标
         const keepTabsIndex = computed<number>(() =>
-            store.getters.tabsList[0].findIndex((item: Tabs) => item.path === (aliasOfParent.value !== "" ? aliasOfParent.value :route.path))
+            store.getters["tabs/tabsList"][0].findIndex((item: Tabs) => item.path === (aliasOfParent.value !== "" ? aliasOfParent.value :route.path))
         );
 
         // 下拉操作
@@ -177,30 +177,30 @@ export default defineComponent({
                     closeTabs(index !== null ? index : tabsIndex.value);
                     break;
                 case 1:
-                    store.dispatch("KEPP_TABS", index !== null ? index : tabsIndex.value);
+                    store.dispatch("tabs/KEPP_TABS", index !== null ? index : tabsIndex.value);
                     break;
                 case 2:
-                    store.dispatch("REMOVE_KEEP_TABS", index !== null ? index : keepTabsIndex.value);
+                    store.dispatch("tabs/REMOVE_KEEP_TABS", index !== null ? index : keepTabsIndex.value);
                     break;
                 case 3:
                     if (keepTabsIndex.value !== -1 || tabsIndex.value === -1) {
                         // 固定
                         if(index === null){
-                            store.dispatch("REMOVE_TABS");
+                            store.dispatch("tabs/REMOVE_TABS");
                             return;
                         }
-                        store.dispatch("REMOVE_OTHER_TABS", index !== null ? index : tabsIndex.value);
+                        store.dispatch("tabs/REMOVE_OTHER_TABS", index !== null ? index : tabsIndex.value);
                     } else {
                         // 活跃
                         index !== null && router.push(tabsList.value[index].path);
-                        store.dispatch("REMOVE_OTHER_TABS", index !== null ? index : tabsIndex.value);
+                        store.dispatch("tabs/REMOVE_OTHER_TABS", index !== null ? index : tabsIndex.value);
                     }
                     break;
                 case 4:
                     if (keepTabsIndex.value === -1 && tabsIndex.value !== -1) {
                         router.push("/dashboard");
                     }
-                    store.dispatch("REMOVE_TABS");
+                    store.dispatch("tabs/REMOVE_TABS");
                     break;
                 case 5:
                     ElMessageBox({
@@ -212,7 +212,7 @@ export default defineComponent({
                         confirmButtonText: $t("tabs.clearConfirm"),
                     })
                         .then(() => {
-                            store.dispatch("INIT_TABS");
+                            store.dispatch("tabs/INIT_TABS");
                             router.push("/dashboard");
                         })
                         .catch(() => {});
@@ -221,7 +221,7 @@ export default defineComponent({
                     if (index !== null && tabsIndex.value !== -1 && tabsIndex.value < index) {
                         router.push(tabsList.value[index].path);
                     }
-                    store.dispatch("REMOVE_LEFT_RIGHT_TABS", {
+                    store.dispatch("tabs/REMOVE_LEFT_RIGHT_TABS", {
                         type: "left",
                         index: index !== null ? index : tabsIndex.value,
                     });
@@ -230,7 +230,7 @@ export default defineComponent({
                     if (index !== null && tabsIndex.value !== -1 && tabsIndex.value > index) {
                         router.push(tabsList.value[index].path);
                     }
-                    store.dispatch("REMOVE_LEFT_RIGHT_TABS", {
+                    store.dispatch("tabs/REMOVE_LEFT_RIGHT_TABS", {
                         type: "right",
                         index: index !== null ? index : tabsIndex.value,
                     });
@@ -249,7 +249,7 @@ export default defineComponent({
                     router.push(tabsList.value[index + 1].path);
                 }
             }
-            store.dispatch("REMOVE_TABS", index);
+            store.dispatch("tabs/REMOVE_TABS", index);
         };
 
         // 设置距离
@@ -303,7 +303,7 @@ export default defineComponent({
                 route.meta.title &&
                 openTabs.value
             ) {
-                store.dispatch("ADD_TABS", {
+                store.dispatch("tabs/ADD_TABS", {
                     name: route.name,
                     title: route.meta.title,
                     path: newValue,
@@ -351,7 +351,7 @@ export default defineComponent({
             tabsIndex,
             keepTabsIndex,
             closeTabs,
-            collapse: computed<boolean>(() => store.getters.collapse),
+            collapse: computed<boolean>(() => store.getters["setting/collapse"]),
             handleCommand,
             mouseOperate,
             tabsRef,

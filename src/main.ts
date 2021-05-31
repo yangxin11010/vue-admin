@@ -20,13 +20,15 @@ import VueI18n from "@/lang";
 
 import MyEl from "@/components/my-components";
 
-import MyStore from "@/plugins/global";
+import MyStore from "@/mystore";
 // import { components, plugins } from "@/util/element-plus";
+import VuePromise from "@/plugins/vue-promise";
+
 const app = createApp(App);
 
 app.use(Router)
     .use(ElementPlus, {
-        size: Store.getters.layoutSize,
+        size: Store.getters["setting/layoutSize"],
         i18n: VueI18n.global.t,
     })
     .use(Store, key)
@@ -34,7 +36,8 @@ app.use(Router)
     .use(directive)
     .use(VueI18n)
     .use(MyStore)
-    .use(MyEl);
+    .use(MyEl)
+    .use(VuePromise);
 
 // components.forEach((component) => {
 //     app.component(component.name, component);

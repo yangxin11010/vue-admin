@@ -67,11 +67,11 @@ export default defineComponent({
             { t: $t, locale } = useI18n();
 
         const loginFormRef = ref(),
-            lang = computed<string>(() => store.getters.lang),
+            lang = computed<string>(() => store.getters["setting/lang"]),
             loading = ref(false);
 
         const changeLang = async (e: string) => {
-            await store.dispatch("SET_LANG", e);
+            await store.dispatch("setting/SET_LANG", e);
             // window.location.reload();
             locale.value = e;
         };
@@ -156,13 +156,13 @@ export default defineComponent({
             loginFormRef.value.validate((valid: boolean) => {
                 if (valid) {
                     loading.value = true;
-                    store.dispatch("LOGIN", "a1vb1-da598-dadsa-nahds");
+                    store.dispatch("user/LOGIN", "a1vb1-da598-dadsa-nahds");
                     const path = route.query.path as string;
                     setTimeout(async () => {
                         // 初始化 collsape 值
-                        await store.dispatch("SET_COLLAPSE", false);
+                        await store.dispatch("setting/SET_COLLAPSE", false);
                         // 移除tabs
-                        await store.dispatch("INIT_TABS");
+                        await store.dispatch("tabs/INIT_TABS");
 
                         reportLoginInfo();
                         successMessage($t("login.success"));

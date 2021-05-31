@@ -128,7 +128,7 @@ export default {
          * 权限 [admin,]
          */
         app.directive("permissions", (el, binding) => {
-            const userPermissions = Store.getters.permissions,
+            const userPermissions = Store.getters["user/permissions"],
                 btnPermissions = binding.value;
             if (btnPermissions && btnPermissions instanceof Array) {
                 const flag = userPermissions.some((item: string) => {

@@ -201,7 +201,7 @@ export default defineComponent({
     name: "MenuPage",
     setup() {
         const store = useStore();
-        const menuList = computed<Array<Menu>>(() => store.getters.menuList);
+        const menuList = computed<Array<Menu>>(() => store.getters["user/menuList"]);
 
         const menuFormRef = ref();
         const dialogVisible = ref(false);

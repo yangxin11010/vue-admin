@@ -161,8 +161,8 @@
 import { defineComponent, reactive, ref, toRefs } from "vue";
 import { successMessage } from "@/util/message";
 import { useI18n } from "vue-i18n";
-import $api from "@/api"
-import type { LoginInfoList } from "@model/api"
+import $api from "@/api";
+import type { LoginInfoList } from "@model/api";
 
 
 export default defineComponent({
