@@ -68,7 +68,7 @@ export default defineComponent({
         const store = useStore(),
             route = useRoute(),
             // router = useRouter(),
-            collapse = computed<boolean>(() => store.getters.collapse),
+            collapse = computed<boolean>(() => store.getters["setting/collapse"]),
             modeState = computed(() => props.mode === "horizontal"),
             asideMenuWidth = computed(() => {
                 return modeState.value ? 'auto' : '250px'
@@ -115,7 +115,7 @@ export default defineComponent({
         };
 
         const changeCollapse = () => {
-            props.fixed && store.dispatch("SET_COLLAPSE", !collapse.value);
+            props.fixed && store.dispatch("setting/SET_COLLAPSE", !collapse.value);
         };
 
 
@@ -178,7 +178,7 @@ export default defineComponent({
             const result = await getMenuList();
             // addRoute(formateRouter(result));
             menuList.value = result;
-            store.dispatch("SET_MENULIST", menuList.value);
+            store.dispatch("user/SET_MENULIST", menuList.value);
             // console.log(router.getRoutes());
 
         });

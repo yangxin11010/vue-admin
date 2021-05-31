@@ -3,25 +3,43 @@ import { Module } from "vuex";
 export type LayoutSize = "default" | "medium" | "small" | "mini";
 
 export interface State {
-    name: string;
+    lang: string;
+    collapse: boolean;
+    layoutSize: LayoutSize;
 }
 
 const setting: Module<State, any> = {
     namespaced: true,
     state: {
-        name: "张三",
+        lang: "zh-cn",
+        collapse: true,
+        layoutSize: "small",
     },
     getters: {
-        name: (state) => state.name,
+        lang: (state) => state.lang,
+        collapse: (state) => state.collapse,
+        layoutSize: (state) => state.layoutSize,
     },
     mutations: {
-        SET_NAME(state, value: string) {
-            state.name = value;
+        SET_LANG(state, value: string) {
+            state.lang = value;
+        },
+        SET_COLLAPSE(state, value: boolean) {
+            state.collapse = value;
+        },
+        SET_LAYOUTSIZE(state, value: LayoutSize) {
+            state.layoutSize = value;
         },
     },
     actions: {
-        SET_NAME({ commit }, value: string) {
-            commit("SET_NAME", value);
+        SET_LANG({ commit }, value: string) {
+            commit("SET_LANG", value);
+        },
+        SET_COLLAPSE({ commit }, value: boolean) {
+            commit("SET_COLLAPSE", value);
+        },
+        SET_LAYOUTSIZE({ commit }, value: LayoutSize) {
+            commit("SET_LAYOUTSIZE", value);
         },
     },
 };

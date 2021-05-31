@@ -377,16 +377,17 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     NProgress.start();
-    const { isLogin, token } = Store.getters;
+    const isLogin = Store.getters["user/isLogin"],
+        token = Store.getters["user/token"];
     if (to.meta.requiresAuth && (!isLogin || !token)) {
         next("/login");
-    } else {
-        if (isLogin && token && to.path === "/login") {
-            next(from.path);
-        } else {
-            next();
-        }
+        return;
     }
+    if (isLogin && token && to.path === "/login") {
+        next(from.path);
+        return;
+    }
+    next();
 });
 
 router.afterEach(() => {

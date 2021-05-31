@@ -60,7 +60,7 @@ export default defineComponent({
         });
 
         return {
-            collapse: computed<boolean>(() => store.getters.collapse),
+            collapse: computed<boolean>(() => store.getters["setting/collapse"]),
             modeState: computed(() => props.mode === "horizontal"),
             openLogo,
             setting,

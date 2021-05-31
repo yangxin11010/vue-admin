@@ -29,17 +29,15 @@ const messages = {
 
 const i18n = createI18n({
     // something vue-i18n options here ...
-    locale: Store.getters.lang,
+    locale: Store.getters["setting/lang"],
     fallbackLocale: enElLocale.name,
     messages: messages,
 });
 
 // 改变 lang 顺序  中文 英文 永远 排在 第一、二位
 const changeIndex = (list: string[]) => {
-    const zhcnIndex = list.findIndex((item) => item === "zh-cn");
-    const enIndex = list.findIndex((item) => item === "en");
-    list.splice(zhcnIndex, 1);
-    list.splice(enIndex, 1);
+    list.splice(list.findIndex((item) => item === "zh-cn"), 1);
+    list.splice(list.findIndex((item) => item === "en"), 1);
     list.unshift("en");
     list.unshift("zh-cn");
     return list;

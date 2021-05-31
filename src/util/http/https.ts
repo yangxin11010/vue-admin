@@ -10,7 +10,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
     (config) => {
-        const token = Store.getters.token;
+        const token = Store.getters["user/token"];
         token && (config.headers["token"] = token);
         return config;
     },

@@ -87,10 +87,10 @@ export default defineComponent({
     setup() {
         const store = useStore();
 
-        const userPermissions = computed<string[]>(() => store.getters.permissions);
+        const userPermissions = computed<string[]>(() => store.getters["user/permissions"]);
 
         const changePermission = (item: string) => {
-            store.dispatch("SET_PERMISSIONS", item);
+            store.dispatch("user/SET_PERMISSIONS", item);
             successMessage("Switch Permissions Success");
         };
 
