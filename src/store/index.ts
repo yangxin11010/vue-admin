@@ -2,38 +2,28 @@
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import type { InjectionKey } from "vue";
-import user, { State as UserState } from "./module/user";
-import setting, { State as SettingState } from "./module/setting";
-import tabs, { State as TabsState } from "./module/tabs";
+import getters from "./getters";
+import mutations from "./mutations";
+import actions from "./actions";
+import user, { UserState } from "./module/user";
+import setting, { SettingState } from "./module/setting";
+import tabs, { TabsState } from "./module/tabs";
 
+// interface/type
+export const key: InjectionKey<Store<RootState>> = Symbol();
 
-export const key: InjectionKey<Store<State>> = Symbol();
-
-// define your own `useStore` composition function
-export function useStore() {
-    return baseUseStore(key);
-}
-export function useState(key?: string): keyof State | State{
-    return key ? useStore().state[key] : useStore().state;
-}
-export function useGetter(key?: string): keyof State | State{
-    return key ? useStore().getters[key] : useStore().getters;
-}
-export function useMutations(key: string, value?: any){
-    return useStore().commit(key, value);
-}
-export function useAactions(key: string, value?: any){
-    return useStore().dispatch(key, value);
-}
-
-export interface State {
+export interface RootState {
     [key: string]: any;
     user?: UserState;
     setting?: SettingState;
     tabs?: TabsState;
 }
 
-const store = createStore<State>({
+export type LayoutSize = "default" | "medium" | "small" | "mini";
+
+export type NavType = "side" | "top";
+
+const store = createStore<RootState>({
     strict: true,
     plugins: [
         // session 存储
@@ -45,6 +35,7 @@ const store = createStore<State>({
                         lang: state.setting?.lang,
                         collapse: state.setting?.collapse,
                         layoutSize: state.setting?.layoutSize,
+                        
                     },
                     user: {
                         isLogin:  state.user?.isLogin,
@@ -61,11 +52,24 @@ const store = createStore<State>({
         // local 存储
         createPersistedState({
             storage: window.localStorage,
-            reducer() {
-                return {};
+            reducer(state) {
+                return {
+                    setting: {
+                        openLogo: state.setting?.openLogo,
+                        openTabs: state.setting?.openTabs,
+                        uniqueOpened: state.setting?.uniqueOpened,
+                        headerMenu: state.setting?.headerMenu,
+                        asideFixed: state.setting?.asideFixed,
+                        isHandleAsideFixed: state.setting?.isHandleAsideFixed,
+                        navType: state.setting?.navType
+                    }
+                };
             },
         }),
     ],
+    getters,
+    mutations,
+    actions,
     modules: {
         user,
         setting,
@@ -74,3 +78,24 @@ const store = createStore<State>({
 });
 
 export default store;
+
+// define your own `useStore` composition function
+export function useStore() {
+    return baseUseStore(key);
+}
+
+export function useState(key?: string){
+    return key ? useStore().state[key] : useStore().state;
+}
+
+export function useGetter(key?: string){
+    return key ? useStore().getters[key] : useStore().getters;
+}
+
+export function useMutations(key: string, value?: any){
+    return useStore().commit(key, value);
+}
+
+export function useAactions(key: string, value?: any){
+    return useStore().dispatch(key, value);
+}

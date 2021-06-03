@@ -32,7 +32,7 @@ module.exports = {
         config.module
             .rule("icons") // 创建规则 ‘icons’
             .test(/\.svg$/) // 检测的具体目录
-            .include.add(resolve("src/icons")) // 只考虑‘src/assets/icons’目录下
+            .include.add(resolve("src/icons")) // 只考虑‘src/icons’目录下
             .end()
             .use("svg-sprite-loader") // 运用
             .loader("svg-sprite-loader") // 指定loader

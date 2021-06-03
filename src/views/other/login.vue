@@ -54,7 +54,7 @@ import { successMessage } from "@/util/message";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
 import { getLocation } from "@/util/location";
-import { getBrowserInfo } from "@/util";
+import { getSystemInfo } from "@/util";
 import $api from "@/api";
 import moment from "moment";
 
@@ -122,8 +122,9 @@ export default defineComponent({
 
         const reportLoginInfo = async () => {
             const {
-                position: { lat, lng },
-            } = await getLocation();
+                    position: { lat, lng },
+                } = await getLocation(),
+                { browser, system } = getSystemInfo();
             const { data } = await $api.help.request({
                 url: "https://restapi.amap.com/v3/geocode/regeo",
                 params: {
@@ -138,8 +139,8 @@ export default defineComponent({
                 },
             } = data;
             $api.report.addLoginInfo({
-                browser: getBrowserInfo().browser,
-                system: getBrowserInfo().system,
+                browser,
+                system,
                 time: moment().format("YYYY-MM-DD HH:mm:ss"),
                 country,
                 province,
@@ -160,7 +161,7 @@ export default defineComponent({
                     const path = route.query.path as string;
                     setTimeout(async () => {
                         // 初始化 collsape 值
-                        await store.dispatch("setting/SET_COLLAPSE", false);
+                        await store.dispatch("setting/SET_COLLAPSE", true);
                         // 移除tabs
                         await store.dispatch("tabs/INIT_TABS");
 

@@ -13,8 +13,8 @@
                     <v-header></v-header>
                 </el-header>
                 <el-container class="container_main" direction="vertical">
-                    <v-tabs></v-tabs>
-                    <v-main>
+                    <v-tabs @screenfull="changeMainScreenfull"></v-tabs>
+                    <v-main ref="mainRef">
                         <my-router-view></my-router-view>
                     </v-main>
                 </el-container>
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import Header from "./Header.vue";
 import Aside from "./Aside.vue";
 import Tabs from "./Tabs.vue";
@@ -33,26 +33,30 @@ import Main from "./Main.vue";
 import Setting from "./Setting.vue";
 import { useStore } from "@/store";
 import MyRouterView from "@/components/MyRouterView.vue";
-import { useLocation } from "@/hooks";
+import { warningMessage } from "@/util/message";
+import ScreenFull from "screenfull";
 
 export default defineComponent({
     setup() {
         const store = useStore(),
-            asideFixed = useLocation({
-                name: "global-setting-asideFixed",
-                value: false,
-                isWatch: true,
-            }),
-            navType = useLocation({
-                name: "global-setting-navType",
-                value: "side",
-                isWatch: true,
-            });
+            asideFixed = computed<boolean>(() => store.getters["setting/asideFixed"]),
+            navType = computed<boolean>(() => store.getters["setting/navType"]),
+            mainRef = ref();
+
+        const changeMainScreenfull = () => {
+            if (!ScreenFull.isEnabled) {
+                warningMessage("浏览器不支持全屏");
+                return false;
+            }
+            ScreenFull.toggle(mainRef.value.$el);
+        };
 
         return {
+            mainRef,
             asideFixed,
             collapse: computed<boolean>(() => store.getters["setting/collapse"]),
             navType,
+            changeMainScreenfull,
         };
     },
     components: {

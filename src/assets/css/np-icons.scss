@@ -2,12 +2,20 @@
 
 @font-face {
     font-family: "np-icon"; /* Project id 2481366 */
-    src: url("//at.alicdn.com/t/font_2481366_z6rkkr4fdkl.woff2?t=1621741598578") format("woff2"),
-        url("//at.alicdn.com/t/font_2481366_z6rkkr4fdkl.woff?t=1621741598578") format("woff"),
-        url("//at.alicdn.com/t/font_2481366_z6rkkr4fdkl.ttf?t=1621741598578") format("truetype");
+    src: url("//at.alicdn.com/t/font_2481366_nn1fc38xesk.woff2?t=1622623698623") format("woff2"),
+        url("//at.alicdn.com/t/font_2481366_nn1fc38xesk.woff?t=1622623698623") format("woff"),
+        url("//at.alicdn.com/t/font_2481366_nn1fc38xesk.ttf?t=1622623698623") format("truetype");
 }
 
 // np-icon 样式 看 index.scss 37 行
+
+.np-icon-exit-fullscreen:before {
+    content: "\e658";
+}
+
+.np-icon-fullscreen:before {
+    content: "\e66a";
+}
 
 .np-icon-Vue:before {
     content: "\e799";

@@ -9,7 +9,7 @@
         >
             {{ $t("tinymce.upimg.t-title") }}
         </el-button>
-        <el-dialog v-model="dialogVisible">
+        <my-dialog v-model="dialogVisible">
             <el-upload
                 class="editor-slide-upload"
                 ref="uploadRef"
@@ -28,7 +28,7 @@
             </el-upload>
             <el-button @click="dialogVisible = false">{{ $t("tinymce.upimg.cancel") }}</el-button>
             <el-button type="primary" @click="handleSubmit">{{ $t("tinymce.upimg.upload") }}</el-button>
-        </el-dialog>
+        </my-dialog>
     </div>
 </template>
 

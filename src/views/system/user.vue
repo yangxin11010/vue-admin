@@ -3,9 +3,9 @@
         <handle-box :wrap="true">
             <el-button type="primary" @click="addUser">新增用户</el-button>
         </handle-box>
-        <my-el-table :data="userlist" border :total="userlist.length" :page="1">
-            <el-table-column label="id" prop="id" width="100" align="center" sortable fixed></el-table-column>
-            <el-table-column label="用户名" prop="username" align="center" width="200" fixed></el-table-column>
+        <my-table :data="userlist" border :total="userlist.length" :page="1">
+            <el-table-column label="id" prop="id" width="100" align="center" sortable></el-table-column>
+            <el-table-column label="用户名" prop="username" align="center" width="200"></el-table-column>
             <el-table-column label="email" prop="email" align="center" width="200"></el-table-column>
             <el-table-column label="权限" prop="permissions" align="center" width="200">
                 <template v-slot="{ row }">
@@ -24,14 +24,14 @@
                 min-width="100"
             ></el-table-column>
             <el-table-column label="注册日期" prop="registDate" align="center" width="200"></el-table-column>
-            <el-table-column label="操作" align="center" width="200" fixed="right">
+            <el-table-column label="操作" align="center" width="200">
                 <template v-slot="{ row }">
                     <el-button type="primary" @click="operate(0, row)">修改</el-button>
                     <el-button v-permissions="['boss']" type="danger" @click="operate(1, row)">删除</el-button>
                 </template>
             </el-table-column>
-        </my-el-table>
-        <el-dialog :title="`${isAddUser ? '新增' : '修改'}用户`" v-model="dialogVisible" width="40%">
+        </my-table>
+        <my-dialog :title="`${isAddUser ? '新增' : '修改'}用户`" v-model="dialogVisible" width="40%">
             <el-form :model="userForm" ref="userFormRef" label-width="80px" :rules="rules">
                 <el-form-item label="用户名" prop="username">
                     <el-input v-model="userForm.username" clearable placeholder="username"></el-input>
@@ -72,7 +72,7 @@
                     <el-button @click="submit" type="primary">{{ isAddUser ? "新 增" : "修 改" }}</el-button>
                 </span>
             </template>
-        </el-dialog>
+        </my-dialog>
     </div>
 </template>
 

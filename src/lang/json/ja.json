@@ -20,7 +20,8 @@
         "asideOpen": "1つのサブメニューの展開を維持する",
         "asideFixed": "固定 Aside",
         "headerMenu": "Header メニュー",
-        "direction": "システム配置位置"
+        "direction": "システム配置位置",
+        "navTypeMsg": "携帯端末は当面サポートしません！"
     },
     "personCenter": {
         "cardTitle": "私について",

@@ -1,5 +1,5 @@
 <template>
-    <el-breadcrumb class="breadcrumb">
+    <el-breadcrumb class="breadcrumb hidden-xs-only">
         <el-breadcrumb-item :to="{ path: '/' }">
             <span
                 class="breadcrumb"

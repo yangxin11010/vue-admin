@@ -1,18 +1,19 @@
-import { Module } from "vuex";
+import type { Module } from "vuex";
 import type {  Tabs } from "@model/views";
+import type { RootState } from "../index";
 
 
-export interface State {
+export interface TabsState {
     tabsList: [Tabs[], Tabs[]];
 }
 
-const setting: Module<State, any> = {
+const setting: Module<TabsState, RootState> = {
     namespaced: true,
     state: {
         tabsList: [[{ name: "Dashboard", title: "首页", path: "/dashboard", keepAlive: true }], []],
     },
     getters: {
-        tabsList: (state) => state.tabsList,
+        tabsList: state => state.tabsList,
     },
     mutations: {
         ADD_TABS(state, value: Tabs) {

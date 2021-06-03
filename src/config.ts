@@ -59,6 +59,6 @@ const globalColor = {
 /**
  * 控制 main 不显示白底(全路径)
  */
-const mainStyleList = ["/dashboard", "/personCenter", "/setting/system"];
+const mainStyleList = ["/dashboard", "/personCenter", "/setting/system", "/components/charts"];
 
 export { nprogress, setting, mainStyleList, globalColor };

@@ -24,4 +24,6 @@ export default [
     "np-icon-Vue",
     "np-icon-scss",
     "np-icon-typescript",
+    "np-icon-fullscreen",
+    "np-icon-exit-fullscreen",
 ];

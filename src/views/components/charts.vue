@@ -1,17 +1,27 @@
 <template>
-    <div class="charts disflex ju_bt flex-w">
-        <div style="margin-bottom: 20px;width: 100%;">
-            <div><Echarts :options="options1"></Echarts></div>
-            <p>2002全国宏观经济指标</p>
-        </div>
-        <div>
-            <div><Echarts :options="options2"></Echarts></div>
-            <p>AQI 分布（平行坐标）</p>
-        </div>
-        <div>
-            <div><Echarts :options="options3"></Echarts></div>
-            <p>AQI - 雷达图</p>
-        </div>
+    <div class="charts">
+        <el-row>
+            <el-col>
+                <div class="charts-item">
+                    <div class="echarts"><Echarts width="1000px" :options="options1"></Echarts></div>
+                    <p>2002全国宏观经济指标</p>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="12" :xs="24">
+                <div class="charts-item">
+                    <div class="echarts"><Echarts width="500px" :options="options2"></Echarts></div>
+                    <p>AQI 分布（平行坐标）</p>
+                </div>
+            </el-col>
+            <el-col :span="12" :xs="24">
+                <div class="charts-item">
+                    <div class="echarts"><Echarts width="500px" :options="options3"></Echarts></div>
+                    <p>AQI - 雷达图</p>
+                </div>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -40,19 +50,20 @@ export default defineComponent({
     background-color: #f0f2f5;
     width: 100%;
     min-height: calc(100vh - 120px);
-    & > div {
-        width: 49.4%;
-        min-height: 500px;
-        text-align: center;
-        background: #fff;
-        & > div {
-            height: 90%;
-            padding: 10px;
-        }
-        & > p {
-            margin-top: 10px;
-            color: #293c55;
-        }
+}
+.charts-item {
+    width: 100%;
+    min-height: 500px;
+    text-align: center;
+    background: #fff;
+    & > p {
+        color: #293c55;
+        padding-bottom: 10px;
     }
+}
+.echarts {
+    width: 100%;
+    height: 500px;
+    padding: 10px;
 }
 </style>

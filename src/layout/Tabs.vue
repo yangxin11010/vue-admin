@@ -80,12 +80,15 @@
         </div>
         <!-- 标签选项 -->
         <div class="tabs-r disflex align-it-cen">
-            <div class="update-page">
+            <div class="tabs-r-icon update-page hidden-xs-only">
                 <i :class="[tabsRotate, `${rotating ? 'rotating' : ''}`]" @click="refreshPage"></i>
+            </div>
+            <div class="tabs-r-icon hidden-xs-only">
+                <i class="el-icon-full-screen" @click="$emit('screenfull')"></i>
             </div>
             <el-dropdown class="tabs-dropdown" placement="bottom" size="medium" @command="handleCommand($event, null)">
                 <span class="tabs-dropdown-title">
-                    <span>{{ $t("tabs.title") }}</span>
+                    <span class="hidden-xs-only">{{ $t("tabs.title") }}</span>
                     <i class="el-icon-arrow-down"></i>
                 </span>
                 <template #dropdown>
@@ -136,9 +139,7 @@ import ElMessageBox from "@/util/messageBox";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
 import { globalColor } from "@/config";
-import { setting } from "@/config";
 import type { Tabs } from "@/model/views";
-import { useLocation } from "@/hooks";
 import mitter from "@/plugins/mitt";
 
 export default defineComponent({
@@ -273,11 +274,7 @@ export default defineComponent({
         };
 
         // 是否显示tabs
-        const openTabs = useLocation({
-            name: "global-setting-openTabs",
-            value: setting.openTabs,
-            isWatch: true
-        });
+        const openTabs = computed(() => store.getters["setting/openTabs"]);
 
         watch(openTabs, (newVal) => {
             if(newVal) {
@@ -371,13 +368,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/variables.scss";
 .tabs {
     height: 30px;
     min-height: 34px;
     max-height: 34px;
     font-size: 12px;
-    border-bottom: 1px solid #d8dce5;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     user-select: none;
     -moz-user-select: none;
     padding-top: 3px;
@@ -457,8 +453,8 @@ export default defineComponent({
     box-shadow: -5px 0 5px #d6d3d3;
     position: relative;
     z-index: 100;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
     text-align: center;
 }
 .tabs-dropdown-title {
@@ -469,20 +465,31 @@ export default defineComponent({
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    text-align: center;
 }
-.tabs-dropdown > span > i {
-    margin-left: 5px;
+.tabs-dropdown > span > span {
+    margin-right: 5px;
 }
 .tabs_hover {
     background-color: v-bind(tabsAColor) !important;
     color: v-bind(tabsATColor) !important;
 }
-.update-page {
+.tabs-r-icon {
+    position: relative;
     width: 26px;
     height: 26px;
     line-height: 26px;
     margin-right: 10px;
     font-size: 20px;
+}
+.tabs-r-icon:not(:first-child)::before {
+    content: "";
+    width: 1px;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    left: -5px;
+    top: 4px;
 }
 :deep(.tabs-dropdown) {
     height: 26px;

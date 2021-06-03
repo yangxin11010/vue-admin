@@ -16,8 +16,8 @@
         </div>
         <div class="header-r disflex ju_bt align-it-cen">
             <!-- 搜索 -->
-            <div v-if="['side'].includes(navType)" class="" style="padding: 0;">
-                <Search></Search>
+            <div style="padding: 0;">
+                <Search :mode="searchMode"></Search>
             </div>
             <!-- 消息 -->
             <el-tooltip
@@ -38,6 +38,7 @@
             </el-tooltip>
             <!-- 全屏 -->
             <el-tooltip
+                class="hidden-xs-only"
                 effect="dark"
                 :content="isScreenfull ? $t('fullscreen.exit') : $t('fullscreen.full')"
                 placement="bottom-end"
@@ -142,37 +143,30 @@ import HeaderMenu from "./components/HeaderMenu.vue";
 import Aside from "./Aside.vue";
 import Search from "./components/Search.vue";
 import { useRouter } from "vue-router";
-import { useStore } from "@/store";
+import { useStore, NavType } from "@/store";
 import { openWindow } from "@/util";
 import { useI18n } from "vue-i18n";
 import { availableLocales, langSetting } from "@/lang";
 import mitter from "@/plugins/mitt";
 import { successMessage } from "@/util/message";
 import { globalColor } from "@/config";
-import { useLocation } from "@/hooks";
+import { getSystemType } from "@/util";
+import { useResize } from "@/hooks";
 
 export default defineComponent({
     setup() {
         const store = useStore(),
             // route = useRoute(),
             router = useRouter(),
+            { width } = useResize(),
             app = getCurrentInstance() as ComponentInternalInstance;
 
         const { locale } = useI18n();
 
         const langIndex = computed<string>(() => store.getters["setting/lang"]),
             layoutSize = computed<string>(() => store.getters["setting/layoutSize"]),
-            headerMenu = useLocation({
-                name: "global-setting-headerMenu",
-                value: false,
-                isWatch: true,
-                storage: "session",
-            }),
-            navType = useLocation({
-                name: "global-setting-navType",
-                value: "side",
-                isWatch: true,
-            });
+            headerMenu = computed<boolean>(() => store.getters["setting/headerMenu"]),
+            navType = computed<NavType>(() => store.getters["setting/navType"]);
 
         const changeLayoutSize = (e: string) => {
             app.appContext.config.globalProperties.$ELEMENT.size = e;
@@ -234,16 +228,17 @@ export default defineComponent({
         };
 
         const headerBColor = computed(() => {
-            return ["top"].includes(navType.value) ? globalColor.asideBColor : globalColor.headerBColor;
-        });
-
-        const headerComColor = computed(() => {
-            return ["top"].includes(navType.value) ? "#fff" : "rgba(0, 0, 0, 0.65)";
-        });
-
-        const headerItemHover = computed(() => {
-            return ["top"].includes(navType.value) ? globalColor.headerHColor : "rgba(0, 0, 0, 0.025)";
-        });
+                return ["top"].includes(navType.value) ? globalColor.asideBColor : globalColor.headerBColor;
+            }),
+            headerComColor = computed(() => {
+                return ["top"].includes(navType.value) ? "#fff" : "rgba(0, 0, 0, 0.65)";
+            }),
+            headerItemHover = computed(() => {
+                return ["top"].includes(navType.value) ? globalColor.headerHColor : "rgba(0, 0, 0, 0.025)";
+            }),
+            searchMode = computed(() => {
+                return [getSystemType(), width.value < 500, ['top'].includes(navType.value)].some((item) => item) ? "fixed" : "default";
+            });
 
         onMounted(() => {
             getData();
@@ -269,6 +264,7 @@ export default defineComponent({
             headerBColor,
             headerComColor,
             headerItemHover,
+            searchMode,
             headerTColor: ref(globalColor.headerTColor),
             headerHColor: ref(globalColor.headerHColor),
         };
@@ -285,7 +281,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/variables.scss";
 .header {
     width: 100%;
     height: 100%;
@@ -297,6 +292,7 @@ export default defineComponent({
         color: v-bind(headerComColor) !important;
     }
     box-shadow: 0 1px 5px #d6d3d3;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .header-r {

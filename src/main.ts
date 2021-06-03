@@ -6,6 +6,7 @@ import ElementPlus from "element-plus";
 // import 'element-plus/lib/theme-chalk/index.css';
 // ele 自定义主题
 import "@/util/element-plus/element-variables.scss";
+import "element-plus/lib/theme-chalk/display.css";
 //	Router
 import Router from "@/router";
 //	Store
@@ -18,9 +19,9 @@ import directive from "@/directive";
 // 国际化
 import VueI18n from "@/lang";
 
-import MyEl from "@/components/my-components";
+import MyEl from "@/plugins/my-components";
 
-import MyStore from "@/mystore";
+import MyStore, { user, setting } from "@/mystore";
 // import { components, plugins } from "@/util/element-plus";
 import VuePromise from "@/plugins/vue-promise";
 
@@ -35,8 +36,10 @@ app.use(Router)
     .use(SvgIcons)
     .use(directive)
     .use(VueI18n)
-    .use(MyStore)
     .use(MyEl)
+    .use(MyStore)
+    .use(user)
+    .use(setting)
     .use(VuePromise);
 
 // components.forEach((component) => {
