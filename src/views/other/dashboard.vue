@@ -2,28 +2,32 @@
     <div class="dashboard">
         <el-row :gutter="30" style="margin-bottom: 0;">
             <template v-for="(item, index) in cardList" :key="index">
-                <el-col :span="6" :xs="12">
+                <el-col :span="6" :xs="12" :sm="12" :lg="6">
                     <card class="el-card-item" shadow="hover" v-bind="item"></card>
                 </el-col>
             </template>
         </el-row>
-        <div class="echars">
-            <Echars ref="dabEcharts" :options="options"></Echars>
-        </div>
+        <el-row>
+            <el-col>
+                <div class="echars">
+                    <Echars ref="dabEcharts" :options="options"></Echars>
+                </div>
+            </el-col>
+        </el-row>
         <el-row :gutter="30">
-            <el-col :span="6" :xs="10" :sm="10" :md="6">
+            <el-col :span="6" :xs="24" :sm="8" :md="8" :lg="6">
                 <el-card shadow="hover" class="bottom-el-card">
                     <template #header>
                         <img
                             @click="imgHandle"
-                            style="height: 220px;"
+                            style="width: 100%;height: 220px;"
                             src="https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png"
                         />
                     </template>
                     <project-percent :data="projectPercentList"></project-percent>
                 </el-card>
             </el-col>
-            <el-col :span="18" :xs="14" :sm="14" :md="18">
+            <el-col :span="18" :xs="24" :sm="16" :md="16" :lg="18">
                 <ToDoList></ToDoList>
             </el-col>
         </el-row>
@@ -148,25 +152,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .dashboard {
     padding: 20px 20px 0;
-    & > div {
-        margin-bottom: 32px;
-    }
 }
 .el-card-item {
     height: 108px;
-    margin-bottom: 20px;
 }
 .echars {
     width: 100%;
     height: 366px;
     padding: 16px 16px 0px;
     background-color: #fff;
-}
-.bottom-el-card-item {
-    margin-bottom: 5px;
-    p {
-        margin-bottom: 5px;
-    }
 }
 :deep(.bottom-el-card) {
     font-size: 14px;

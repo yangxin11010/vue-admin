@@ -20,7 +20,8 @@
         "asideOpen": "保持一个子菜单的展开",
         "asideFixed": "固定 Aside",
         "headerMenu": "Header 菜单",
-        "direction": "系统布局位置"
+        "direction": "系统布局位置",
+        "navTypeMsg": "暂不支持手机端！"
     },
     "personCenter": {
         "cardTitle": "关于我",

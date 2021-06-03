@@ -1,8 +1,19 @@
 <template>
-    <div class="search" :class="{ show: showInput }">
+    <div
+        :class="{
+            'search-default': mode === 'default',
+            'search-fixed': mode === 'fixed',
+            show: mode === 'fixed' ? true : showInput,
+        }"
+    >
+        <div v-if="mode === 'fixed'" v-show="fixedShow" class="search-back-fixed" @click="closeFixed"></div>
         <el-select
             ref="inputRef"
-            class="search-input"
+            v-show="mode === 'default' ? true : fixedShow"
+            :class="{
+                'search-input-default': mode === 'default',
+                'search-input-fixed': mode === 'fixed',
+            }"
             v-model="searchValue"
             filterable
             remote
@@ -20,6 +31,7 @@
                 :value="item.path + ',' + item.realPath + ',' + item.parentMenuId"
             ></el-option>
         </el-select>
+
         <div class="search-icon" @click.stop="inputOperate">
             <i class="np-icon-search" />
         </div>
@@ -27,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, watch } from "vue";
+import { computed, defineComponent, nextTick, ref, watch, PropType } from "vue";
 import MenuList from "@/assets/js/menuList";
 import type { Menu } from "@/model/views";
 import { useStore } from "@/store";
@@ -39,16 +51,23 @@ import { getParentMenuList } from "@/util";
 
 export default defineComponent({
     name: "Search",
-    setup() {
+    props: {
+        mode: {
+            type: String as PropType<"default" | "fixed">,
+            default: "default"
+        }
+    },
+    setup(props) {
         const store = useStore(),
             router = useRouter(),
             { t: $t } = useI18n(),
             inputRef = ref(),
-            menuList = computed<Array<Menu>>(() => store.getters["user/menuList"]),
-            showInput = ref(false),
-            loading = ref(false),
-            searchValue = ref(""),
-            searchResult = ref<Array<Menu>>([]);
+            showInput = ref(false), // default 显示输入框
+            loading = ref(false),   // 加载
+            searchValue = ref(""),  // 搜索关键字
+            fixedShow = ref(false), // 控制元素
+            searchResult = ref<Array<Menu>>([]), // 返回结果
+            menuList = computed<Array<Menu>>(() => store.getters["user/menuList"]);
 
         const close = () => {
             showInput.value = false;
@@ -56,9 +75,17 @@ export default defineComponent({
         };
 
         const inputOperate = async () => {
+            if(props.mode === "fixed") fixedShow.value = true;
             showInput.value = true;
             await nextTick();
             inputRef.value.focus();
+        };
+
+        const closeFixed = () => {
+            if(props.mode === "fixed"){
+                fixedShow.value = false;
+                searchValue.value = "";
+            }
         };
 
         // 模糊查询 --> 模拟后端接口
@@ -107,11 +134,13 @@ export default defineComponent({
             return list.map(item => $t('aside.' + item)).join(" > ")
         }
 
+        // 开始搜索
         watch(searchValue, (value) => {
             if (value) {
                 searchValue.value = "";
                 searchResult.value = [];
                 close();
+                closeFixed();
                 setTimeout(() => {
                     const path = value.split(",")[0],
                         realPath = value.split(",")[1],
@@ -142,14 +171,16 @@ export default defineComponent({
             remoteMethod,
             loading,
             searchResult,
-            mergeParentTitle
+            mergeParentTitle,
+            fixedShow,
+            closeFixed
         };
     },
 });
 </script>
 
 <style lang="scss" scoped>
-.search {
+.search-default {
     height: 100%;
     display: flex;
     align-items: center;
@@ -157,10 +188,19 @@ export default defineComponent({
     cursor: pointer;
 
     &.show {
-        .search-input {
+        .search-input-default {
             width: 210px;
         }
     }
+}
+.search-back-fixed {
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2001;
 }
 .search-icon {
     height: 100%;
@@ -169,8 +209,9 @@ export default defineComponent({
     display: flex;
     align-items: center;
     font-weight: bold;
+    cursor: pointer;
 }
-.search-input {
+.search-input-default {
     width: 0;
     display: inline-block;
     font-size: 18px;
@@ -185,6 +226,18 @@ export default defineComponent({
         box-shadow: none !important;
         border-bottom: 1px solid #d9d9d9 !important;
         vertical-align: middle;
+    }
+}
+.search-input-fixed {
+    width: 300px;
+    position: fixed;
+    top: 100px;
+    left: calc((100vw - 300px) / 2);
+    z-index: 2001;
+    :deep(.el-input__inner) {
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
     }
 }
 </style>

@@ -34,7 +34,7 @@ const i18n = createI18n({
     messages: messages,
 });
 
-// 改变 lang 顺序  中文 英文 永远 排在 第一、二位
+// 改变 lang 顺序  中文、英文排在第一、二位
 const changeIndex = (list: string[]) => {
     list.splice(list.findIndex((item) => item === "zh-cn"), 1);
     list.splice(list.findIndex((item) => item === "en"), 1);

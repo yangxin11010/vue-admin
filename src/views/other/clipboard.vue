@@ -2,20 +2,32 @@
     <div class="clipboard">
         <el-tabs>
             <el-tab-pane label="use clipboard by function">
-                <el-input class="input-box" v-model="text"></el-input>
-                <el-button type="primary" icon="np-icon-fuzhi" @click="copyInput">&nbsp;&nbsp;copy</el-button>
+                <el-row :gutter="10">
+                    <el-col class="mb10" :span="8" :xs="24">
+                        <el-input v-model="text"></el-input>
+                    </el-col>
+                    <el-col class="mb10" :span="16" :xs="24">
+                        <el-button type="primary" icon="np-icon-fuzhi" @click="copyInput">copy</el-button>
+                    </el-col>
+                </el-row>
             </el-tab-pane>
             <el-tab-pane label="use clipboard by v-directive">
-                <el-input class="input-box" v-model="text"></el-input>
-                <el-button
-                    type="primary"
-                    v-clipboard="text"
-                    v-clipboard:success="copySuccess"
-                    v-clipboard:error="copyError"
-                    icon="np-icon-fuzhi"
-                >
-                    &nbsp;copy
-                </el-button>
+                <el-row :gutter="10">
+                    <el-col class="mb10" :span="8" :xs="24">
+                        <el-input v-model="text"></el-input>
+                    </el-col>
+                    <el-col class="mb10" :span="16" :xs="24">
+                        <el-button
+                            type="primary"
+                            v-clipboard="text"
+                            v-clipboard:success="copySuccess"
+                            v-clipboard:error="copyError"
+                            icon="np-icon-fuzhi"
+                        >
+                            copy
+                        </el-button>
+                    </el-col>
+                </el-row>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -55,8 +67,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-.input-box {
-    width: 350px;
-}
-</style>
+<style lang="scss" scoped></style>

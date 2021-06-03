@@ -5,7 +5,7 @@
                 <svg-icon v-if="svg" class="card-item-icon" :icon-class="icon"></svg-icon>
                 <i v-else class="icon"></i>
             </div>
-            <div class="card-item-body">
+            <div class="card-item-body hidden-xs-only">
                 <span>{{ title }}</span>
                 <span>{{ num }}</span>
             </div>

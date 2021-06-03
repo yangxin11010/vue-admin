@@ -20,7 +20,7 @@ export default defineComponent({
 
         provide(promiseInjectionKey, result);
 
-        const axios = async () => {
+        const http = async () => {
             if (!props.promise) {
                 result.error = "promise can not find";
             } else {
@@ -33,11 +33,11 @@ export default defineComponent({
         };
 
         onBeforeMount(() => {
-            axios();
+            http();
         });
 
         return {
-            axios,
+            http,
         };
     },
 });

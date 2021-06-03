@@ -20,7 +20,8 @@
         "asideOpen": "Keep a submenu open",
         "asideFixed": "Keep Aside",
         "headerMenu": "Header menu",
-        "direction": "System Layout Direction"
+        "direction": "System Layout Direction",
+        "navTypeMsg": "Mobile terminal is not supported!"
     },
     "personCenter": {
         "cardTitle": "About Me",

@@ -50,7 +50,6 @@ import { globalColor, setting } from "@/config";
 // import { RouteRecordRaw } from "vue-router";
 import TitleLogo from "./components/TitleLogo.vue";
 import MyElMenuItem from "./components/MyElMenuItem.vue";
-import { useLocation } from "@/hooks";
 
 
 export default defineComponent({
@@ -97,16 +96,6 @@ export default defineComponent({
                 return menuList.value
             }
         })
-        const openLogo = useLocation({
-            name: "global-setting-openLogo",
-            value: setting.openLogo,
-            isWatch: true
-        }),
-        uniqueOpened = useLocation({
-            name: "global-setting-uniqueOpened",
-            value: true,
-            isWatch: true
-        });
 
         const getMenuList = (): Promise<Menu[]> => {
             return new Promise((resolve) => {
@@ -189,14 +178,14 @@ export default defineComponent({
             defaultActive: computed(() => route.path),
             modeState,
             asideMenuWidth,
-            openLogo,
+            openLogo: computed(() => store.getters["setting/openLogo"]),
+            uniqueOpened: computed(() => store.getters["setting/uniqueOpened"]),
             globalColor,
             setting,
+            changeCollapse,
             asideNextBColor: ref(globalColor.asideNextBColor),
             asideNextAColor: ref(globalColor.asideNextAColor),
             asideBColor: ref(globalColor.asideBColor),
-            uniqueOpened,
-            changeCollapse
         };
     },
     components: {
@@ -207,7 +196,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/variables.scss";
 .aside-box {
     height: 100%;
     position: fixed;
@@ -253,8 +241,11 @@ export default defineComponent({
     }
     .asideMenu {
         width: v-bind(asideMenuWidth);
+        height: 100%;
         // 去掉el-menu 白色右边框
         border: none !important;
+        overflow-x: hidden;
+        overflow-y: hidden;
     }
 
     :deep(.el-menu--collapse) {

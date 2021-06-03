@@ -5,7 +5,7 @@
             <el-button type="primary" @click="exportTable(0)">{{ $t("export.excel-btn") }}</el-button>
             <el-button type="primary" @click="exportTable(1)">{{ $t("export.zip-btn") }}</el-button>
         </handle-box>
-        <my-el-table
+        <my-table
             v-loading="loading"
             :data="tableData"
             border
@@ -37,7 +37,7 @@
                 </template>
             </el-table-column>
             <el-table-column label="supplier" prop="supplier" align="center"></el-table-column>
-        </my-el-table>
+        </my-table>
     </div>
 </template>
 

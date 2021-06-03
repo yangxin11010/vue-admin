@@ -26,7 +26,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import "@/assets/css/index.scss";
-@import "@/assets/css/variables.scss";
+// @import "@/assets/css/variables.scss";
 @import "@/assets/css/animation.scss";
 @import "@/assets/css/element-global.scss";
 @import "@/assets/css/np-icons.scss";

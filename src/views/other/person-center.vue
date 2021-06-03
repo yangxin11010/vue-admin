@@ -1,7 +1,7 @@
 <template>
     <div class="psersonCenter">
         <el-row :gutter="20">
-            <el-col :span="6">
+            <el-col :span="6" :xs="24" :sm="8" :md="6">
                 <el-card shadow="hover">
                     <template #header>
                         <span>{{ $t("personCenter.cardTitle") }}</span>
@@ -25,11 +25,11 @@
                     </div>
                 </el-card>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="18" :xs="24" :sm="16" :md="18">
                 <el-card shadow="hover">
                     <el-tabs :before-leave="tabsBeforeLeave">
                         <el-tab-pane :label="$t('personCenter.account')">
-                            <el-form label-width="100px">
+                            <el-form label-width="auto">
                                 <el-form-item label="Name：">
                                     <template #label>
                                         <span class="font_wb">{{ $t("personCenter.accountInfo.name") }}：</span>
@@ -89,18 +89,10 @@
                                                 <tr>
                                                     <td align="right">location：</td>
                                                     <td>
-                                                        <el-tooltip
-                                                            effect="dark"
-                                                            :content="item.address"
-                                                            placement="right"
-                                                        >
-                                                            <span>
-                                                                <span class="location">{{ item.country }}</span>
-                                                                <span class="location">{{ item.province }}</span>
-                                                                <span class="location">{{ item.city }}</span>
-                                                                <span class="location">{{ item.area }}</span>
-                                                            </span>
-                                                        </el-tooltip>
+                                                        <span class="location">{{ item.country }}</span>
+                                                        <span class="location">{{ item.province }}</span>
+                                                        <span class="location">{{ item.city }}</span>
+                                                        <span class="location">{{ item.area }}</span>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -108,18 +100,20 @@
                                     </el-card>
                                 </el-timeline-item>
                             </el-timeline>
-                            <el-pagination
-                                @current-change="loginPageChange"
-                                background
-                                v-model:current-page="loginData.page"
-                                :page-size="10"
-                                layout="total, prev, pager, next, jumper"
-                                :total="loginData.total"
-                            >
-                            </el-pagination>
+                            <div class="pagination">
+                                <my-pagination
+                                    @current-change="loginPageChange"
+                                    background
+                                    v-model:current-page="loginData.page"
+                                    :page-size="10"
+                                    :total="loginData.total"
+                                    layout="total,prev,pager,next,jumper"
+                                >
+                                </my-pagination>
+                            </div>
                         </el-tab-pane>
                         <el-tab-pane :label="$t('personCenter.editPwd')">
-                            <el-form :model="passWord" ref="passFormRef" :rules="rules" label-width="150px">
+                            <el-form :model="passWord" ref="passFormRef" :rules="rules" label-width="auto">
                                 <el-form-item prop="oldPass">
                                     <template #label>
                                         <span class="font_wb">{{ $t("personCenter.editPwdInfo.oldPwd") }}：</span>
@@ -317,7 +311,7 @@ export default defineComponent({
     }
 }
 .form-input {
-    width: 350px;
+    max-width: 350px;
 }
 .about-item {
     font-size: 14px;

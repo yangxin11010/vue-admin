@@ -18,9 +18,8 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
-import { useStore } from "@/store";
+import { useStore, NavType } from "@/store";
 import { setting } from "@/config";
-import { useLocation } from "@/hooks";
 import { globalColor } from "@/config";
 export default defineComponent({
     name: "TitleLogo",
@@ -44,16 +43,8 @@ export default defineComponent({
     },
     setup(props) {
         const store = useStore();
-        const openLogo = useLocation({
-                name: "global-setting-openLogo",
-                value: setting.openLogo,
-                isWatch: true,
-            }),
-            navType = useLocation({
-                name: "global-setting-navType",
-                value: "side",
-                isWatch: true,
-            });
+        const openLogo = computed<boolean>(() => store.getters["setting/openLogo"]),
+            navType = computed<NavType>(() => store.getters["setting/navType"]);
 
         const backGColor = computed(() => {
             return ["top"].includes(navType.value) ? globalColor.asideBColor : "#2b2f3a";
@@ -86,7 +77,7 @@ export default defineComponent({
     width: 40px;
     height: 40px;
     position: relative;
-    left: -6px;
+    left: -8px;
 }
 .title {
     width: 130px;

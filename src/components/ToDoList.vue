@@ -33,7 +33,7 @@
             </el-table-column>
         </el-table>
     </el-card>
-    <el-dialog title="待办事项" v-model="dialogVisible" width="30%">
+    <my-dialog title="待办事项" v-model="dialogVisible" width="30%">
         <el-form :model="toDoForm" ref="toDoFormRef" label-width="80px">
             <el-form-item
                 prop="things"
@@ -55,7 +55,7 @@
                 <el-button type="primary" @click="addToDoList">添 加</el-button>
             </span>
         </template>
-    </el-dialog>
+    </my-dialog>
 </template>
 
 <script lang="ts">

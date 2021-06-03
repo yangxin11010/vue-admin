@@ -3,7 +3,7 @@
         <handle-box>
             <el-button type="primary" @click="addMenu">添加菜单</el-button>
         </handle-box>
-        <my-el-table
+        <my-table
             :data="menuList"
             :show-header="true"
             border
@@ -37,21 +37,21 @@
                 align="left"
                 min-width="250"
             ></el-table-column>
-            <el-table-column label="缓存状态" prop="keepAlive" align="center" fixed="right">
+            <el-table-column label="缓存状态" prop="keepAlive" align="center">
                 <template v-slot="{ row }">
                     <el-tag :type="row.keepAlive ? 'success' : 'danger'">
                         {{ row.keepAlive ? "开启" : "关闭" }}
                     </el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="菜单状态" prop="status" align="center" fixed="right">
+            <el-table-column label="菜单状态" prop="status" align="center">
                 <template v-slot="{ row }">
                     <el-tag :type="row.status === 0 ? 'danger' : 'success'">
                         {{ row.status === 0 ? "已禁用" : "已启用" }}
                     </el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="180" fixed="right">
+            <el-table-column label="操作" align="center" width="180">
                 <template v-slot="{ row }">
                     <el-button type="primary" @click="operate(0, row)">
                         修改
@@ -66,9 +66,9 @@
                     </el-button>
                 </template>
             </el-table-column>
-        </my-el-table>
+        </my-table>
 
-        <el-dialog :title="`${isAddMenu ? '添加' : '修改'}菜单`" v-model="dialogVisible" width="40%">
+        <my-dialog :title="`${isAddMenu ? '添加' : '修改'}菜单`" v-model="dialogVisible" width="40%">
             <el-form :model="menuForm" ref="menuFormRef" label-width="80px">
                 <el-form-item label="上级菜单" prop="parentMenuId">
                     <el-cascader
@@ -165,8 +165,8 @@
                     <el-button @click="submit" type="primary">{{ isAddMenu ? "添 加" : "修 改" }}</el-button>
                 </span>
             </template>
-        </el-dialog>
-        <el-drawer title="请选择图标" v-model="choseIconDrawer">
+        </my-dialog>
+        <my-drawer title="请选择图标" v-model="choseIconDrawer">
             <el-tabs type="border-card" tab-position="top">
                 <el-tab-pane label="Element-UI Icons">
                     <el-space wrap size="large">
@@ -183,7 +183,7 @@
                     </el-space>
                 </el-tab-pane>
             </el-tabs>
-        </el-drawer>
+        </my-drawer>
     </div>
 </template>
 
@@ -246,6 +246,7 @@ export default defineComponent({
                 return "";
             };
         });
+
 
         // 添加菜单
         const addMenu = async () => {

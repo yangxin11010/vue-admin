@@ -1,14 +1,15 @@
-import { Module } from "vuex";
+import type { Module } from "vuex";
 import type { Menu } from "@model/views";
+import type { RootState } from "../index";
 
-export interface State {
+export interface UserState {
     isLogin: boolean;
     token: string | null;
     permissions: string[];
     menuList: Menu[];
 }
 
-const setting: Module<State, any> = {
+const setting: Module<UserState, RootState> = {
     namespaced: true,
     state: {
         isLogin: false,
@@ -17,10 +18,10 @@ const setting: Module<State, any> = {
         menuList: [],
     },
     getters: {
-        isLogin: (state) => state.isLogin,
-        token: (state) => state.token,
-        permissions: (state) => state.permissions,
-        menuList: (state) => state.menuList,
+        isLogin: state => state.isLogin,
+        token: state => state.token,
+        permissions: state => state.permissions,
+        menuList: state => state.menuList,
     },
     mutations: {
         LOGIN(state, value: string) {

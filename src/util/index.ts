@@ -59,10 +59,10 @@ export function setDomStyles(el: any, params: CustomData) {
  * 获取系统/浏览器名称
  * @returns
  */
-export function getBrowserInfo() {
-    const os = navigator.platform;
-    const userAgent = navigator.userAgent;
-    const info: { system: string; browser: string } = {
+export function getSystemInfo() {
+    const os = navigator.platform,
+    userAgent = navigator.userAgent,
+    info: { system: string; browser: string, } = {
         system: "",
         browser: "",
     };
@@ -113,6 +113,12 @@ export function getBrowserInfo() {
         info.browser = "unknown";
     }
     return info;
+}
+
+export function getSystemType(){
+    const userAgentInfo = navigator.userAgent,
+    phoneList = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+    return phoneList.some(item => userAgentInfo.includes(item))
 }
 
 // 根据id查找菜单
